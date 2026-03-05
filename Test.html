@@ -5,64 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>CHOBANK</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tambahkan font sesuai desain referensi -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- html2canvas tetap disertakan karena diperlukan sistem -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        /* === RESET & BASE === */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-
+        
         body {
-            background-color: #ffffff;
-            color: #171717;
-            line-height: 1.5;
+            background-color: #f8f8f8;
+            color: #222222;
+            line-height: 1.6;
             min-height: 100vh;
             width: 100%;
             overflow-x: hidden;
-            background: #fcfcfc;
-            position: relative;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            font-family: 'Montserrat', sans-serif;
         }
-
-        /* subtle animated grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: -1;
-            animation: shiftGrid 12s linear infinite alternate;
-        }
-
-        @keyframes shiftGrid {
-            0% { background-position: 0 0; }
-            100% { background-position: 20px 20px; }
-        }
-
+        
         .container {
             width: 100%;
-            max-width: 1300px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 16px 20px 30px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding: 25px 20px;
         }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px 0 20px;
-        }
-
-        /* === SPLASH SCREEN (LOGO & CHOBANK FIRST) === */
+        
+        /* Splash Screen - dipertahankan sesuai permintaan sebelumnya */
         .splash-screen {
             position: fixed;
             inset: 0;
@@ -73,7 +45,7 @@
             align-items: center;
             justify-content: center;
             transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none; /* agar tidak mengganggu klik setelah fade */
+            pointer-events: none;
         }
 
         .splash-content {
@@ -112,402 +84,864 @@
             opacity: 0;
         }
 
-        /* hide splash after fade-out (so it doesn't block clicks) */
         .splash-screen.hidden {
             display: none;
         }
-
-        /* === HEADER (now normal, without logo inside) === */
+        
+        /* HEADER - didesain ulang sesuai referensi */
         header {
             text-align: center;
-            margin-bottom: 32px;
-            padding: 24px 20px 28px;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid #000000;
-            border-radius: 42px;
-            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 820px;
-            transition: border-radius 0.3s ease, box-shadow 0.4s ease;
-            animation: floatHeader 3s infinite alternate ease-in-out;
-        }
-
-        @keyframes floatHeader {
-            0% { transform: translateY(0); box-shadow: 0 20px 35px -8px rgba(0,0,0,0.1); }
-            100% { transform: translateY(-4px); box-shadow: 0 28px 40px -8px rgba(0,0,0,0.18); }
-        }
-
-        header:hover {
-            border-radius: 32px;
-            border-color: #222;
-        }
-
-        /* NO logo inside header anymore, just decorative minimal */
-        .header-minimal {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000;
-        }
-
-        .header-minimal span {
-            background: linear-gradient(145deg, #000, #333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #2e2e2e;
-            max-width: 600px;
-            margin: 0 auto 10px;
-            background: rgba(0,0,0,0.02);
-            padding: 6px 18px;
-            border-radius: 40px;
-            display: inline-block;
-            backdrop-filter: blur(4px);
-        }
-
-        .tagline {
-            font-size: 1rem;
-            color: #444;
-            font-weight: 400;
-            border-top: 1.5px dashed #aaa;
-            padding-top: 16px;
-            margin-top: 8px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* feature cards */
-        .menu-options {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 24px;
-            margin: 30px 0 25px;
-            width: 100%;
-        }
-
-        .menu-option {
-            background: #ffffff;
-            border: 2.5px solid #111;
-            border-radius: 32px;
-            padding: 28px 24px 24px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.15, 0.75, 0.3, 1.1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 340px;
-            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
-            position: relative;
-            background: linear-gradient(145deg, #ffffff, #f9f9f9);
-            flex: 1 1 280px;
-        }
-
-        .menu-option::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 30px;
-            padding: 3px;
-            background: radial-gradient(circle at 30% 30%, rgba(0,0,0,0.3), transparent 70%);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .menu-option:hover::after {
-            opacity: 0.8;
-        }
-
-        .menu-option:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: #000;
-            box-shadow: 0 28px 40px -12px rgba(0,0,0,0.25);
-        }
-
-        .menu-icon {
-            font-size: 3.4rem;
-            margin-bottom: 18px;
-            color: #000;
-            background: linear-gradient(145deg, #0a0a0a, #333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: 0.25s;
-        }
-
-        .menu-option:hover .menu-icon {
-            transform: scale(1.1) rotate(2deg);
-        }
-
-        .menu-option h2 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: #000;
-            line-height: 1.2;
-        }
-
-        .menu-option p {
-            color: #333;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
-            max-width: 280px;
-            opacity: 0.8;
-        }
-
-        .action-btn {
-            background: #000;
-            color: #fff;
-            padding: 14px 30px;
-            border-radius: 60px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 2px solid #000;
-            width: 100%;
-            max-width: 220px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 14px rgba(0,0,0,0.1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #000000;
+            background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
-            z-index: 2;
         }
-
-        .action-btn::before {
+        
+        .logo {
+            max-width: 80px;
+            height: auto;
+            margin: 0 auto 10px;
+            display: block;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #000000;
+            line-height: 1.3;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+        
+        /* FORM CONTAINER - didesain ulang sesuai referensi */
+        .form-container {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 30px 25px;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0%;
-            height: 300%;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(25deg);
-            transition: width 0.6s ease;
-            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
         }
-
-        .action-btn:hover::before {
-            width: 200%;
-        }
-
-        .action-btn:hover {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
-            transform: translateY(-4px);
-            box-shadow: 0 16px 24px -8px rgba(0,0,0,0.3);
-        }
-
-        /* coming soon special style */
-        .menu-option.coming-soon .action-btn {
-            background: #2b2b2b;
-            border-color: #2b2b2b;
-            color: #dddddd;
-            cursor: default;
-            pointer-events: none;
-            opacity: 0.9;
-            box-shadow: none;
-            justify-content: center;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .menu-option.coming-soon .action-btn i {
-            font-size: 1rem;
-            color: #aaa;
-        }
-
-        .menu-option.coming-soon {
-            cursor: default;
-        }
-
-        .menu-option.coming-soon:hover {
-            transform: translateY(-6px) scale(1.01);
-            border-color: #333;
-        }
-
-        .menu-option.coming-soon .menu-icon {
-            opacity: 0.8;
-        }
-
-        .coming-badge {
-            position: absolute;
-            top: -12px;
-            right: 10px;
-            background: #000;
-            color: white;
-            font-size: 0.8rem;
+        
+        .form-container h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #000000;
+            text-align: center;
             font-weight: 700;
-            padding: 6px 16px;
-            border-radius: 50px;
-            border: 2px solid white;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.12);
             letter-spacing: 0.5px;
-            transform: rotate(2deg);
-            transition: 0.2s;
+            position: relative;
+            padding-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
         }
-
-        .menu-option:hover .coming-badge {
-            transform: rotate(0deg) scale(1.1);
-            background: #222;
+        
+        .form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #333333, #000000, #333333);
         }
-
-        /* home icon */
-        .home-icon-container {
+        
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #000000;
+            font-size: 18px;
+            letter-spacing: 0.3px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #222222;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #333333;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* CARD OPTIONS - desain persis seperti referensi */
+        .card-options {
             display: flex;
-            justify-content: center;
-            margin: 30px 0 20px;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
         }
-
-        .home-icon {
+        
+        .card-option {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-option.selected {
+            border-color: #000000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: #fff;
-            color: #000;
-            border: 3px solid #000;
-            border-radius: 30px;
-            font-size: 26px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 8px 0 #000;
-            text-decoration: none;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
-
-        .home-icon:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 0 #000;
-            background: #f2f2f2;
+        
+        .card-icon.regular {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
-
-        /* footer */
-        footer {
-            text-align: center;
-            margin-top: 35px;
-            padding: 28px 20px 20px;
-            border-top: 3px solid #000;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(4px);
-            border-radius: 48px 48px 24px 24px;
-            max-width: 980px;
+        
+        .card-icon.silver {
+            background: linear-gradient(135deg, #606c88, #3f4c6b);
+        }
+        
+        .card-icon.gold {
+            background: linear-gradient(135deg, #000000, #D4AF37, #000000);
+        }
+        
+        .card-icon.business {
+            background: linear-gradient(135deg, #70000E, #990014, #70000E);
+        }
+        
+        .card-icon.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
+        
+        .card-info {
+            flex: 1;
+        }
+        
+        .card-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #000000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .card-info p {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .limit-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            transition: 0.3s;
         }
-
-        footer:hover {
-            background: rgba(255,255,255,0.8);
-        }
-
-        .warning-box {
-            background: #ffffff;
-            border: 2px solid #111;
-            border-radius: 32px;
-            padding: 20px 22px;
-            margin-bottom: 22px;
-            box-shadow: inset 0 -4px 0 #aaa;
-        }
-
-        .warning-box strong {
-            color: #000;
-            font-size: 1.1rem;
+        
+        .action-btn {
             display: block;
-            margin-bottom: 10px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
         }
-
-        .warning-box p {
-            color: #1f1f1f;
+        
+        .btn-primary {
+            background: linear-gradient(to right, #000000, #222222);
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
-
-        footer p {
-            color: #262626;
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #222222, #000000);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
-
-        /* bank features */
-        .bank-features {
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            color: #000000;
+            border: 2px solid #000000;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #f5f5f5, #ffffff);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* PREVIEW SECTION - desain sesuai referensi */
+        .preview-section {
+            margin-top: 35px;
+            width: 100%;
+        }
+        
+        .preview-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .preview-container {
+            width: 100%;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
             display: flex;
             justify-content: center;
-            gap: 14px 22px;
-            margin: 25px 0 15px;
-            flex-wrap: wrap;
+            align-items: center;
+            flex-direction: column;
         }
-
-        .feature-item {
-            background: #fff;
-            border: 2px solid #000;
-            border-radius: 40px;
-            padding: 8px 20px;
+        
+        .card-preview-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+        
+        .card-preview {
+            width: 350px;
+            height: 220px;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .card-preview:hover {
+            transform: rotateY(15deg) rotateX(5deg);
+        }
+        
+        .card-preview.regular {
+            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
+        }
+        
+        .card-preview.silver {
+            background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50);
+        }
+        
+        .card-preview.gold {
+            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
+        }
+        
+        .card-preview.business {
+            background: linear-gradient(135deg, #4d0008, #70000E, #4d0008);
+        }
+        
+        .card-preview.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
+        
+        .card-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .card-logo {
+            width: 80px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .card-type {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .card-type.silver {
+            color: #e0e0e0;
+        }
+        
+        .card-type.gold {
+            color: #D4AF37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .card-type.business {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-type.student {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+        }
+        
+        .card-middle-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .card-chip-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #d4af37, #f7ef8a, #d4af37);
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 22px;
+            background: linear-gradient(135deg, #b8941f, #d4af37, #b8941f);
+            border-radius: 3px;
+        }
+        
+        .card-number-section {
+            margin-top: 5px;
+        }
+        
+        .card-number {
+            font-size: 22px;
+            font-weight: 500;
+            color: white;
+            letter-spacing: 3px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-number {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: auto;
+        }
+        
+        .card-holder {
+            color: white;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-holder {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .card-holder-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 3px;
+            letter-spacing: 1.5px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-holder-name {
+            color: #000000;
+        }
+        
+        .card-expiry {
+            color: white;
+            font-size: 12px;
+            text-align: right;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-expiry {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .card-expiry-date {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 3px;
+            letter-spacing: 1.5px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-expiry-date {
+            color: #000000;
+        }
+        
+        .card-hologram {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .card-hologram::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255,255,255,0.4) 50%, 
+                transparent 70%);
+            animation: hologram 3s infinite linear;
+        }
+        
+        @keyframes hologram {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Card Info Display */
+        .card-info-display {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .card-info-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #000000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .card-info-box h4 {
+            margin-bottom: 10px;
+            color: #000000;
+            font-size: 18px;
+        }
+        
+        .card-info-box p {
+            margin-bottom: 5px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .card-info-box strong {
+            color: #000000;
+            min-width: 150px;
+            display: inline-block;
+        }
+        
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .download-btn {
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(to right, #000000, #333333);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0.95;
+        }
+        
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #000000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Modal Business & Student */
+        .business-modal, .student-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .business-modal.active, .student-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .business-modal-content, .student-modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+        }
+        
+        .business-modal.active .business-modal-content,
+        .student-modal.active .student-modal-content {
+            transform: translateY(0);
+        }
+        
+        .business-modal-header, .student-modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .business-modal-header h3, .student-modal-header h3 {
+            font-size: 28px;
+            color: #000000;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .business-modal-header p, .student-modal-header p {
+            color: #555555;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #000000;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: #333333;
+            transform: rotate(90deg);
+        }
+        
+        .success-message {
+            background: linear-gradient(145deg, #e8f5e8, #d0e8d0);
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .success-message h4 {
+            color: #2e7d32;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .success-message p {
+            color: #555555;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .twitter-contact {
+            background: #1da1f2;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: 0.3s;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
         }
-
-        .feature-item:hover {
-            background: #000;
+        
+        .twitter-contact:hover {
+            background: #0d8bd9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(29, 161, 242, 0.3);
+        }
+        
+        /* Back Button */
+        .back-to-top {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 30px;
+        }
+        
+        .back-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #000000, #333333);
+            border: 2px solid #000000;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-size: 20px;
         }
-
-        .feature-item:hover .feature-icon,
-        .feature-item:hover .feature-text {
-            color: white;
-            -webkit-text-fill-color: white;
+        
+        .back-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #333333, #000000);
         }
-
-        .feature-icon {
-            font-size: 1.2rem;
-            color: #000;
+        
+        .hidden {
+            display: none;
         }
-
-        /* animations */
-        @keyframes fadeSlide {
-            0% { opacity: 0; transform: translateY(40px); }
-            100% { opacity: 1; transform: translateY(0); }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #000000;
+            color: #444444;
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
         }
-
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 35px 30px;
+            }
+            
+            .form-container {
+                padding: 35px 30px;
+            }
+            
+            .card-options {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .card-option {
+                flex: 1 1 calc(50% - 10px);
+                min-width: 200px;
+            }
+            
+            .action-buttons, .download-options {
+                flex-direction: row;
+            }
+            
+            .action-btn, .download-btn {
+                width: auto;
+                flex: 1;
+                margin: 0 5px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .fade-in {
-            animation: fadeSlide 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-            opacity: 0;
-        }
-
-        /* responsive */
-        @media (min-width: 680px) {
-            .menu-options {
-                max-width: 1000px;
-            }
-        }
-
-        @media (min-width: 900px) {
-            .menu-options {
-                gap: 28px;
-            }
-            .menu-option {
-                max-width: 300px;
-            }
+            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN: Logo & CHOBANK pertama kali -->
+    <!-- SPLASH SCREEN: Logo & CHOBANK pertama kali (dipertahankan) -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
@@ -515,137 +949,786 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT (akan muncul setelah splash fade) -->
+    <!-- MAIN CONTENT -->
     <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.8s ease;">
+        <header>
+            <img src="chobank1.png" alt="Chobank Logo" class="logo" id="main-logo">
+            <h1>CHOBANK Digital ATM Card</h1>
+            <p class="subtitle">Create CHOBANK digital ATM cards for roleplay purposes.</p>
+        </header>
+        
         <main class="main-content">
-            <!-- HEADER sekarang tanpa logo besar, hanya minimal -->
-            <header class="fade-in" style="animation-delay: 0.1s;">
-                <div class="header-minimal">
-                    <span>CHOBANK</span>
-                </div>
-                <p class="subtitle">Digital Banking for Roleplay</p>
-                <p class="tagline">imagination · creativity · simulation</p>
-            </header>
-
-            <!-- 5 CARDS (2 asli + 3 coming soon, dengan Equity Investment) -->
-            <div class="menu-options">
-                <!-- 1. Digital ATM Card -->
-                <div class="menu-option fade-in" style="animation-delay: 0.15s;">
-                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
-                    <h2>Digital ATM Card</h2>
-                    <p>Create CHOBANK digital cards: Regular, Silver, Gold. Unique numbers & premium design.</p>
-                    <a href="chobank.html" class="action-btn">Create Card</a>
-                </div>
-
-                <!-- 2. Payment Proof Generator -->
-                <div class="menu-option fade-in" style="animation-delay: 0.25s;">
-                    <div class="menu-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h2>Payment Proof</h2>
-                    <p>Generate domestic/international payment proofs with realistic details.</p>
-                    <a href="proof.html" class="action-btn">Make Transaction</a>
-                </div>
-
-                <!-- 3. Loan (coming soon) -->
-                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.35s;">
-                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
-                    <div class="menu-icon"><i class="fas fa-hand-hold-usd"></i></div>
-                    <h2>Loan</h2>
-                    <p>Quick personal & business loans — flexible terms.</p>
-                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
-                </div>
-
-                <!-- 4. Insurance (coming soon) -->
-                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.45s;">
-                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
-                    <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h2>Insurance</h2>
-                    <p>Life, health & asset protection plans.</p>
-                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
-                </div>
-
-                <!-- 5. Equity Investment (coming soon) – sebelumnya Trading -->
-                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.55s;">
-                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
-                    <div class="menu-icon"><i class="fas fa-chart-pie"></i></div> <!-- icon lebih ke investment -->
-                    <h2>Equity Investment</h2>
-                    <p>For Investors Only.</p>
-                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
+            <section class="form-container fade-in">
+                <h2>ATM Card Application Form</h2>
+                
+                <form id="card-form">
+                    <div class="form-group">
+                        <label for="full-name">Full Name of Cardholder</label>
+                        <input type="text" id="full-name" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Full Address</label>
+                        <textarea id="address" class="form-control" rows="3" placeholder="Enter your full address" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Card Type</label>
+                        <div class="card-options">
+                            <div class="card-option" data-type="regular">
+                                <div class="card-icon regular">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Regular Card</h3>
+                                    <p>Standard card with transaction limit</p>
+                                    <span class="limit-badge">Limit: IDR 100,000,000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="silver">
+                                <div class="card-icon silver">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Silver Card</h3>
+                                    <p>Premium card with higher limit</p>
+                                    <span class="limit-badge">Limit: IDR 5,000,000,000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="gold">
+                                <div class="card-icon gold">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Gold Card (Black)</h3>
+                                    <p>Exclusive unlimited card</p>
+                                    <span class="limit-badge">Unlimited</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="business">
+                                <div class="card-icon business">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Business Card</h3>
+                                    <p>Only for company</p>
+                                    <span class="limit-badge">Limit: IDR 1,000,000,000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="student">
+                                <div class="card-icon student">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Student Card</h3>
+                                    <p>Special card for students</p>
+                                    <span class="limit-badge">For Students Only</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate ATM Card</button>
+                        <button type="reset" class="action-btn btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+            </section>
+            
+            <div class="preview-section hidden" id="preview-section">
+                <h3 class="preview-title">CHOBANK ATM Card Preview</h3>
+                
+                <div class="preview-container">
+                    <div class="card-preview-container">
+                        <div class="card-preview" id="card-preview">
+                            <div class="card-glow"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <div class="card-logo-placeholder" id="card-logo">
+                                        <!-- Logo will be inserted via JS -->
+                                    </div>
+                                    <div class="card-type" id="card-type-label">REGULAR</div>
+                                </div>
+                                
+                                <div class="card-middle-section">
+                                    <div class="card-chip-container">
+                                        <div class="card-chip"></div>
+                                    </div>
+                                    <div class="card-number-section">
+                                        <div class="card-number" id="card-number-display">
+                                            •••• •••• •••• ••••
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-details">
+                                    <div class="card-holder">
+                                        CARDHOLDER NAME
+                                        <div class="card-holder-name" id="card-holder-name">FULL NAME</div>
+                                    </div>
+                                    
+                                    <div class="card-expiry">
+                                        VALID THRU
+                                        <div class="card-expiry-date" id="card-expiry-date">MM/YY</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-hologram"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-info-display">
+                        <div class="card-info-box">
+                            <h4>Card Details</h4>
+                            <p><strong>Card / Account Number:</strong> <span id="display-card-number">•••• •••• •••• ••••</span></p>
+                            <p><strong>Cardholder Name:</strong> <span id="display-holder-name">FULL NAME</span></p>
+                            <p><strong>Expiry Date:</strong> <span id="display-expiry-date">MM/YY</span></p>
+                            <p><strong>Card Type:</strong> <span id="display-card-type">REGULAR</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="download-options">
+                        <button type="button" id="download-card-btn" class="download-btn">Download ATM Card</button>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="new-card-btn" class="action-btn btn-secondary">Create New Card</button>
+                    </div>
                 </div>
             </div>
-
-            <!-- home icon -->
-            <div class="home-icon-container fade-in" style="animation-delay: 0.65s;">
-                <a href="https://thekachoo.github.io/Home/index.html" class="home-icon" title="home">
-                    <i class="fas fa-home"></i>
-                </a>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Creating card...</p>
             </div>
         </main>
-
-        <!-- footer -->
-        <footer class="fade-in" style="animation-delay: 0.75s;">
-            <div class="warning-box">
-                <strong>⚠ FICTIONAL NOTICE</strong>
-                <p>CHOBANK is a roleplay platform. No real money or assets are used. All transactions, cards, and proofs are fictional.</p>
+        
+        <!-- Business Card Modal -->
+        <div class="business-modal" id="business-modal">
+            <div class="business-modal-content">
+                <button class="close-modal" id="close-business-modal">&times;</button>
+                
+                <div class="business-modal-header">
+                    <h3>Business Card Form</h3>
+                    <p>Fill in company data for Business Card application</p>
+                </div>
+                
+                <form id="business-form">
+                    <div class="form-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" id="company-name" class="form-control" placeholder="Enter company name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-type">Company Type</label>
+                        <input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-year">Company Establishment Year</label>
+                        <input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-founder">Founder / Person in Charge</label>
+                        <input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="account-manager">Account Manager</label>
+                        <input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button>
+                        <button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+                
+                <div id="business-success" class="hidden">
+                    <div class="success-message">
+                        <h4>Form Successfully Submitted!</h4>
+                        <p>Thank you for completing the Business Card form. Your company data has been recorded.</p>
+                        <p>For further process and ATM card delivery, please contact:</p>
+                        <a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact">
+                            <i class="fab fa-twitter"></i> @HAIKACHOO on Twitter
+                        </a>
+                        <p style="margin-top: 15px; font-size: 14px;">Business Card will be processed within 1-3 working days after confirmation.</p>
+                    </div>
+                </div>
             </div>
-            <p>© 2026 CHOBANK, powered by The Kachoo</p>
+        </div>
+        
+        <!-- Student Card Modal -->
+        <div class="student-modal" id="student-modal">
+            <div class="student-modal-content">
+                <button class="close-modal" id="close-student-modal">&times;</button>
+                
+                <div class="student-modal-header">
+                    <h3>Student Card Form</h3>
+                    <p>Fill in student data for Student Card application</p>
+                </div>
+                
+                <form id="student-form">
+                    <div class="form-group">
+                        <label for="student-name">Student Name</label>
+                        <input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-dob">Date of Birth</label>
+                        <input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-school">School / University</label>
+                        <input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="parent-occupation">Parent Occupation</label>
+                        <input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-address">Address</label>
+                        <textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button>
+                        <button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+                
+                <div id="student-success" class="hidden">
+                    <div class="success-message">
+                        <h4>Form Successfully Submitted!</h4>
+                        <p>Thank you for completing the Student Card form. Your data has been recorded.</p>
+                        <p>Student Card number: <strong id="student-card-number-display">•••• •••• •••• ••••</strong></p>
+                        <p>For further process and ATM card delivery, please contact:</p>
+                        <a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact">
+                            <i class="fab fa-twitter"></i> @HAIKACHOO on Twitter
+                        </a>
+                        <p style="margin-top: 15px; font-size: 14px;">Student Card will be processed within 1-3 working days after confirmation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Top Button -->
+        <div class="back-to-top">
+            <a href="index.html" class="back-button" id="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+        
+        <footer>
+            <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
+            <p>This page does not perform actual financial transactions.</p>
+            <p>Each card number is unique and will never be repeated.</p>
         </footer>
     </div>
 
     <script>
-        (function() {
-            // === SPLASH SCREEN LOGIC ===
-            const splash = document.getElementById('splashScreen');
-            const mainContainer = document.getElementById('mainContainer');
+        // ==============================
+        // SPLASH SCREEN LOGIC
+        // ==============================
+        const splash = document.getElementById('splashScreen');
+        const mainContainer = document.getElementById('mainContainer');
 
-            // Fallback jika logo splash error
-            window.handleSplashLogoError = function() {
-                const splashLogo = document.getElementById('splashLogo');
-                if (splashLogo) {
-                    splashLogo.style.display = 'none';
-                    // tambahkan ikon sebagai fallback di splash
-                    const fallbackIcon = document.createElement('i');
-                    fallbackIcon.className = 'fas fa-university';
-                    fallbackIcon.style.fontSize = '5rem';
-                    fallbackIcon.style.color = '#000';
-                    fallbackIcon.style.marginBottom = '1rem';
-                    splash.querySelector('.splash-content').prepend(fallbackIcon);
-                }
-            };
+        window.handleSplashLogoError = function() {
+            const splashLogo = document.getElementById('splashLogo');
+            if (splashLogo) {
+                splashLogo.style.display = 'none';
+                const fallbackIcon = document.createElement('i');
+                fallbackIcon.className = 'fas fa-university';
+                fallbackIcon.style.fontSize = '5rem';
+                fallbackIcon.style.color = '#000';
+                fallbackIcon.style.marginBottom = '1rem';
+                splash.querySelector('.splash-content').prepend(fallbackIcon);
+            }
+        };
 
-            // Tunggu sebentar lalu fade out splash dan munculkan main container
+        setTimeout(() => {
+            splash.classList.add('fade-out');
             setTimeout(() => {
-                splash.classList.add('fade-out');
-                // setelah fade selesai, sembunyikan splash dan tampilkan main container
-                setTimeout(() => {
-                    splash.classList.add('hidden');
-                    mainContainer.style.opacity = '1';
-                }, 1200); // cocok dengan transition splash 1.2s
-            }, 1600); // biar splash terlihat 1.6 detik (cukup lama untuk pudar)
+                splash.classList.add('hidden');
+                mainContainer.style.opacity = '1';
+            }, 1200);
+        }, 1600);
 
-            // === LOGO FALLBACK UNTUK HEADER (tidak dipakai karena header tanpa logo, tapi kita tetap sediakan jika img tiba2 ada) ===
-            // tidak diperlukan
-
-            // === PARALLAX GRID (opsional) ===
-            document.addEventListener('mousemove', function(e) {
-                const x = e.clientX / window.innerWidth - 0.5;
-                const y = e.clientY / window.innerHeight - 0.5;
-                document.body.style.backgroundPosition = `${x * 8}px ${y * 8}px, ${x * 8 + 40}px ${y * 8}px`;
-            });
-
-            // disable click pada coming soon buttons
-            const soonBtns = document.querySelectorAll('.coming-soon .action-btn');
-            soonBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => e.preventDefault());
-            });
-
-            // tambahkan sedikit interaksi pada kartu non-coming-soon
-            const activeCards = document.querySelectorAll('.menu-option:not(.coming-soon)');
-            activeCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    // biarkan link bekerja normal
+        // ==============================
+        // MAIN CONFIGURATION (dari file asli, tidak diubah)
+        // ==============================
+        const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
+        
+        const usedCardNumbers = new Set();
+        let selectedCardType = '';
+        let currentAccountNumber = '';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.card-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.card-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    selectedCardType = this.getAttribute('data-type');
+                    
+                    if (selectedCardType === 'business') {
+                        openBusinessModal();
+                    } else if (selectedCardType === 'student') {
+                        openStudentModal();
+                    }
                 });
             });
-        })();
+            
+            document.getElementById('generate-card-btn').addEventListener('click', generateCard);
+            document.getElementById('download-card-btn').addEventListener('click', downloadCard);
+            document.getElementById('new-card-btn').addEventListener('click', function() {
+                document.getElementById('preview-section').classList.add('hidden');
+                document.getElementById('card-form').reset();
+                document.querySelectorAll('.card-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                selectedCardType = '';
+                currentAccountNumber = '';
+            });
+            
+            document.getElementById('close-business-modal').addEventListener('click', closeBusinessModal);
+            document.getElementById('cancel-business-btn').addEventListener('click', closeBusinessModal);
+            document.getElementById('business-form').addEventListener('submit', submitBusinessForm);
+            
+            document.getElementById('close-student-modal').addEventListener('click', closeStudentModal);
+            document.getElementById('cancel-student-btn').addEventListener('click', closeStudentModal);
+            document.getElementById('student-form').addEventListener('submit', submitStudentForm);
+            
+            checkLogo();
+        });
+        
+        function openBusinessModal() {
+            document.getElementById('business-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeBusinessModal() {
+            document.getElementById('business-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('business-form').reset();
+            document.getElementById('business-success').classList.add('hidden');
+            document.getElementById('business-form').classList.remove('hidden');
+            document.querySelectorAll('.card-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            selectedCardType = '';
+        }
+        
+        function openStudentModal() {
+            document.getElementById('student-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeStudentModal() {
+            document.getElementById('student-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('student-form').reset();
+            document.getElementById('student-success').classList.add('hidden');
+            document.getElementById('student-form').classList.remove('hidden');
+            document.querySelectorAll('.card-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            selectedCardType = '';
+        }
+        
+        function checkLogo() {
+            const logo = document.getElementById('main-logo');
+            logo.onerror = function() {
+                this.style.display = 'none';
+                const header = document.querySelector('header');
+                const placeholder = document.createElement('div');
+                placeholder.innerHTML = '<div style="font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px;"><i class="fas fa-university"></i> CHOBANK</div>';
+                header.insertBefore(placeholder, header.firstChild);
+            };
+        }
+        
+        // ==============================
+        // MAIN FUNCTION: GENERATE CARD
+        // ==============================
+        async function generateCard() {
+            const fullName = document.getElementById('full-name').value.trim();
+            const address = document.getElementById('address').value.trim();
+            
+            if (!fullName || !address) {
+                alert('Please fill in full name and address!');
+                return;
+            }
+            
+            if (!selectedCardType || selectedCardType === 'business' || selectedCardType === 'student') {
+                alert('Please select a valid card type (Regular, Silver, or Gold)!');
+                return;
+            }
+            
+            let cardNumber;
+            do {
+                cardNumber = generateUniqueCardNumber();
+            } while (usedCardNumbers.has(cardNumber));
+            
+            usedCardNumbers.add(cardNumber);
+            currentAccountNumber = cardNumber.replace(/\s/g, '');
+            
+            const expiryDate = generateExpiryDate();
+            updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType);
+            
+            // SEND DATA TO SPREADSHEET
+            const cardData = {
+                name: fullName,
+                address: address,
+                cardType: selectedCardType,
+                cardNumber: currentAccountNumber,
+                accountNumber: currentAccountNumber,
+                expiryDate: expiryDate
+            };
+            
+            document.getElementById('loading').style.display = 'block';
+            
+            try {
+                const result = await sendToSpreadsheet(cardData);
+                
+                if (result.success) {
+                    document.getElementById('preview-section').classList.remove('hidden');
+                    document.getElementById('preview-section').classList.add('fade-in');
+                    
+                    setTimeout(() => {
+                        document.getElementById('preview-section').scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 300);
+                    
+                    alert('✅ Card successfully created and data saved to spreadsheet!');
+                } else {
+                    throw new Error('Failed to save data');
+                }
+            } catch (error) {
+                alert('❌ Failed to save data to spreadsheet: ' + error.message);
+                return;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        // ==============================
+        // SUBMIT BUSINESS FORM
+        // ==============================
+        async function submitBusinessForm(e) {
+            e.preventDefault();
+            
+            const companyName = document.getElementById('company-name').value.trim();
+            const companyType = document.getElementById('company-type').value.trim();
+            const companyYear = document.getElementById('company-year').value.trim();
+            const companyFounder = document.getElementById('company-founder').value.trim();
+            const accountManager = document.getElementById('account-manager').value.trim();
+            
+            if (!companyName || !companyType || !companyYear || !companyFounder || !accountManager) {
+                alert('Please complete all company data!');
+                return;
+            }
+            
+            const businessData = {
+                companyName: companyName,
+                companyType: companyType,
+                companyYear: companyYear,
+                founder: companyFounder,
+                accountManager: accountManager
+            };
+            
+            try {
+                await sendToSpreadsheet(businessData);
+                document.getElementById('business-form').classList.add('hidden');
+                document.getElementById('business-success').classList.remove('hidden');
+                document.querySelectorAll('.card-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                selectedCardType = '';
+            } catch (error) {
+                alert('Failed to send data: ' + error.message);
+            }
+        }
+        
+        // ==============================
+        // SUBMIT STUDENT FORM
+        // ==============================
+        async function submitStudentForm(e) {
+            e.preventDefault();
+            
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentDOB = document.getElementById('student-dob').value.trim();
+            const studentSchool = document.getElementById('student-school').value.trim();
+            const parentOccupation = document.getElementById('parent-occupation').value.trim();
+            const studentAddress = document.getElementById('student-address').value.trim();
+            
+            if (!studentName || !studentDOB || !studentSchool || !parentOccupation || !studentAddress) {
+                alert('Please complete all student data!');
+                return;
+            }
+            
+            let cardNumber;
+            do {
+                cardNumber = generateUniqueCardNumber();
+            } while (usedCardNumbers.has(cardNumber));
+            
+            usedCardNumbers.add(cardNumber);
+            
+            const studentData = {
+                studentName: studentName,
+                dateOfBirth: studentDOB,
+                school: studentSchool,
+                parentOccupation: parentOccupation,
+                address: studentAddress,
+                cardNumber: cardNumber.replace(/\s/g, '')
+            };
+            
+            try {
+                await sendToSpreadsheet(studentData);
+                document.getElementById('student-card-number-display').textContent = cardNumber;
+                document.getElementById('student-form').classList.add('hidden');
+                document.getElementById('student-success').classList.remove('hidden');
+                document.querySelectorAll('.card-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                selectedCardType = '';
+            } catch (error) {
+                alert('Failed to send data: ' + error.message);
+            }
+        }
+        
+        // ==============================
+        // SEND TO SPREADSHEET FUNCTION - FIXED!
+        // ==============================
+        async function sendToSpreadsheet(data) {
+            console.log('Sending data:', data);
+            
+            try {
+                const response = await fetch(SPREADSHEET_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('Response:', result);
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to save data');
+                }
+                
+                return result;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+        }
+        
+        // ==============================
+        // HELPER FUNCTIONS
+        // ==============================
+        function generateUniqueCardNumber() {
+            let number = '';
+            for (let i = 0; i < 4; i++) {
+                number += Math.floor(1000 + Math.random() * 9000);
+                if (i < 3) number += ' ';
+            }
+            return number;
+        }
+        
+        function generateExpiryDate() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear() + 5).slice(-2);
+            return `${month}/${year}`;
+        }
+        
+        function updateCardPreview(name, cardNumber, expiryDate, type) {
+            const cardPreview = document.getElementById('card-preview');
+            const cardTypeLabel = document.getElementById('card-type-label');
+            const cardNumberDisplay = document.getElementById('card-number-display');
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardExpiryDate = document.getElementById('card-expiry-date');
+            
+            document.getElementById('display-card-number').textContent = cardNumber;
+            document.getElementById('display-holder-name').textContent = name;
+            document.getElementById('display-expiry-date').textContent = expiryDate;
+            document.getElementById('display-card-type').textContent = type.toUpperCase();
+            
+            cardPreview.className = 'card-preview';
+            cardPreview.classList.add(type);
+            
+            const logoPlaceholder = document.getElementById('card-logo');
+            logoPlaceholder.innerHTML = '';
+            
+            const logoImg = document.createElement('img');
+            logoImg.src = 'logo-thekachoo.png';
+            logoImg.alt = 'CHOBANK Logo';
+            logoImg.className = 'card-logo';
+            logoImg.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                if (type === 'student') {
+                    placeholder.style.color = '#000000';
+                } else {
+                    placeholder.style.color = 'white';
+                }
+                placeholder.style.fontWeight = '800';
+                placeholder.style.fontSize = '18px';
+                placeholder.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+                placeholder.textContent = 'CHOBANK';
+                placeholder.style.fontFamily = "'Roboto Mono', monospace";
+                logoPlaceholder.appendChild(placeholder);
+            };
+            logoPlaceholder.appendChild(logoImg);
+            
+            cardTypeLabel.textContent = type.toUpperCase();
+            cardTypeLabel.className = 'card-type';
+            
+            if (type === 'silver') {
+                cardTypeLabel.classList.add('silver');
+            } else if (type === 'gold') {
+                cardTypeLabel.classList.add('gold');
+            } else if (type === 'student') {
+                cardTypeLabel.classList.add('student');
+            }
+            
+            cardNumberDisplay.textContent = cardNumber;
+            if (type === 'student') {
+                cardNumberDisplay.classList.add('student-card-number');
+            } else {
+                cardNumberDisplay.classList.remove('student-card-number');
+            }
+            
+            cardHolderName.textContent = name.toUpperCase();
+            if (type === 'student') {
+                cardHolderName.classList.add('student-card-holder-name');
+                cardHolderName.closest('.card-holder').classList.add('student-card-holder');
+            } else {
+                cardHolderName.classList.remove('student-card-holder-name');
+                cardHolderName.closest('.card-holder').classList.remove('student-card-holder');
+            }
+            
+            cardExpiryDate.textContent = expiryDate;
+            if (type === 'student') {
+                cardExpiryDate.classList.add('student-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.add('student-card-expiry');
+            } else {
+                cardExpiryDate.classList.remove('student-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.remove('student-card-expiry');
+            }
+        }
+        
+        function downloadCard() {
+            const cardPreview = document.getElementById('card-preview');
+            if (!cardPreview) {
+                alert('Please generate a card first!');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '-9999px';
+            tempContainer.style.width = '450px';
+            tempContainer.style.height = '300px';
+            tempContainer.style.backgroundColor = 'transparent';
+            
+            const clonedCard = cardPreview.cloneNode(true);
+            clonedCard.style.transform = 'none';
+            clonedCard.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
+            clonedCard.style.width = '450px';
+            clonedCard.style.height = '300px';
+            clonedCard.style.borderRadius = '20px';
+            clonedCard.style.padding = '25px';
+            
+            const cardNumber = clonedCard.querySelector('.card-number');
+            if (cardNumber) cardNumber.style.fontSize = '26px';
+            
+            const cardHolderName = clonedCard.querySelector('.card-holder-name');
+            if (cardHolderName) cardHolderName.style.fontSize = '22px';
+            
+            const cardExpiryDate = clonedCard.querySelector('.card-expiry-date');
+            if (cardExpiryDate) cardExpiryDate.style.fontSize = '22px';
+            
+            const cardType = clonedCard.querySelector('.card-type');
+            if (cardType) cardType.style.fontSize = '14px';
+            
+            const cardChip = clonedCard.querySelector('.card-chip');
+            if (cardChip) {
+                cardChip.style.width = '40px';
+                cardChip.style.height = '30px';
+            }
+            
+            tempContainer.appendChild(clonedCard);
+            document.body.appendChild(tempContainer);
+            
+            const watermark = document.createElement('div');
+            watermark.style.position = 'absolute';
+            watermark.style.bottom = '10px';
+            watermark.style.right = '10px';
+            watermark.style.fontSize = '12px';
+            watermark.style.fontWeight = '600';
+            watermark.style.fontFamily = "'Roboto Mono', monospace";
+            watermark.textContent = 'ROLEPLAY ONLY';
+            
+            if (selectedCardType === 'student') {
+                watermark.style.color = 'rgba(0,0,0,0.5)';
+            } else {
+                watermark.style.color = 'rgba(255,255,255,0.5)';
+            }
+            
+            clonedCard.appendChild(watermark);
+            
+            setTimeout(() => {
+                html2canvas(clonedCard, {
+                    scale: 2,
+                    backgroundColor: null,
+                    useCORS: true,
+                    width: 450,
+                    height: 300,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    const name = document.getElementById('full-name').value.trim().replace(/\s+/g, '_');
+                    const type = selectedCardType;
+                    const timestamp = new Date().getTime();
+                    link.download = `chobank_${type}_card_${name}_${timestamp}.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                    
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    
+                    alert('ATM card downloaded successfully!');
+                }).catch(error => {
+                    console.error('Error generating card image:', error);
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    
+                    alert('An error occurred while creating the card image. Please try again.');
+                });
+            }, 500);
+        }
     </script>
 </body>
     </html>
