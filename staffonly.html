@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CHOBANK - Digital ATM Card Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #222222;
+            line-height: 1.6;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 25px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #000000;
+            background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo {
+            max-width: 180px;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #000000;
+            line-height: 1.3;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+        
+        .form-container {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 30px 25px;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
+        }
+        
+        .form-container h2 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #333333, #000000, #333333);
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #000000;
+            font-size: 18px;
+            letter-spacing: 0.3px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #222222;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #333333;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .card-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .card-option {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-option.selected {
+            border-color: #000000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .card-icon.regular {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+        
+        .card-icon.silver {
+            background: linear-gradient(135deg, #606c88, #3f4c6b);
+        }
+        
+        .card-icon.gold {
+            background: linear-gradient(135deg, #000000, #D4AF37, #000000);
+        }
+        
+        .card-icon.business {
+            background: linear-gradient(135deg, #70000E, #990014, #70000E);
+        }
+        
+        .card-icon.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
+        
+        .card-info {
+            flex: 1;
+        }
+        
+        .card-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #000000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .card-info p {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .limit-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        .action-btn {
+            display: block;
+            padding: 16px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #000000, #222222);
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #222222, #000000);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            color: #000000;
+            border: 2px solid #000000;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #f5f5f5, #ffffff);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .preview-section {
+            margin-top: 35px;
+            width: 100%;
+        }
+        
+        .preview-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .preview-container {
+            width: 100%;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .card-preview-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+        
+        .card-preview {
+            width: 350px;
+            height: 220px;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
+        }
+        
+        .card-preview:hover {
+            transform: rotateY(15deg) rotateX(5deg);
+        }
+        
+        .card-preview.regular {
+            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
+        }
+        
+        .card-preview.silver {
+            background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50);
+        }
+        
+        .card-preview.gold {
+            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
+        }
+        
+        .card-preview.business {
+            background: linear-gradient(135deg, #70000E, #990014, #70000E);
+        }
+        
+        .card-preview.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
+        
+        .card-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .card-logo {
+            width: 80px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .card-type {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .card-type.silver {
+            color: #e0e0e0;
+        }
+        
+        .card-type.gold {
+            color: #D4AF37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        
+        .card-type.business {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .card-type.student {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+        }
+        
+        .card-middle-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .card-chip-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .card-chip {
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #d4af37, #f7ef8a, #d4af37);
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 22px;
+            background: linear-gradient(135deg, #b8941f, #d4af37, #b8941f);
+            border-radius: 3px;
+        }
+        
+        .card-number-section {
+            margin-top: 5px;
+        }
+        
+        .card-number {
+            font-size: 22px;
+            font-weight: 500;
+            color: white;
+            letter-spacing: 3px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-number {
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .business-card-number {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: auto;
+        }
+        
+        .card-holder {
+            color: white;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-holder {
+            color: #000000 !important;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5) !important;
+        }
+        
+        .business-card-holder {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .card-holder-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 3px;
+            letter-spacing: 1.5px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-holder-name {
+            color: #000000 !important;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5) !important;
+        }
+        
+        .business-card-holder-name {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .card-expiry {
+            color: white;
+            font-size: 12px;
+            text-align: right;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-expiry {
+            color: #000000 !important;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5) !important;
+        }
+        
+        .business-card-expiry {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .card-expiry-date {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 3px;
+            letter-spacing: 1.5px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .student-card-expiry-date {
+            color: #000000 !important;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5) !important;
+        }
+        
+        .business-card-expiry-date {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .card-hologram {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .card-hologram::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255,255,255,0.4) 50%, 
+                transparent 70%);
+            animation: hologram 3s infinite linear;
+        }
+        
+        @keyframes hologram {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .download-btn {
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(to right, #000000, #333333);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0.95;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #000000;
+            color: #444444;
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #000000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 35px 30px;
+            }
+            
+            .form-container {
+                padding: 35px 30px;
+            }
+            
+            .card-options {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .card-option {
+                flex: 1 1 calc(50% - 10px);
+                min-width: 200px;
+            }
+            
+            .action-buttons, .download-options {
+                flex-direction: row;
+            }
+            
+            .action-btn, .download-btn {
+                width: auto;
+                flex: 1;
+                margin: 0 5px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .card-info-display {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .card-info-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #000000;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .card-info-box h4 {
+            margin-bottom: 10px;
+            color: #000000;
+            font-size: 18px;
+        }
+        
+        .card-info-box p {
+            margin-bottom: 5px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .card-info-box strong {
+            color: #000000;
+            min-width: 150px;
+            display: inline-block;
+        }
+        
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .success-modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+        }
+        
+        .success-modal.active .success-modal-content {
+            transform: translateY(0);
+        }
+        
+        .success-message {
+            background: linear-gradient(145deg, #e8f5e8, #d0e8d0);
+            border: 2px solid #2e7d32;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .success-message h4 {
+            color: #2e7d32;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .success-message p {
+            color: #555555;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .contact-info p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #000000;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background: #333333;
+            transform: rotate(90deg);
+        }
+        
+        /* Tambahan untuk efek mengkilap */
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.1) 50%,
+                rgba(255,255,255,0) 100%);
+            z-index: 1;
+        }
+        
+        .card-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255,255,255,0.1) 50%, 
+                transparent 70%);
+            transform: rotate(30deg);
+            animation: shine 3s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+        
+        /* Form untuk input nomor kartu */
+        .card-number-input-group {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .card-number-input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .card-number-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: 'Roboto Mono', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .card-number-input:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+        
+        .info-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-placeholder" style="font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fas fa-university"></i> CHOBANK
+            </div>
+            <h1>CHOBANK Digital ATM Card</h1>
+            <p class="subtitle">Buat kartu ATM digital CHOBANK untuk keperluan roleplay. Hanya form nama dan alamat.</p>
+        </header>
+        
+        <main class="main-content">
+            <section class="form-container fade-in">
+                <h2>Formulir Pembuatan Kartu ATM</h2>
+                
+                <form id="card-form">
+                    <div class="form-group">
+                        <label for="full-name">Nama Lengkap / Nama Perusahaan</label>
+                        <input type="text" id="full-name" class="form-control" placeholder="Masukkan nama lengkap atau nama perusahaan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Alamat Lengkap</label>
+                        <textarea id="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Pilih Jenis Kartu</label>
+                        <div class="card-options">
+                            <div class="card-option" data-type="regular">
+                                <div class="card-icon regular">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Regular Card</h3>
+                                    <p>Kartu standar dengan limit transaksi</p>
+                                    <span class="limit-badge">Limit: Rp 100.000.000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="silver">
+                                <div class="card-icon silver">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Silver Card</h3>
+                                    <p>Kartu premium dengan limit lebih tinggi</p>
+                                    <span class="limit-badge">Limit: Rp 5.000.000.000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="gold">
+                                <div class="card-icon gold">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Gold Card (Black)</h3>
+                                    <p>Kartu eksklusif tanpa batas limit</p>
+                                    <span class="limit-badge">Unlimited</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="business">
+                                <div class="card-icon business">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Business Card</h3>
+                                    <p>Kartu khusus bisnis dengan warna merah maroon</p>
+                                    <span class="limit-badge">COMPANY NAME</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-option" data-type="student">
+                                <div class="card-icon student">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="card-info">
+                                    <h3>Student Card</h3>
+                                    <p>Kartu khusus pelajar - bisa input nomor sendiri</p>
+                                    <span class="limit-badge">CARDHOLDER NAME</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Input untuk nomor kartu (untuk semua tipe kartu) -->
+                    <div class="card-number-input-group hidden" id="card-number-input-group">
+                        <label for="custom-card-number">Nomor Kartu / Rekening (Opsional)</label>
+                        <input type="text" id="custom-card-number" class="card-number-input" placeholder="Contoh: 1234 5678 9012 3456" maxlength="19">
+                        <p class="info-note">Kosongkan untuk nomor acak. Bisa menggunakan nomor yang sama berkali-kali.</p>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate Kartu ATM</button>
+                        <button type="reset" class="action-btn btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+            </section>
+            
+            <div class="preview-section hidden" id="preview-section">
+                <h3 class="preview-title">Preview Kartu ATM CHOBANK</h3>
+                
+                <div class="preview-container">
+                    <div class="card-preview-container">
+                        <div class="card-preview" id="card-preview">
+                            <div class="card-glow"></div>
+                            <div class="card-shine"></div>
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <div class="card-logo-placeholder" id="card-logo">
+                                        <!-- Logo akan dimasukkan via JS -->
+                                    </div>
+                                    <div class="card-type" id="card-type-label">REGULAR</div>
+                                </div>
+                                
+                                <!-- Chip kecil di antara CHOBANK dan nomor kartu -->
+                                <div class="card-middle-section">
+                                    <div class="card-chip-container">
+                                        <div class="card-chip"></div>
+                                    </div>
+                                    <div class="card-number-section">
+                                        <div class="card-number" id="card-number-display">
+                                            •••• •••• •••• ••••
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-details">
+                                    <div class="card-holder-container">
+                                        <div class="card-holder" id="card-holder-label">
+                                            CARDHOLDER NAME
+                                        </div>
+                                        <div class="card-holder-name" id="card-holder-name">FULL NAME</div>
+                                    </div>
+                                    
+                                    <div class="card-expiry">
+                                        VALID THRU
+                                        <div class="card-expiry-date" id="card-expiry-date">MM/YY</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card-hologram"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Kartu di Bawah Preview -->
+                    <div class="card-info-display">
+                        <div class="card-info-box">
+                            <h4>Detail Kartu</h4>
+                            <p><strong>Nomor Kartu / Rekening:</strong> <span id="display-card-number">•••• •••• •••• ••••</span></p>
+                            <p><strong id="display-holder-label">Nama Pemegang:</strong> <span id="display-holder-name">FULL NAME</span></p>
+                            <p><strong>Masa Berlaku:</strong> <span id="display-expiry-date">MM/YY</span></p>
+                            <p><strong>Tipe Kartu:</strong> <span id="display-card-type">REGULAR</span></p>
+                            <p><strong>Alamat:</strong> <span id="display-address">-</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="download-options">
+                        <button type="button" id="download-card-btn" class="download-btn">Download Kartu ATM</button>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="new-card-btn" class="action-btn btn-secondary">Buat Kartu Baru</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Sedang membuat kartu...</p>
+            </div>
+        </main>
+        
+        <!-- Success Modal for Business and Student Cards -->
+        <div class="success-modal" id="success-modal">
+            <div class="success-modal-content">
+                <button class="close-modal" id="close-success-modal">&times;</button>
+                
+                <div class="success-message">
+                    <h4 id="modal-title">Kartu Berhasil Dibuat!</h4>
+                    <p id="modal-message">Kartu Anda telah berhasil dibuat dan siap untuk diunduh.</p>
+                    <div class="contact-info" id="modal-contact-info">
+                        <p><strong>Untuk kartu Business/Student:</strong></p>
+                        <p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat dengan membawa dokumen yang diperlukan.</p>
+                        <p>Untuk informasi lebih lanjut hubungi:</p>
+                        <p><i class="fas fa-phone"></i> 1500-123</p>
+                        <p><i class="fas fa-envelope"></i> info@chobank.id</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
+            <p>This page does not perform actual financial transactions.</p>
+            <p>You can create unlimited cards with same or different numbers.</p>
+        </footer>
+    </div>
+
+    <script>
+        // ==============================
+        // KONFIGURASI UTAMA
+        // ==============================
+        let selectedCardType = '';
+        let currentAccountNumber = '';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.card-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.card-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    selectedCardType = this.getAttribute('data-type');
+                    
+                    // Tampilkan input nomor kartu untuk SEMUA tipe kartu
+                    const cardNumberInputGroup = document.getElementById('card-number-input-group');
+                    cardNumberInputGroup.classList.remove('hidden');
+                    
+                    // Update label dan placeholder berdasarkan tipe kartu
+                    const label = cardNumberInputGroup.querySelector('label');
+                    const input = document.getElementById('custom-card-number');
+                    
+                    if (selectedCardType === 'student') {
+                        label.textContent = 'Nomor Rekening (Opsional - Untuk Student Card)';
+                        input.placeholder = 'Contoh: 1234 5678 9012 3456 atau 1234567890123456';
+                    } else if (selectedCardType === 'business') {
+                        label.textContent = 'Nomor Kartu (Opsional - Untuk Business Card)';
+                        input.placeholder = 'Contoh: 1234 5678 9012 3456';
+                    } else if (selectedCardType === 'regular' || selectedCardType === 'silver' || selectedCardType === 'gold') {
+                        label.textContent = 'Nomor Kartu (Opsional - Hanya untuk Regular, Silver, Gold)';
+                        input.placeholder = 'Contoh: 1234 5678 9012 3456';
+                    }
+                });
+            });
+            
+            document.getElementById('generate-card-btn').addEventListener('click', generateCard);
+            document.getElementById('download-card-btn').addEventListener('click', downloadCard);
+            document.getElementById('new-card-btn').addEventListener('click', function() {
+                document.getElementById('preview-section').classList.add('hidden');
+                document.getElementById('card-form').reset();
+                document.querySelectorAll('.card-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                selectedCardType = '';
+                currentAccountNumber = '';
+                document.getElementById('card-number-input-group').classList.add('hidden');
+            });
+            
+            document.getElementById('close-success-modal').addEventListener('click', closeSuccessModal);
+            
+            // Format input nomor kartu
+            document.getElementById('custom-card-number').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Format: XXXX XXXX XXXX XXXX
+                let formatted = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += ' ';
+                    }
+                    formatted += value[i];
+                }
+                
+                e.target.value = formatted.substring(0, 19); // Max 16 digit + 3 spasi
+            });
+        });
+        
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // ==============================
+        // FUNGSI UTAMA: GENERATE KARTU
+        // ==============================
+        function generateCard() {
+            const fullName = document.getElementById('full-name').value.trim();
+            const address = document.getElementById('address').value.trim();
+            
+            if (!fullName || !address) {
+                alert('Harap isi nama lengkap dan alamat!');
+                return;
+            }
+            
+            if (!selectedCardType) {
+                alert('Harap pilih jenis kartu!');
+                return;
+            }
+            
+            let cardNumber;
+            const customCardNumber = document.getElementById('custom-card-number').value.trim();
+            
+            if (customCardNumber) {
+                // Validasi nomor kartu custom
+                const cleanedNumber = customCardNumber.replace(/\s/g, '');
+                
+                // Untuk Student Card: bisa input nomor berapa saja (tidak harus 16 digit)
+                if (selectedCardType === 'student') {
+                    // Student card bisa berapa saja, minimal 1 digit
+                    if (cleanedNumber.length === 0) {
+                        alert('Untuk Student Card, nomor rekening minimal 1 digit!');
+                        return;
+                    }
+                    
+                    // Format sesuai input pengguna
+                    cardNumber = formatCardNumber(cleanedNumber);
+                } else {
+                    // Untuk kartu lainnya: harus 16 digit
+                    if (cleanedNumber.length !== 16 || !/^\d+$/.test(cleanedNumber)) {
+                        alert('Nomor kartu harus 16 digit angka!');
+                        return;
+                    }
+                    
+                    // Format: XXXX XXXX XXXX XXXX
+                    cardNumber = formatCardNumber(cleanedNumber);
+                }
+            } else {
+                // Jika tidak diisi, generate nomor acak
+                cardNumber = generateRandomCardNumber();
+            }
+            
+            currentAccountNumber = cardNumber.replace(/\s/g, '');
+            
+            const expiryDate = generateExpiryDate();
+            updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType, address);
+            
+            document.getElementById('preview-section').classList.remove('hidden');
+            document.getElementById('preview-section').classList.add('fade-in');
+            
+            setTimeout(() => {
+                document.getElementById('preview-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+            
+            if (selectedCardType === 'business' || selectedCardType === 'student') {
+                showSuccessModal(selectedCardType);
+            }
+        }
+        
+        function showSuccessModal(cardType) {
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const modalContactInfo = document.getElementById('modal-contact-info');
+            
+            if (cardType === 'business') {
+                modalTitle.textContent = 'Business Card Berhasil Dibuat!';
+                modalMessage.textContent = 'Kartu Business Anda telah berhasil dibuat. Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.';
+                modalContactInfo.innerHTML = `
+                    <p><strong>Untuk kartu Business:</strong></p>
+                    <p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat dengan membawa dokumen perusahaan.</p>
+                    <p>Untuk informasi lebih lanjut hubungi:</p>
+                    <p><i class="fas fa-phone"></i> 1500-123 (Ext. Business)</p>
+                    <p><i class="fas fa-envelope"></i> business@chobank.id</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Kunjungi cabang terdekat</p>
+                `;
+            } else if (cardType === 'student') {
+                modalTitle.textContent = 'Student Card Berhasil Dibuat!';
+                modalMessage.textContent = 'Kartu Student Anda telah berhasil dibuat. Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.';
+                modalContactInfo.innerHTML = `
+                    <p><strong>Untuk kartu Student:</strong></p>
+                    <p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat dengan membawa KTM asli.</p>
+                    <p>Untuk informasi lebih lanjut hubungi:</p>
+                    <p><i class="fas fa-phone"></i> 1500-123 (Ext. Student)</p>
+                    <p><i class="fas fa-envelope"></i> student@chobank.id</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Kunjungi cabang terdekat</p>
+                `;
+            }
+            
+            document.getElementById('success-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // ==============================
+        // FUNGSI BANTU
+        // ==============================
+        function formatCardNumber(number) {
+            // Format: XXXX XXXX XXXX XXXX untuk 16 digit
+            // Atau format sesuai panjangnya
+            let formatted = '';
+            for (let i = 0; i < number.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += number[i];
+            }
+            return formatted;
+        }
+        
+        function generateRandomCardNumber() {
+            let number = '';
+            for (let i = 0; i < 4; i++) {
+                number += Math.floor(1000 + Math.random() * 9000);
+                if (i < 3) number += ' ';
+            }
+            return number;
+        }
+        
+        function generateExpiryDate() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear() + 5).slice(-2);
+            return `${month}/${year}`;
+        }
+        
+        function updateCardPreview(name, cardNumber, expiryDate, type, address) {
+            const cardPreview = document.getElementById('card-preview');
+            const cardTypeLabel = document.getElementById('card-type-label');
+            const cardNumberDisplay = document.getElementById('card-number-display');
+            const cardHolderLabel = document.getElementById('card-holder-label');
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardExpiryDate = document.getElementById('card-expiry-date');
+            
+            // Update card info display
+            document.getElementById('display-card-number').textContent = cardNumber;
+            document.getElementById('display-holder-name').textContent = name;
+            document.getElementById('display-expiry-date').textContent = expiryDate;
+            document.getElementById('display-card-type').textContent = type.toUpperCase();
+            document.getElementById('display-address').textContent = address;
+            
+            // Update card preview styling
+            cardPreview.className = 'card-preview';
+            cardPreview.classList.add(type);
+            
+            // Update logo placeholder
+            const logoPlaceholder = document.getElementById('card-logo');
+            logoPlaceholder.innerHTML = '';
+            
+            const placeholder = document.createElement('div');
+            placeholder.style.fontWeight = '800';
+            placeholder.style.fontSize = '18px';
+            placeholder.textContent = 'CHOBANK';
+            placeholder.style.fontFamily = "'Roboto Mono', monospace";
+            
+            // Atur warna logo berdasarkan tipe kartu
+            if (type === 'student') {
+                placeholder.style.color = '#000000';
+                placeholder.style.textShadow = '0 1px 3px rgba(255,255,255,0.5)';
+            } else {
+                placeholder.style.color = '#ffffff';
+                placeholder.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            }
+            
+            logoPlaceholder.appendChild(placeholder);
+            
+            // Update card type label
+            cardTypeLabel.textContent = type.toUpperCase();
+            cardTypeLabel.className = 'card-type';
+            
+            if (type === 'silver') {
+                cardTypeLabel.classList.add('silver');
+            } else if (type === 'gold') {
+                cardTypeLabel.classList.add('gold');
+            } else if (type === 'business') {
+                cardTypeLabel.classList.add('business');
+            } else if (type === 'student') {
+                cardTypeLabel.classList.add('student');
+            }
+            
+            // Update card number - sesuaikan ukuran font jika nomor panjang
+            cardNumberDisplay.textContent = cardNumber;
+            cardNumberDisplay.className = 'card-number';
+            
+            // Atur ukuran font berdasarkan panjang nomor
+            if (cardNumber.length > 19) {
+                // Jika lebih panjang dari format standar, kurangi font size
+                const length = cardNumber.replace(/\s/g, '').length;
+                if (length > 20) {
+                    cardNumberDisplay.style.fontSize = '16px';
+                } else if (length > 16) {
+                    cardNumberDisplay.style.fontSize = '18px';
+                }
+            } else {
+                cardNumberDisplay.style.fontSize = '22px';
+            }
+            
+            // Reset semua kelas warna
+            cardNumberDisplay.classList.remove('student-card-number', 'business-card-number');
+            
+            if (type === 'student') {
+                cardNumberDisplay.classList.add('student-card-number');
+            } else if (type === 'business') {
+                cardNumberDisplay.classList.add('business-card-number');
+            } else {
+                // Untuk Regular, Silver, Gold: warna putih default
+                cardNumberDisplay.style.color = 'white';
+                cardNumberDisplay.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            }
+            
+            // Update card holder label and name
+            if (type === 'business') {
+                cardHolderLabel.textContent = 'COMPANY NAME';
+                document.getElementById('display-holder-label').textContent = 'Nama Perusahaan:';
+            } else if (type === 'student') {
+                cardHolderLabel.textContent = 'STUDENT NAME';
+                document.getElementById('display-holder-label').textContent = 'Nama Pelajar:';
+            } else {
+                cardHolderLabel.textContent = 'CARDHOLDER NAME';
+                document.getElementById('display-holder-label').textContent = 'Nama Pemegang:';
+            }
+            
+            cardHolderLabel.className = 'card-holder';
+            cardHolderName.textContent = name.toUpperCase();
+            cardHolderName.className = 'card-holder-name';
+            
+            // Reset semua kelas warna untuk holder
+            cardHolderLabel.classList.remove('student-card-holder', 'business-card-holder');
+            cardHolderName.classList.remove('student-card-holder-name', 'business-card-holder-name');
+            
+            if (type === 'student') {
+                cardHolderLabel.classList.add('student-card-holder');
+                cardHolderName.classList.add('student-card-holder-name');
+                cardHolderLabel.style.color = '#000000';
+                cardHolderLabel.style.textShadow = '0 1px 3px rgba(255,255,255,0.5)';
+                cardHolderName.style.color = '#000000';
+                cardHolderName.style.textShadow = '0 1px 3px rgba(255,255,255,0.5)';
+            } else if (type === 'business') {
+                cardHolderLabel.classList.add('business-card-holder');
+                cardHolderName.classList.add('business-card-holder-name');
+                cardHolderLabel.style.color = '#ffffff';
+                cardHolderLabel.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+                cardHolderName.style.color = '#ffffff';
+                cardHolderName.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            } else {
+                // Untuk Regular, Silver, Gold: warna putih default
+                cardHolderLabel.style.color = 'white';
+                cardHolderLabel.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+                cardHolderName.style.color = 'white';
+                cardHolderName.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            }
+            
+            // Update expiry date
+            cardExpiryDate.textContent = expiryDate;
+            cardExpiryDate.className = 'card-expiry-date';
+            
+            // Reset semua kelas warna untuk expiry
+            cardExpiryDate.classList.remove('student-card-expiry-date', 'business-card-expiry-date');
+            cardExpiryDate.closest('.card-expiry').classList.remove('student-card-expiry', 'business-card-expiry');
+            
+            if (type === 'student') {
+                cardExpiryDate.classList.add('student-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.add('student-card-expiry');
+                cardExpiryDate.style.color = '#000000';
+                cardExpiryDate.style.textShadow = '0 1px 3px rgba(255,255,255,0.5)';
+                cardExpiryDate.closest('.card-expiry').style.color = '#000000';
+                cardExpiryDate.closest('.card-expiry').style.textShadow = '0 1px 3px rgba(255,255,255,0.5)';
+            } else if (type === 'business') {
+                cardExpiryDate.classList.add('business-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.add('business-card-expiry');
+                cardExpiryDate.style.color = '#ffffff';
+                cardExpiryDate.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+                cardExpiryDate.closest('.card-expiry').style.color = '#ffffff';
+                cardExpiryDate.closest('.card-expiry').style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            } else {
+                // Untuk Regular, Silver, Gold: warna putih default
+                cardExpiryDate.style.color = 'white';
+                cardExpiryDate.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+                cardExpiryDate.closest('.card-expiry').style.color = 'white';
+                cardExpiryDate.closest('.card-expiry').style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
+            }
+        }
+        
+        function downloadCard() {
+            const cardPreview = document.getElementById('card-preview');
+            if (!cardPreview) {
+                alert('Harap buat kartu terlebih dahulu!');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '-9999px';
+            tempContainer.style.width = '450px';
+            tempContainer.style.height = '300px';
+            tempContainer.style.backgroundColor = 'transparent';
+            
+            const clonedCard = cardPreview.cloneNode(true);
+            clonedCard.style.transform = 'none';
+            clonedCard.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
+            clonedCard.style.width = '450px';
+            clonedCard.style.height = '300px';
+            clonedCard.style.borderRadius = '20px';
+            clonedCard.style.padding = '25px';
+            
+            // Sesuaikan ukuran font untuk nomor panjang
+            const cardNumber = clonedCard.querySelector('.card-number');
+            const cardNumberText = cardNumber.textContent;
+            const numberLength = cardNumberText.replace(/\s/g, '').length;
+            
+            if (numberLength > 20) {
+                cardNumber.style.fontSize = '16px';
+            } else if (numberLength > 16) {
+                cardNumber.style.fontSize = '18px';
+            } else {
+                cardNumber.style.fontSize = '26px';
+            }
+            
+            const cardHolderName = clonedCard.querySelector('.card-holder-name');
+            if (cardHolderName) cardHolderName.style.fontSize = '22px';
+            
+            const cardExpiryDate = clonedCard.querySelector('.card-expiry-date');
+            if (cardExpiryDate) cardExpiryDate.style.fontSize = '22px';
+            
+            const cardType = clonedCard.querySelector('.card-type');
+            if (cardType) cardType.style.fontSize = '14px';
+            
+            const cardChip = clonedCard.querySelector('.card-chip');
+            if (cardChip) {
+                cardChip.style.width = '40px';
+                cardChip.style.height = '30px';
+            }
+            
+            tempContainer.appendChild(clonedCard);
+            document.body.appendChild(tempContainer);
+            
+            const watermark = document.createElement('div');
+            watermark.style.position = 'absolute';
+            watermark.style.bottom = '10px';
+            watermark.style.right = '10px';
+            watermark.style.fontSize = '12px';
+            watermark.style.fontWeight = '600';
+            watermark.style.fontFamily = "'Roboto Mono', monospace";
+            watermark.textContent = 'ROLEPLAY ONLY';
+            
+            if (selectedCardType === 'student') {
+                watermark.style.color = 'rgba(0,0,0,0.5)';
+            } else {
+                watermark.style.color = 'rgba(255,255,255,0.5)';
+            }
+            
+            clonedCard.appendChild(watermark);
+            
+            setTimeout(() => {
+                html2canvas(clonedCard, {
+                    scale: 2,
+                    backgroundColor: null,
+                    useCORS: true,
+                    width: 450,
+                    height: 300,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    const name = document.getElementById('full-name').value.trim().replace(/\s+/g, '_');
+                    const type = selectedCardType;
+                    const timestamp = new Date().getTime();
+                    link.download = `chobank_${type}_card_${name}_${timestamp}.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                    
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    
+                    alert('Kartu ATM berhasil diunduh!');
+                }).catch(error => {
+                    console.error('Error generating card image:', error);
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    
+                    alert('Terjadi kesalahan saat membuat gambar kartu. Silakan coba lagi.');
+                });
+            }, 500);
+        }
+    </script>
+</body>
+    </html>
