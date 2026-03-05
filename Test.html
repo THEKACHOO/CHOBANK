@@ -6,6 +6,7 @@
     <title>CHOBANK</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* === RESET & BASE === */
         * {
             margin: 0;
             padding: 0;
@@ -53,7 +54,6 @@
             flex-direction: column;
         }
 
-        /* main card / glassmorphism white */
         .main-content {
             flex: 1;
             display: flex;
@@ -62,7 +62,62 @@
             padding: 8px 0 20px;
         }
 
-        /* ----- HEADER (clean white / black accents) ----- */
+        /* === SPLASH SCREEN (LOGO & CHOBANK FIRST) === */
+        .splash-screen {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none; /* agar tidak mengganggu klik setelah fade */
+        }
+
+        .splash-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            animation: splashFloat 2.2s infinite alternate ease-in-out;
+        }
+
+        .splash-logo {
+            max-width: 140px;
+            width: 30vw;
+            height: auto;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2));
+        }
+
+        .splash-title {
+            font-size: clamp(3rem, 15vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #000, #1e1e1e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 4px 8px 20px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        @keyframes splashFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-12px); }
+        }
+
+        .splash-screen.fade-out {
+            opacity: 0;
+        }
+
+        /* hide splash after fade-out (so it doesn't block clicks) */
+        .splash-screen.hidden {
+            display: none;
+        }
+
+        /* === HEADER (now normal, without logo inside) === */
         header {
             text-align: center;
             margin-bottom: 32px;
@@ -89,33 +144,18 @@
             border-color: #222;
         }
 
-        .logo {
-            max-width: 80px;
-            height: auto;
-            margin: 0 auto 12px;
-            display: block;
-            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.1));
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-        }
-
-        .logo:hover {
-            transform: scale(1.08) rotate(1deg);
-        }
-
-        h1 {
-            font-size: clamp(2.2rem, 10vw, 3.8rem);
-            font-weight: 900;
+        /* NO logo inside header anymore, just decorative minimal */
+        .header-minimal {
+            font-size: 2rem;
+            font-weight: 800;
             letter-spacing: -0.02em;
             color: #000;
-            line-height: 1.1;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            display: inline-block;
-            background: linear-gradient(145deg, #000, #1a1a1a);
+        }
+
+        .header-minimal span {
+            background: linear-gradient(145deg, #000, #333);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 2px 4px 12px rgba(0,0,0,0.06);
         }
 
         .subtitle {
@@ -143,7 +183,7 @@
             margin-right: auto;
         }
 
-        /* ----- feature cards (original two) + three new coming soon ----- */
+        /* feature cards */
         .menu-options {
             display: flex;
             flex-wrap: wrap;
@@ -307,7 +347,6 @@
             opacity: 0.8;
         }
 
-        /* additional badge "soon" */
         .coming-badge {
             position: absolute;
             top: -12px;
@@ -359,7 +398,7 @@
             background: #f2f2f2;
         }
 
-        /* footer clean */
+        /* footer */
         footer {
             text-align: center;
             margin-top: 35px;
@@ -403,7 +442,7 @@
             color: #262626;
         }
 
-        /* bank features (tiny extras) */
+        /* bank features */
         .bank-features {
             display: flex;
             justify-content: center;
@@ -439,7 +478,7 @@
             color: #000;
         }
 
-        /* animation keyframes */
+        /* animations */
         @keyframes fadeSlide {
             0% { opacity: 0; transform: translateY(40px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -447,12 +486,10 @@
 
         .fade-in {
             animation: fadeSlide 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-            opacity: 0; /* set final via animation */
+            opacity: 0;
         }
 
-        /* staggered delays handled by style attr */
-
-        /* responsive grid for 5 cards (2 original + 3 new) */
+        /* responsive */
         @media (min-width: 680px) {
             .menu-options {
                 max-width: 1000px;
@@ -467,36 +504,32 @@
                 max-width: 300px;
             }
         }
-
-        /* white mode clean */
-        .bg-animation {
-            display: none;
-        }
-        
-        /* custom for new section */
-        .extra-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 24px;
-            width: 100%;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
-    <!-- subtle animated overlay (pure css) -->
-    <div class="container">
+    <!-- SPLASH SCREEN: Logo & CHOBANK pertama kali -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
+            <div class="splash-title">CHOBANK</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (akan muncul setelah splash fade) -->
+    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.8s ease;">
         <main class="main-content">
-            <header class="fade-in" style="animation-delay: 0.05s;">
-                <!-- Logo with fallback in js -->
-                <img src="chobank1.png" alt="CHOBANK" class="logo" id="main-logo">
-                <h1>CHOBANK</h1>
+            <!-- HEADER sekarang tanpa logo besar, hanya minimal -->
+            <header class="fade-in" style="animation-delay: 0.1s;">
+                <div class="header-minimal">
+                    <span>CHOBANK</span>
+                </div>
+                <p class="subtitle">Digital Banking for Roleplay</p>
+                <p class="tagline">imagination · creativity · simulation</p>
             </header>
 
-            <!-- original 2 cards + 3 new coming soon cards (english) -->
+            <!-- 5 CARDS (2 asli + 3 coming soon, dengan Equity Investment) -->
             <div class="menu-options">
-                <!-- 1. Digital ATM Card (original) -->
+                <!-- 1. Digital ATM Card -->
                 <div class="menu-option fade-in" style="animation-delay: 0.15s;">
                     <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
                     <h2>Digital ATM Card</h2>
@@ -504,7 +537,7 @@
                     <a href="chobank.html" class="action-btn">Create Card</a>
                 </div>
 
-                <!-- 2. Payment Proof Generator (original) -->
+                <!-- 2. Payment Proof Generator -->
                 <div class="menu-option fade-in" style="animation-delay: 0.25s;">
                     <div class="menu-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                     <h2>Payment Proof</h2>
@@ -512,7 +545,7 @@
                     <a href="proof.html" class="action-btn">Make Transaction</a>
                 </div>
 
-                <!-- 3. NEW: Loan (coming soon) English -->
+                <!-- 3. Loan (coming soon) -->
                 <div class="menu-option coming-soon fade-in" style="animation-delay: 0.35s;">
                     <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
                     <div class="menu-icon"><i class="fas fa-hand-hold-usd"></i></div>
@@ -521,7 +554,7 @@
                     <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
                 </div>
 
-                <!-- 4. NEW: Insurance (coming soon) English -->
+                <!-- 4. Insurance (coming soon) -->
                 <div class="menu-option coming-soon fade-in" style="animation-delay: 0.45s;">
                     <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
                     <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
@@ -530,17 +563,17 @@
                     <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
                 </div>
 
-                <!-- 5. NEW: Trading (coming soon) English -->
+                <!-- 5. Equity Investment (coming soon) – sebelumnya Trading -->
                 <div class="menu-option coming-soon fade-in" style="animation-delay: 0.55s;">
                     <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
-                    <div class="menu-icon"><i class="fas fa-chart-line"></i></div>
-                    <h2>Trading</h2>
-                    <p>Stocks, crypto & ETF simulation.</p>
+                    <div class="menu-icon"><i class="fas fa-chart-pie"></i></div> <!-- icon lebih ke investment -->
+                    <h2>Equity Investment</h2>
+                    <p>For Investors Only.</p>
                     <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
                 </div>
             </div>
 
-            <!-- home icon (animated) -->
+            <!-- home icon -->
             <div class="home-icon-container fade-in" style="animation-delay: 0.65s;">
                 <a href="https://thekachoo.github.io/Home/index.html" class="home-icon" title="home">
                     <i class="fas fa-home"></i>
@@ -548,7 +581,7 @@
             </div>
         </main>
 
-        <!-- footer with important message -->
+        <!-- footer -->
         <footer class="fade-in" style="animation-delay: 0.75s;">
             <div class="warning-box">
                 <strong>⚠ FICTIONAL NOTICE</strong>
@@ -560,49 +593,59 @@
 
     <script>
         (function() {
-            // logo fallback
-            const logo = document.getElementById('main-logo');
-            if (logo) {
-                logo.onerror = function() {
-                    this.style.display = 'none';
-                    const header = document.querySelector('header');
-                    const fallbackDiv = document.createElement('div');
-                    fallbackDiv.style.marginBottom = '12px';
-                    fallbackDiv.style.display = 'flex';
-                    fallbackDiv.style.justifyContent = 'center';
-                    fallbackDiv.style.alignItems = 'center';
-                    fallbackDiv.style.gap = '12px';
-                    fallbackDiv.style.fontSize = '3.5rem';
-                    fallbackDiv.style.fontWeight = '900';
-                    fallbackDiv.style.color = '#000';
-                    fallbackDiv.innerHTML = `<i class="fas fa-landmark"></i><span style="background:linear-gradient(145deg,#000,#333); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">CHOBANK</span>`;
-                    header.insertBefore(fallbackDiv, header.firstChild);
-                };
-            }
+            // === SPLASH SCREEN LOGIC ===
+            const splash = document.getElementById('splashScreen');
+            const mainContainer = document.getElementById('mainContainer');
 
-            // subtle parallax for the grid background (optional)
+            // Fallback jika logo splash error
+            window.handleSplashLogoError = function() {
+                const splashLogo = document.getElementById('splashLogo');
+                if (splashLogo) {
+                    splashLogo.style.display = 'none';
+                    // tambahkan ikon sebagai fallback di splash
+                    const fallbackIcon = document.createElement('i');
+                    fallbackIcon.className = 'fas fa-university';
+                    fallbackIcon.style.fontSize = '5rem';
+                    fallbackIcon.style.color = '#000';
+                    fallbackIcon.style.marginBottom = '1rem';
+                    splash.querySelector('.splash-content').prepend(fallbackIcon);
+                }
+            };
+
+            // Tunggu sebentar lalu fade out splash dan munculkan main container
+            setTimeout(() => {
+                splash.classList.add('fade-out');
+                // setelah fade selesai, sembunyikan splash dan tampilkan main container
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    mainContainer.style.opacity = '1';
+                }, 1200); // cocok dengan transition splash 1.2s
+            }, 1600); // biar splash terlihat 1.6 detik (cukup lama untuk pudar)
+
+            // === LOGO FALLBACK UNTUK HEADER (tidak dipakai karena header tanpa logo, tapi kita tetap sediakan jika img tiba2 ada) ===
+            // tidak diperlukan
+
+            // === PARALLAX GRID (opsional) ===
             document.addEventListener('mousemove', function(e) {
                 const x = e.clientX / window.innerWidth - 0.5;
                 const y = e.clientY / window.innerHeight - 0.5;
-                const grid = document.body;
-                // very subtle shift (just for fun)
-                grid.style.backgroundPosition = `${x * 8}px ${y * 8}px, ${x * 8 + 40}px ${y * 8}px`;
+                document.body.style.backgroundPosition = `${x * 8}px ${y * 8}px, ${x * 8 + 40}px ${y * 8}px`;
             });
 
-            // add hover sound? no. but add smooth class toggles
-            const cards = document.querySelectorAll('.menu-option:not(.coming-soon)');
-            cards.forEach(c => {
-                c.addEventListener('click', function(e) {
-                    // just visual feedback, links work natively
-                });
-            });
-
-            // disable click on coming soon buttons (already have pointer-events: none, but also prevent if any link)
+            // disable click pada coming soon buttons
             const soonBtns = document.querySelectorAll('.coming-soon .action-btn');
             soonBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => e.preventDefault());
             });
+
+            // tambahkan sedikit interaksi pada kartu non-coming-soon
+            const activeCards = document.querySelectorAll('.menu-option:not(.coming-soon)');
+            activeCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // biarkan link bekerja normal
+                });
+            });
         })();
     </script>
 </body>
-</html>
+    </html>
