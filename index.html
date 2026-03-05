@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHOBANK</title>
+    <title>CHOBANK - Digital Banking for Roleplay</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
@@ -22,77 +21,45 @@
             width: 100%;
             overflow-x: hidden;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            font-family: 'Montserrat', sans-serif;
+            position: relative;
         }
         
         .container {
             width: 100%;
             max-width: 100%;
             margin: 0 auto;
-            padding: 25px 20px;
+            padding: 20px 15px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
         }
         
         header {
             text-align: center;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
             border-bottom: 3px solid #000000;
             background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 18px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
-        }
-        
-        .logo {
-    max-width: 80px; /* Diubah dari 180px menjadi 80px */
-    height: auto;
-    margin: 0 auto 10px; /* Diubah margin-bottom dari 20px menjadi 10px */
-    display: block;
-    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
-}
-        
-        h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: #000000;
-            line-height: 1.3;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #444444;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-        }
-        
-        .form-container {
-            background: linear-gradient(145deg, #ffffff, #f8f8f8);
-            border: 2px solid #000000;
-            border-radius: 15px;
-            padding: 30px 25px;
+            max-width: 750px;
             width: 100%;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
         }
         
-        .form-container::before {
+        header::before {
             content: '';
             position: absolute;
             top: 0;
@@ -102,19 +69,31 @@
             background: linear-gradient(to right, #000000, #333333, #000000);
         }
         
-        .form-container h2 {
-            font-size: 28px;
-            margin-bottom: 25px;
-            color: #000000;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            position: relative;
-            padding-bottom: 15px;
-            font-family: 'Montserrat', sans-serif;
+        .logo {
+            max-width: 80px;
+            height: auto;
+            margin: 0 auto 15px;
+            display: block;
+            transition: transform 0.3s ease;
         }
         
-        .form-container h2::after {
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+            color: #000000;
+            line-height: 1.2;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 12px;
+        }
+        
+        h1::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -124,1197 +103,449 @@
             background: linear-gradient(to right, #333333, #000000, #333333);
         }
         
-        .form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 700;
-            color: #000000;
+        .subtitle {
             font-size: 18px;
-            letter-spacing: 0.3px;
-            font-family: 'Montserrat', sans-serif;
+            color: #444444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
         }
         
-        .form-control {
-            width: 100%;
-            padding: 15px 18px;
-            border: 2px solid #000000;
-            border-radius: 8px;
-            background-color: #ffffff;
-            color: #222222;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-            font-family: 'Montserrat', sans-serif;
+        .tagline {
+            font-size: 15px;
+            color: #666666;
+            font-style: italic;
+            margin-top: 12px;
         }
         
-        .form-control:focus {
-            outline: none;
-            border-color: #333333;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .card-options {
+        .menu-options {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 25px;
+            margin-top: 35px;
+            max-width: 550px;
+            width: 100%;
         }
         
-        .card-option {
+        .menu-option {
             background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border: 2px solid #000000;
-            border-radius: 10px;
-            padding: 20px;
+            border: 3px solid #000000;
+            border-radius: 15px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
         }
         
-        .card-option:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card-option.selected {
-            border-color: #000000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(145deg, #ffffff, #f8f8f8);
-        }
-        
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-        }
-        
-        .card-icon.regular {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-        }
-        
-        .card-icon.silver {
-            background: linear-gradient(135deg, #606c88, #3f4c6b);
-        }
-        
-        .card-icon.gold {
-            background: linear-gradient(135deg, #000000, #D4AF37, #000000);
-        }
-        
-        .card-icon.business {
-            background: linear-gradient(135deg, #70000E, #990014, #70000E);
-        }
-        
-        .card-icon.student {
-            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
-        }
-        
-        .card-info {
-            flex: 1;
-        }
-        
-        .card-info h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #000000;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .card-info p {
-            font-size: 14px;
-            color: #555555;
-            margin-bottom: 5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .limit-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            background: linear-gradient(135deg, #000000, #333333);
-            color: white;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-top: 5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
+        .menu-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
+        }
+        
+        .menu-option:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-color: #222222;
+        }
+        
+        .menu-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #000000;
+            background: linear-gradient(135deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-option:hover .menu-icon {
+            transform: scale(1.1);
+        }
+        
+        .menu-option h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #000000;
+            line-height: 1.3;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        
+        .menu-option p {
+            color: #555555;
+            margin-bottom: 18px;
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 380px;
         }
         
         .action-btn {
-            display: block;
-            padding: 16px 20px;
-            border-radius: 8px;
+            display: inline-block;
+            background: linear-gradient(to right, #000000, #222222);
+            color: #ffffff;
+            padding: 15px 35px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
             transition: all 0.3s ease;
             border: 2px solid #000000;
-            font-size: 16px;
-            text-align: center;
+            font-size: 17px;
             width: 100%;
+            max-width: 250px;
             cursor: pointer;
             letter-spacing: 0.5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(to right, #000000, #222222);
-            color: #ffffff;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(to right, #222222, #000000);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(to right, #ffffff, #f5f5f5);
-            color: #000000;
-            border: 2px solid #000000;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(to right, #f5f5f5, #ffffff);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
-        }
-        
-        .preview-section {
-            margin-top: 35px;
-            width: 100%;
-        }
-        
-        .preview-title {
-            font-size: 28px;
-            margin-bottom: 25px;
-            color: #000000;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .preview-container {
-            width: 100%;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
-        .card-preview-container {
-            perspective: 1000px;
-            margin-bottom: 30px;
-        }
-        
-        .card-preview {
-            width: 350px;
-            height: 220px;
-            border-radius: 15px;
-            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-            font-family: 'Roboto Mono', monospace;
+            z-index: 1;
         }
         
-        .card-preview:hover {
-            transform: rotateY(15deg) rotateX(5deg);
-        }
-        
-        .card-preview.regular {
-            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
-        }
-        
-        .card-preview.silver {
-            background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50);
-        }
-        
-        .card-preview.gold {
-            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
-        }
-        
-        .card-preview.business {
-            background: linear-gradient(135deg, #4d0008, #70000E, #4d0008);
-        }
-        
-        .card-preview.student {
-            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
-        }
-        
-        .card-glow {
+        .action-btn::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.15) 0%, transparent 50%);
-            z-index: 1;
+            background: linear-gradient(to right, #222222, #000000);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
         }
         
-        .card-content {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .action-btn:hover::before {
+            opacity: 1;
         }
         
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        
-        .card-logo {
-            width: 80px;
-            height: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-        
-        .card-type {
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .card-type.silver {
-            color: #e0e0e0;
-        }
-        
-        .card-type.gold {
-            color: #D4AF37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-        
-        .card-type.business {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        
-        .card-type.student {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Chip placement between CHOBANK and Card Number */
-        .card-middle-section {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .card-chip-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .card-chip {
-            width: 40px;
-            height: 30px;
-            background: linear-gradient(135deg, #d4af37, #f7ef8a, #d4af37);
-            border-radius: 5px;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .card-chip::before {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 22px;
-            background: linear-gradient(135deg, #b8941f, #d4af37, #b8941f);
-            border-radius: 3px;
-        }
-        
-        .card-number-section {
-            margin-top: 5px;
-        }
-        
-        .card-number {
-            font-size: 22px;
-            font-weight: 500;
-            color: white;
-            letter-spacing: 3px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-number {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
-        
-        .card-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: auto;
-        }
-        
-        .card-holder {
-            color: white;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-holder {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
-        
-        .card-holder-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 3px;
-            letter-spacing: 1.5px;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-holder-name {
-            color: #000000;
-        }
-        
-        .card-expiry {
-            color: white;
-            font-size: 12px;
-            text-align: right;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-expiry {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
-        
-        .card-expiry-date {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 3px;
-            letter-spacing: 1.5px;
-            font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-expiry-date {
-            color: #000000;
-        }
-        
-        .card-hologram {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 30px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .card-hologram::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                transparent 30%, 
-                rgba(255,255,255,0.4) 50%, 
-                transparent 70%);
-            animation: hologram 3s infinite linear;
-        }
-        
-        @keyframes hologram {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        .download-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 350px;
-        }
-        
-        .download-btn {
-            padding: 16px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            border: 2px solid #000000;
-            font-size: 16px;
-            text-align: center;
-            width: 100%;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(to right, #000000, #333333);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .download-btn:hover {
+        .action-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            opacity: 0.95;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
             padding-top: 25px;
-            border-top: 2px solid #000000;
+            border-top: 3px solid #000000;
             color: #444444;
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.6;
-            font-family: 'Montserrat', sans-serif;
+            max-width: 750px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         footer p {
             margin-bottom: 10px;
         }
         
-        .hidden {
-            display: none;
+        .warning-box {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 18px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
+        .warning-box strong {
+            color: #000000;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
         }
         
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #000000;
+        /* Home Icon */
+        .home-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .home-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(to right, #000000, #222222);
+            color: white;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            font-size: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+            border: 2px solid #000000;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .home-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+            background: linear-gradient(to right, #222222, #000000);
         }
         
         @media (min-width: 768px) {
             .container {
+                max-width: 900px;
+                padding: 30px 25px;
+            }
+            
+            header {
+                padding: 35px 30px;
+                margin-bottom: 45px;
+            }
+            
+            .logo {
+                max-width: 100px;
+            }
+            
+            h1 {
+                font-size: 40px;
+            }
+            
+            .subtitle {
+                font-size: 20px;
+            }
+            
+            .menu-options {
+                flex-direction: row;
+                gap: 35px;
                 max-width: 800px;
-                padding: 35px 30px;
             }
             
-            .form-container {
-                padding: 35px 30px;
-            }
-            
-            .card-options {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            
-            .card-option {
-                flex: 1 1 calc(50% - 10px);
-                min-width: 200px;
-            }
-            
-            .action-buttons, .download-options {
-                flex-direction: row;
-            }
-            
-            .action-btn, .download-btn {
-                width: auto;
+            .menu-option {
                 flex: 1;
-                margin: 0 5px;
+                padding: 35px 25px;
+            }
+            
+            .menu-icon {
+                font-size: 60px;
+            }
+            
+            .menu-option h2 {
+                font-size: 26px;
+            }
+            
+            .menu-option p {
+                font-size: 16px;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .logo {
+                max-width: 120px;
+            }
+            
+            h1 {
+                font-size: 42px;
             }
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .fade-in {
-            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
-        /* Card Info Display */
-        .card-info-display {
-            margin-top: 20px;
-            text-align: center;
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .bank-features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            max-width: 800px;
             width: 100%;
-            max-width: 350px;
         }
         
-        .card-info-box {
-            background: #f5f5f5;
+        .feature-item {
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border: 2px solid #000000;
+            border-radius: 10px;
             padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #000000;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .card-info-box h4 {
-            margin-bottom: 10px;
-            color: #000000;
-            font-size: 18px;
-        }
-        
-        .card-info-box p {
-            margin-bottom: 5px;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .card-info-box strong {
-            color: #000000;
-            min-width: 150px;
-            display: inline-block;
-        }
-        
-        /* Business Card Modal */
-        .business-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .business-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .business-modal-content {
-            background: linear-gradient(145deg, #ffffff, #f8f8f8);
-            border: 2px solid #000000;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(30px);
-            transition: transform 0.3s ease;
-        }
-        
-        .business-modal.active .business-modal-content {
-            transform: translateY(0);
-        }
-        
-        .business-modal-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .business-modal-header h3 {
-            font-size: 28px;
-            color: #000000;
-            margin-bottom: 10px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .business-modal-header p {
-            color: #555555;
-            font-size: 16px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #000000;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            background: #333333;
-            transform: rotate(90deg);
-        }
-        
-        .success-message {
-            background: linear-gradient(145deg, #e8f5e8, #d0e8d0);
-            border: 2px solid #2e7d32;
-            border-radius: 10px;
-            padding: 25px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        
-        .success-message h4 {
-            color: #2e7d32;
-            font-size: 22px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .success-message p {
-            color: #555555;
-            margin-bottom: 10px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .twitter-contact {
-            background: #1da1f2;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-flex;
             align-items: center;
             gap: 10px;
-            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
         }
         
-        .twitter-contact:hover {
-            background: #0d8bd9;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(29, 161, 242, 0.3);
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
         
-        /* Student Card Modal */
-        .student-modal {
-            position: fixed;
+        .feature-icon {
+            font-size: 20px;
+            color: #000000;
+            background: linear-gradient(135deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+        }
+        
+        /* Animasi latar belakang */
+        .bg-animation {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
         }
         
-        .student-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .student-modal-content {
-            background: linear-gradient(145deg, #ffffff, #f8f8f8);
-            border: 2px solid #000000;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(30px);
-            transition: transform 0.3s ease;
-        }
-        
-        .student-modal.active .student-modal-content {
-            transform: translateY(0);
-        }
-        
-        .student-modal-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .student-modal-header h3 {
-            font-size: 28px;
-            color: #000000;
-            margin-bottom: 10px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .student-modal-header p {
-            color: #555555;
-            font-size: 16px;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-                /* Back Button Styles */
-        .back-to-top {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0 30px;
-        }
-        
-        .back-button {
-            width: 50px;
-            height: 50px;
+        .bg-circle {
+            position: absolute;
             border-radius: 50%;
-            background: linear-gradient(135deg, #000000, #333333);
-            border: 2px solid #000000;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            font-size: 20px;
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, transparent 70%);
         }
         
-        .back-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #333333, #000000);
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
         }
         
-        .back-button:active {
-            transform: translateY(-2px);
+        .bg-circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            right: -150px;
         }
     </style>
 </head>
 <body>
+    <!-- Background animation -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+    
     <div class="container">
-        <header>
-            <img src="chobank1.png" alt="Chobank Logo" class="logo" id="main-logo">
-            <h1>CHOBANK Digital ATM Card</h1>
-            <p class="subtitle">Create CHOBANK digital ATM cards for roleplay purposes.</p>
-        </header>
-        
         <main class="main-content">
-            <section class="form-container fade-in">
-                <h2>ATM Card Application Form</h2>
-                
-                <form id="card-form">
-                    <div class="form-group">
-                        <label for="full-name">Full Name of Cardholder</label>
-                        <input type="text" id="full-name" class="form-control" placeholder="Enter your full name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Full Address</label>
-                        <textarea id="address" class="form-control" rows="3" placeholder="Enter your full address" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Select Card Type</label>
-                        <div class="card-options">
-                            <div class="card-option" data-type="regular">
-                                <div class="card-icon regular">
-                                    <i class="fas fa-credit-card"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h3>Regular Card</h3>
-                                    <p>Standard card with transaction limit</p>
-                                    <span class="limit-badge">Limit: IDR 100,000,000</span>
-                                </div>
-                            </div>
-                            
-                            <div class="card-option" data-type="silver">
-                                <div class="card-icon silver">
-                                    <i class="fas fa-credit-card"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h3>Silver Card</h3>
-                                    <p>Premium card with higher limit</p>
-                                    <span class="limit-badge">Limit: IDR 5,000,000,000</span>
-                                </div>
-                            </div>
-                            
-                            <div class="card-option" data-type="gold">
-                                <div class="card-icon gold">
-                                    <i class="fas fa-gem"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h3>Gold Card (Black)</h3>
-                                    <p>Exclusive unlimited card</p>
-                                    <span class="limit-badge">Unlimited</span>
-                                </div>
-                            </div>
-                            
-                            <div class="card-option" data-type="business">
-                                <div class="card-icon business">
-                                    <i class="fas fa-briefcase"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h3>Business Card</h3>
-                                    <p>Only for company</p>
-                                    <span class="limit-badge">Limit: IDR 1,000,000,000</span>
-                                </div>
-                            </div>
-                            
-                            <div class="card-option" data-type="student">
-                                <div class="card-icon student">
-                                    <i class="fas fa-graduation-cap"></i>
-                                </div>
-                                <div class="card-info">
-                                    <h3>Student Card</h3>
-                                    <p>Special card for students</p>
-                                    <span class="limit-badge">For Students Only</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate ATM Card</button>
-                        <button type="reset" class="action-btn btn-secondary">Reset Form</button>
-                    </div>
-                </form>
-            </section>
+            <header class="fade-in">
+                <img src="chobank1.png" alt="CHOBANK Logo" class="logo" id="main-logo">
+                <h1>CHOBANK</h1>
+                <p class="subtitle">Digital Banking Solutions for Roleplay Enthusiasts</p>
+                <p class="tagline">Where Imagination Meets Financial Creativity</p>
+            </header>
             
-            <div class="preview-section hidden" id="preview-section">
-                <h3 class="preview-title">CHOBANK ATM Card Preview</h3>
-                
-                <div class="preview-container">
-                    <div class="card-preview-container">
-                        <div class="card-preview" id="card-preview">
-                            <div class="card-glow"></div>
-                            <div class="card-content">
-                                <div class="card-header">
-                                    <div class="card-logo-placeholder" id="card-logo">
-                                        <!-- Logo will be inserted via JS -->
-                                    </div>
-                                    <div class="card-type" id="card-type-label">REGULAR</div>
-                                </div>
-                                
-                                <!-- Small chip between CHOBANK and card number -->
-                                <div class="card-middle-section">
-                                    <div class="card-chip-container">
-                                        <div class="card-chip"></div>
-                                    </div>
-                                    <div class="card-number-section">
-                                        <div class="card-number" id="card-number-display">
-                                            •••• •••• •••• ••••
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="card-details">
-                                    <div class="card-holder">
-                                        CARDHOLDER NAME
-                                        <div class="card-holder-name" id="card-holder-name">FULL NAME</div>
-                                    </div>
-                                    
-                                    <div class="card-expiry">
-                                        VALID THRU
-                                        <div class="card-expiry-date" id="card-expiry-date">MM/YY</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="card-hologram"></div>
-                        </div>
+            <div class="menu-options">
+                <div class="menu-option fade-in" style="animation-delay: 0.2s;">
+                    <div class="menu-icon">
+                        <i class="fas fa-credit-card"></i>
                     </div>
-                    
-                    <!-- Card Info Below Preview -->
-                    <div class="card-info-display">
-                        <div class="card-info-box">
-                            <h4>Card Details</h4>
-                            <p><strong>Card / Account Number:</strong> <span id="display-card-number">•••• •••• •••• ••••</span></p>
-                            <p><strong>Cardholder Name:</strong> <span id="display-holder-name">FULL NAME</span></p>
-                            <p><strong>Expiry Date:</strong> <span id="display-expiry-date">MM/YY</span></p>
-                            <p><strong>Card Type:</strong> <span id="display-card-type">REGULAR</span></p>
-                        </div>
-                    </div>
-                    
-                    <div class="download-options">
-                        <button type="button" id="download-card-btn" class="download-btn">Download ATM Card</button>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button type="button" id="new-card-btn" class="action-btn btn-secondary">Create New Card</button>
-                    </div>
+                    <h2>Digital ATM Card</h2>
+                    <p>Create CHOBANK digital ATM cards with various choices: Regular, Silver, and Gold Card. Each card has a unique number and premium design.</p>
+                    <a href="chobank.html" class="action-btn">Create ATM Card</a>
                 </div>
-            </div>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Creating card...</p>
+                
+                <div class="menu-option fade-in" style="animation-delay: 0.4s;">
+                    <div class="menu-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h2>Payment Proof Generator</h2>
+                    <p>Generate electronic payment proof for domestic transactions, international payments, or invoice payments. Complete with transaction details.</p>
+                    <a href="proof.html" class="action-btn">Make Transaction</a>
+                </div>
             </div>
         </main>
         
-        <!-- Business Card Modal -->
-        <div class="business-modal" id="business-modal">
-            <div class="business-modal-content">
-                <button class="close-modal" id="close-business-modal">&times;</button>
-                
-                <div class="business-modal-header">
-                    <h3>Business Card Form</h3>
-                    <p>Fill in company data for Business Card application</p>
-                </div>
-                
-                <form id="business-form">
-                    <div class="form-group">
-                        <label for="company-name">Company Name</label>
-                        <input type="text" id="company-name" class="form-control" placeholder="Enter company name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="company-type">Company Type</label>
-                        <input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="company-year">Company Establishment Year</label>
-                        <input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="company-founder">Founder / Person in Charge</label>
-                        <input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="account-manager">Account Manager</label>
-                        <input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button>
-                        <button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button>
-                    </div>
-                </form>
-                
-                <div id="business-success" class="hidden">
-                    <div class="success-message">
-                        <h4>Form Successfully Submitted!</h4>
-                        <p>Thank you for completing the Business Card form. Your company data has been recorded.</p>
-                        <p>For further process and ATM card delivery, please contact:</p>
-                        <a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact">
-                            <i class="fab fa-twitter"></i> @HAIKACHOO on Twitter
-                        </a>
-                        <p style="margin-top: 15px; font-size: 14px;">Business Card will be processed within 1-3 working days after confirmation.</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Home Icon added before footer -->
+        <div class="home-icon-container fade-in" style="animation-delay: 0.5s;">
+            <a href="https://thekachoo.github.io/Home/index.html" class="home-icon" title="Go to Home">
+                <i class="fas fa-home"></i>
+            </a>
         </div>
         
-        <!-- Student Card Modal -->
-        <div class="student-modal" id="student-modal">
-            <div class="student-modal-content">
-                <button class="close-modal" id="close-student-modal">&times;</button>
-                
-                <div class="student-modal-header">
-                    <h3>Student Card Form</h3>
-                    <p>Fill in student data for Student Card application</p>
-                </div>
-                
-                <form id="student-form">
-                    <div class="form-group">
-                        <label for="student-name">Student Name</label>
-                        <input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="student-dob">Date of Birth</label>
-                        <input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="student-school">School / University</label>
-                        <input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="parent-occupation">Parent Occupation</label>
-                        <input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="student-address">Address</label>
-                        <textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button>
-                        <button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button>
-                    </div>
-                </form>
-                
-                <div id="student-success" class="hidden">
-                    <div class="success-message">
-                        <h4>Form Successfully Submitted!</h4>
-                        <p>Thank you for completing the Student Card form. Your data has been recorded.</p>
-                        <p>Student Card number: <strong id="student-card-number-display">•••• •••• •••• ••••</strong></p>
-                        <p>For further process and ATM card delivery, please contact:</p>
-                        <a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact">
-                            <i class="fab fa-twitter"></i> @HAIKACHOO on Twitter
-                        </a>
-                        <p style="margin-top: 15px; font-size: 14px;">Student Card will be processed within 1-3 working days after confirmation.</p>
-                    </div>
-                </div>
+        <footer class="fade-in" style="animation-delay: 0.6s;">
+            <div class="warning-box">
+                <strong>⚠ IMPORTANT NOTICE:</strong>
+                <p>CHOBANK is a fictional digital banking platform created specifically for roleplay and simulation needs. All features, transactions, cards, and payment proofs generated are for roleplay purposes only and do not represent actual financial transactions.</p>
+                <p>No money or funds are actually transferred, stored, or managed by this platform. All generated data is fictional and for roleplay purposes only.</p>
             </div>
-        </div>
-
-         <!-- Back to Top Button -->
-        <div class="back-to-top">
-   <a href="index.html" class="back-button" id="back-button">
-                <i class="fas fa-arrow-left"></i>
-           </a>
-        </div>
-        
-        <footer>
-            <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
-            <p>This page does not perform actual financial transactions.</p>
-            <p>Each card number is unique and will never be repeated.</p>
+            <p>© 2026 CHOBANK Digital Roleplay Banking. All fictional content created for entertainment purposes only.</p>
+            <p>Powered by The Kachoo</p>
         </footer>
     </div>
 
     <script>
-        // ==============================
-        // MAIN CONFIGURATION
-        // ==============================
-        const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
-        
-        const usedCardNumbers = new Set();
-        let selectedCardType = '';
-        let currentAccountNumber = '';
-        
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.card-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.card-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    this.classList.add('selected');
-                    selectedCardType = this.getAttribute('data-type');
-                    
-                    if (selectedCardType === 'business') {
-                        openBusinessModal();
-                    } else if (selectedCardType === 'student') {
-                        openStudentModal();
-                    }
-                });
-            });
-            
-            document.getElementById('generate-card-btn').addEventListener('click', generateCard);
-            document.getElementById('download-card-btn').addEventListener('click', downloadCard);
-            document.getElementById('new-card-btn').addEventListener('click', function() {
-                document.getElementById('preview-section').classList.add('hidden');
-                document.getElementById('card-form').reset();
-                document.querySelectorAll('.card-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                selectedCardType = '';
-                currentAccountNumber = '';
-            });
-            
-            document.getElementById('close-business-modal').addEventListener('click', closeBusinessModal);
-            document.getElementById('cancel-business-btn').addEventListener('click', closeBusinessModal);
-            document.getElementById('business-form').addEventListener('submit', submitBusinessForm);
-            
-            document.getElementById('close-student-modal').addEventListener('click', closeStudentModal);
-            document.getElementById('cancel-student-btn').addEventListener('click', closeStudentModal);
-            document.getElementById('student-form').addEventListener('submit', submitStudentForm);
-            
             checkLogo();
+            
+            // Add hover effect to menu options
+            const menuOptions = document.querySelectorAll('.menu-option');
+            menuOptions.forEach(option => {
+                option.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                option.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add animation to buttons
+            const buttons = document.querySelectorAll('.action-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add animation to home icon
+            const homeIcon = document.querySelector('.home-icon');
+            if (homeIcon) {
+                homeIcon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.1)';
+                });
+                
+                homeIcon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            }
         });
-        
-        function openBusinessModal() {
-            document.getElementById('business-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeBusinessModal() {
-            document.getElementById('business-modal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.getElementById('business-form').reset();
-            document.getElementById('business-success').classList.add('hidden');
-            document.getElementById('business-form').classList.remove('hidden');
-            document.querySelectorAll('.card-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            selectedCardType = '';
-        }
-        
-        function openStudentModal() {
-            document.getElementById('student-modal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeStudentModal() {
-            document.getElementById('student-modal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.getElementById('student-form').reset();
-            document.getElementById('student-success').classList.add('hidden');
-            document.getElementById('student-form').classList.remove('hidden');
-            document.querySelectorAll('.card-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            selectedCardType = '';
-        }
         
         function checkLogo() {
             const logo = document.getElementById('main-logo');
@@ -1322,382 +553,32 @@
                 this.style.display = 'none';
                 const header = document.querySelector('header');
                 const placeholder = document.createElement('div');
-                placeholder.innerHTML = '<div style="font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px;"><i class="fas fa-university"></i> CHOBANK</div>';
+                placeholder.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <div style="font-size: 50px; margin-bottom: 12px; font-weight: 900; letter-spacing: 2px; color: #000; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                            <i class="fas fa-university"></i> CHOBANK
+                        </div>
+                        <div style="width: 180px; height: 8px; background: linear-gradient(to right, #000000, #333333, #000000); margin: 0 auto; border-radius: 4px;"></div>
+                    </div>
+                `;
                 header.insertBefore(placeholder, header.firstChild);
             };
         }
         
-        // ==============================
-        // MAIN FUNCTION: GENERATE CARD
-        // ==============================
-        async function generateCard() {
-            const fullName = document.getElementById('full-name').value.trim();
-            const address = document.getElementById('address').value.trim();
+        // Add simple parallax effect to background
+        document.addEventListener('mousemove', function(e) {
+            const bgCircles = document.querySelectorAll('.bg-circle');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
             
-            if (!fullName || !address) {
-                alert('Please fill in full name and address!');
-                return;
-            }
-            
-            if (!selectedCardType || selectedCardType === 'business' || selectedCardType === 'student') {
-                alert('Please select a valid card type (Regular, Silver, or Gold)!');
-                return;
-            }
-            
-            let cardNumber;
-            do {
-                cardNumber = generateUniqueCardNumber();
-            } while (usedCardNumbers.has(cardNumber));
-            
-            usedCardNumbers.add(cardNumber);
-            currentAccountNumber = cardNumber.replace(/\s/g, '');
-            
-            const expiryDate = generateExpiryDate();
-            updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType);
-            
-            // SEND DATA TO SPREADSHEET
-            const cardData = {
-                name: fullName,
-                address: address,
-                cardType: selectedCardType,
-                cardNumber: currentAccountNumber,
-                accountNumber: currentAccountNumber,
-                expiryDate: expiryDate
-            };
-            
-            document.getElementById('loading').style.display = 'block';
-            
-            try {
-                const result = await sendToSpreadsheet(cardData);
+            bgCircles.forEach((circle, index) => {
+                const speed = index === 0 ? 0.02 : 0.01;
+                const x = (mouseX * speed * 100);
+                const y = (mouseY * speed * 100);
                 
-                if (result.success) {
-                    document.getElementById('preview-section').classList.remove('hidden');
-                    document.getElementById('preview-section').classList.add('fade-in');
-                    
-                    setTimeout(() => {
-                        document.getElementById('preview-section').scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }, 300);
-                    
-                    alert('✅ Card successfully created and data saved to spreadsheet!');
-                } else {
-                    throw new Error('Failed to save data');
-                }
-            } catch (error) {
-                alert('❌ Failed to save data to spreadsheet: ' + error.message);
-                return;
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-        
-        // ==============================
-        // SUBMIT BUSINESS FORM
-        // ==============================
-        async function submitBusinessForm(e) {
-            e.preventDefault();
-            
-            const companyName = document.getElementById('company-name').value.trim();
-            const companyType = document.getElementById('company-type').value.trim();
-            const companyYear = document.getElementById('company-year').value.trim();
-            const companyFounder = document.getElementById('company-founder').value.trim();
-            const accountManager = document.getElementById('account-manager').value.trim();
-            
-            if (!companyName || !companyType || !companyYear || !companyFounder || !accountManager) {
-                alert('Please complete all company data!');
-                return;
-            }
-            
-            const businessData = {
-                companyName: companyName,
-                companyType: companyType,
-                companyYear: companyYear,
-                founder: companyFounder,
-                accountManager: accountManager
-            };
-            
-            try {
-                await sendToSpreadsheet(businessData);
-                document.getElementById('business-form').classList.add('hidden');
-                document.getElementById('business-success').classList.remove('hidden');
-                document.querySelectorAll('.card-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                selectedCardType = '';
-            } catch (error) {
-                alert('Failed to send data: ' + error.message);
-            }
-        }
-        
-        // ==============================
-        // SUBMIT STUDENT FORM
-        // ==============================
-        async function submitStudentForm(e) {
-            e.preventDefault();
-            
-            const studentName = document.getElementById('student-name').value.trim();
-            const studentDOB = document.getElementById('student-dob').value.trim();
-            const studentSchool = document.getElementById('student-school').value.trim();
-            const parentOccupation = document.getElementById('parent-occupation').value.trim();
-            const studentAddress = document.getElementById('student-address').value.trim();
-            
-            if (!studentName || !studentDOB || !studentSchool || !parentOccupation || !studentAddress) {
-                alert('Please complete all student data!');
-                return;
-            }
-            
-            let cardNumber;
-            do {
-                cardNumber = generateUniqueCardNumber();
-            } while (usedCardNumbers.has(cardNumber));
-            
-            usedCardNumbers.add(cardNumber);
-            
-            const studentData = {
-                studentName: studentName,
-                dateOfBirth: studentDOB,
-                school: studentSchool,
-                parentOccupation: parentOccupation,
-                address: studentAddress,
-                cardNumber: cardNumber.replace(/\s/g, '')
-            };
-            
-            try {
-                await sendToSpreadsheet(studentData);
-                document.getElementById('student-card-number-display').textContent = cardNumber;
-                document.getElementById('student-form').classList.add('hidden');
-                document.getElementById('student-success').classList.remove('hidden');
-                document.querySelectorAll('.card-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                selectedCardType = '';
-            } catch (error) {
-                alert('Failed to send data: ' + error.message);
-            }
-        }
-        
-        // ==============================
-        // SEND TO SPREADSHEET FUNCTION - FIXED!
-        // ==============================
-        async function sendToSpreadsheet(data) {
-            console.log('Sending data:', data);
-            
-            try {
-                const response = await fetch(SPREADSHEET_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log('Response:', result);
-                
-                if (!result.success) {
-                    throw new Error(result.error || 'Failed to save data');
-                }
-                
-                return result;
-                
-            } catch (error) {
-                console.error('Error:', error);
-                throw error;
-            }
-        }
-        
-        // ==============================
-        // HELPER FUNCTIONS
-        // ==============================
-        function generateUniqueCardNumber() {
-            let number = '';
-            for (let i = 0; i < 4; i++) {
-                number += Math.floor(1000 + Math.random() * 9000);
-                if (i < 3) number += ' ';
-            }
-            return number;
-        }
-        
-        function generateExpiryDate() {
-            const now = new Date();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = String(now.getFullYear() + 5).slice(-2);
-            return `${month}/${year}`;
-        }
-        
-        function updateCardPreview(name, cardNumber, expiryDate, type) {
-            const cardPreview = document.getElementById('card-preview');
-            const cardTypeLabel = document.getElementById('card-type-label');
-            const cardNumberDisplay = document.getElementById('card-number-display');
-            const cardHolderName = document.getElementById('card-holder-name');
-            const cardExpiryDate = document.getElementById('card-expiry-date');
-            
-            document.getElementById('display-card-number').textContent = cardNumber;
-            document.getElementById('display-holder-name').textContent = name;
-            document.getElementById('display-expiry-date').textContent = expiryDate;
-            document.getElementById('display-card-type').textContent = type.toUpperCase();
-            
-            cardPreview.className = 'card-preview';
-            cardPreview.classList.add(type);
-            
-            const logoPlaceholder = document.getElementById('card-logo');
-            logoPlaceholder.innerHTML = '';
-            
-            const logoImg = document.createElement('img');
-            logoImg.src = 'logo-thekachoo.png';
-            logoImg.alt = 'CHOBANK Logo';
-            logoImg.className = 'card-logo';
-            logoImg.onerror = function() {
-                this.style.display = 'none';
-                const placeholder = document.createElement('div');
-                if (type === 'student') {
-                    placeholder.style.color = '#000000';
-                } else {
-                    placeholder.style.color = 'white';
-                }
-                placeholder.style.fontWeight = '800';
-                placeholder.style.fontSize = '18px';
-                placeholder.style.textShadow = '0 1px 3px rgba(0,0,0,0.8)';
-                placeholder.textContent = 'CHOBANK';
-                placeholder.style.fontFamily = "'Roboto Mono', monospace";
-                logoPlaceholder.appendChild(placeholder);
-            };
-            logoPlaceholder.appendChild(logoImg);
-            
-            cardTypeLabel.textContent = type.toUpperCase();
-            cardTypeLabel.className = 'card-type';
-            
-            if (type === 'silver') {
-                cardTypeLabel.classList.add('silver');
-            } else if (type === 'gold') {
-                cardTypeLabel.classList.add('gold');
-            } else if (type === 'student') {
-                cardTypeLabel.classList.add('student');
-            }
-            
-            cardNumberDisplay.textContent = cardNumber;
-            if (type === 'student') {
-                cardNumberDisplay.classList.add('student-card-number');
-            } else {
-                cardNumberDisplay.classList.remove('student-card-number');
-            }
-            
-            cardHolderName.textContent = name.toUpperCase();
-            if (type === 'student') {
-                cardHolderName.classList.add('student-card-holder-name');
-                cardHolderName.closest('.card-holder').classList.add('student-card-holder');
-            } else {
-                cardHolderName.classList.remove('student-card-holder-name');
-                cardHolderName.closest('.card-holder').classList.remove('student-card-holder');
-            }
-            
-            cardExpiryDate.textContent = expiryDate;
-            if (type === 'student') {
-                cardExpiryDate.classList.add('student-card-expiry-date');
-                cardExpiryDate.closest('.card-expiry').classList.add('student-card-expiry');
-            } else {
-                cardExpiryDate.classList.remove('student-card-expiry-date');
-                cardExpiryDate.closest('.card-expiry').classList.remove('student-card-expiry');
-            }
-        }
-        
-        function downloadCard() {
-            const cardPreview = document.getElementById('card-preview');
-            if (!cardPreview) {
-                alert('Please generate a card first!');
-                return;
-            }
-            
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
-            
-            const tempContainer = document.createElement('div');
-            tempContainer.style.position = 'fixed';
-            tempContainer.style.left = '-9999px';
-            tempContainer.style.top = '-9999px';
-            tempContainer.style.width = '450px';
-            tempContainer.style.height = '300px';
-            tempContainer.style.backgroundColor = 'transparent';
-            
-            const clonedCard = cardPreview.cloneNode(true);
-            clonedCard.style.transform = 'none';
-            clonedCard.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.4)';
-            clonedCard.style.width = '450px';
-            clonedCard.style.height = '300px';
-            clonedCard.style.borderRadius = '20px';
-            clonedCard.style.padding = '25px';
-            
-            const cardNumber = clonedCard.querySelector('.card-number');
-            if (cardNumber) cardNumber.style.fontSize = '26px';
-            
-            const cardHolderName = clonedCard.querySelector('.card-holder-name');
-            if (cardHolderName) cardHolderName.style.fontSize = '22px';
-            
-            const cardExpiryDate = clonedCard.querySelector('.card-expiry-date');
-            if (cardExpiryDate) cardExpiryDate.style.fontSize = '22px';
-            
-            const cardType = clonedCard.querySelector('.card-type');
-            if (cardType) cardType.style.fontSize = '14px';
-            
-            const cardChip = clonedCard.querySelector('.card-chip');
-            if (cardChip) {
-                cardChip.style.width = '40px';
-                cardChip.style.height = '30px';
-            }
-            
-            tempContainer.appendChild(clonedCard);
-            document.body.appendChild(tempContainer);
-            
-            const watermark = document.createElement('div');
-            watermark.style.position = 'absolute';
-            watermark.style.bottom = '10px';
-            watermark.style.right = '10px';
-            watermark.style.fontSize = '12px';
-            watermark.style.fontWeight = '600';
-            watermark.style.fontFamily = "'Roboto Mono', monospace";
-            watermark.textContent = 'ROLEPLAY ONLY';
-            
-            if (selectedCardType === 'student') {
-                watermark.style.color = 'rgba(0,0,0,0.5)';
-            } else {
-                watermark.style.color = 'rgba(255,255,255,0.5)';
-            }
-            
-            clonedCard.appendChild(watermark);
-            
-            setTimeout(() => {
-                html2canvas(clonedCard, {
-                    scale: 2,
-                    backgroundColor: null,
-                    useCORS: true,
-                    width: 450,
-                    height: 300,
-                    logging: false
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    const name = document.getElementById('full-name').value.trim().replace(/\s+/g, '_');
-                    const type = selectedCardType;
-                    const timestamp = new Date().getTime();
-                    link.download = `chobank_${type}_card_${name}_${timestamp}.png`;
-                    link.href = canvas.toDataURL('image/png', 1.0);
-                    link.click();
-                    
-                    document.body.removeChild(tempContainer);
-                    loading.style.display = 'none';
-                    
-                    alert('ATM card downloaded successfully!');
-                }).catch(error => {
-                    console.error('Error generating card image:', error);
-                    document.body.removeChild(tempContainer);
-                    loading.style.display = 'none';
-                    
-                    alert('An error occurred while creating the card image. Please try again.');
-                });
-            }, 500);
-        }
+                circle.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
     </script>
 </body>
-</html>
+    </html>
