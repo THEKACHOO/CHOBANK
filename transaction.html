@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Payment Proof Generator - The Kachoo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #222222;
+            line-height: 1.6;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 25px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #000000;
+            background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .logo {
+            max-width: 80px;
+            height: auto;
+            margin: 0 auto 10px;
+            display: block;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #000000;
+            line-height: 1.3;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .payment-option {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #000000;
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
+        }
+        
+        .payment-option:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+            border-color: #222222;
+        }
+        
+        .payment-icon {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #000000;
+            background: linear-gradient(135deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+        }
+        
+        .payment-option h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #000000;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        .payment-option p {
+            color: #444444;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 300px;
+        }
+        
+        .select-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #000000, #222222);
+            color: #ffffff;
+            padding: 14px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid #000000;
+            font-size: 16px;
+            width: 100%;
+            max-width: 240px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .select-btn:hover {
+            background: linear-gradient(to right, #222222, #000000);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .generator-container {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin-top: 15px;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .generator-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .generator-container h2 {
+            font-size: 26px;
+            margin-bottom: 12px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .generator-container p {
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #000000;
+            font-size: 18px;
+            letter-spacing: 0.3px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #222222;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #333333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .preview-section {
+            margin-top: 35px;
+            width: 100%;
+        }
+        
+        .preview-title {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .preview-container {
+            width: 100%;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .proof-preview {
+            background: linear-gradient(145deg, #ffffff, #fafafa);
+            border: 3px solid #000000;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .proof-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
+        }
+        
+        .proof-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #000000;
+            position: relative;
+        }
+        
+        .proof-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #333333, #000000, #333333);
+        }
+        
+        .proof-title {
+            font-size: 35px;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .proof-subtitle {
+            font-size: 20px;
+            color: #555555;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .proof-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px dashed #ddd;
+            padding-bottom: 12px;
+            align-items: center;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 700;
+            color: #333333;
+            font-size: 18px;
+            flex: 1;
+        }
+        
+        .detail-value {
+            font-weight: 700;
+            color: #000000;
+            font-size: 16px;
+            text-align: right;
+            flex: 1;
+        }
+        
+        .detail-value.amount {
+            font-size: 22px;
+            color: #000;
+            font-weight: 800;
+        }
+        
+        .proof-footer {
+            margin-top: 35px;
+            padding: 20px;
+            border-top: 2px solid #000000;
+            text-align: center;
+            color: #444444;
+            font-size: 16px;
+            line-height: 1.6;
+            background: linear-gradient(to right, #f9f9f9, #ffffff, #f9f9f9);
+            border-radius: 8px;
+        }
+        
+        .proof-footer p {
+            margin-bottom: 10px;
+        }
+        
+        .proof-footer strong {
+            color: #000000;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+            width: 100%;
+        }
+        
+        .action-btn {
+            display: block;
+            padding: 16px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #000000, #222222);
+            color: #ffffff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, #222222, #000000);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            color: #000000;
+            border: 2px solid #000000;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #f5f5f5, #ffffff);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .download-btn {
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: 2px solid #000000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to right, #000000, #333333);
+            color: white;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            opacity: 0.95;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #000000;
+            color: #444444;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        .back-to-index {
+            text-align: center;
+            margin: 40px 0 30px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #000000, #333333);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            border: 2px solid #000000;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: linear-gradient(to right, #333333, #000000);
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 35px 30px;
+            }
+            
+            .payment-options {
+                gap: 30px;
+            }
+            
+            .payment-option {
+                padding: 30px 25px;
+            }
+            
+            .generator-container {
+                padding: 35px 30px;
+            }
+            
+            .proof-preview {
+                padding: 35px;
+            }
+            
+            .action-buttons, .download-options {
+                flex-direction: row;
+            }
+            
+            .action-btn, .download-btn {
+                width: auto;
+                flex: 1;
+                margin: 0 5px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f9f9f9, #ffffff);
+            border-left: 5px solid #000000;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #000000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .auto-bank-info {
+            background: linear-gradient(135deg, #f0f0f0, #e8e8e8);
+            border-left: 4px solid #000000;
+            padding: 12px 15px;
+            margin: 10px 0 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .auto-bank-info i {
+            color: #000;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="chobank1.png" alt="Chobank Logo" class="logo" id="main-logo">
+            <h1>Payment Proof Generator</h1>
+            <p class="subtitle">Feature to create fictional payment proof for roleplay purposes.</p>
+        </header>
+        
+        <main class="main-content">
+            <section class="payment-options">
+                <div class="payment-option fade-in" id="domestic-btn">
+                    <div class="payment-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h2>Domestic Payment</h2>
+                    <p>Transfer to local bank in Rupiah currency</p>
+                    <button class="select-btn" data-type="domestic">Select Payment Type</button>
+                </div>
+                
+                <div class="payment-option fade-in" id="international-btn">
+                    <div class="payment-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h2>International Payment</h2>
+                    <p>Transfer to international bank in foreign currency</p>
+                    <button class="select-btn" data-type="international">Select Payment Type</button>
+                </div>
+                
+                <div class="payment-option fade-in" id="invoice-btn">
+                    <div class="payment-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h2>Invoice Payment</h2>
+                    <p>Payment for issued invoices</p>
+                    <button class="select-btn" data-type="invoice">Select Payment Type</button>
+                </div>
+            </section>
+            
+            <section class="generator-container hidden" id="generator"></section>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Creating image...</p>
+            </div>
+            
+            <!-- Back to Index Button -->
+            <div class="back-to-index">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2026 The Kachoo Payment Proof Generator. All payments are fictional and for roleplay purposes only.</p>
+            <p>This page does not perform actual financial transactions.</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentPaymentType = '';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.select-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    currentPaymentType = type;
+                    loadPaymentForm(type);
+                    
+                    document.getElementById('generator').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+            
+            checkLogo();
+        });
+        
+        function checkLogo() {
+            const logo = document.getElementById('main-logo');
+            logo.onerror = function() {
+                this.style.display = 'none';
+                const header = document.querySelector('header');
+                const placeholder = document.createElement('div');
+                placeholder.innerHTML = '<h2 style="font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px;"><i class="fas fa-university"></i> THE KACHOO</h2>';
+                header.insertBefore(placeholder, header.firstChild);
+            };
+        }
+        
+        function loadPaymentForm(type) {
+            const generator = document.getElementById('generator');
+            
+            let title, subtitle, currency, showInvoiceField, formLabels, bankType;
+            
+            if (type === 'domestic') {
+                title = 'Pembayaran Dalam Negeri';
+                subtitle = 'Transfer ke bank lokal dengan mata uang Rupiah';
+                currency = 'IDR (Rupiah)';
+                showInvoiceField = false;
+                bankType = 'nasional';
+                formLabels = {
+                    payerName: 'Nama Pengirim',
+                    receiverName: 'Nama Penerima',
+                    receiverAccount: 'Nomor Rekening Penerima',
+                    recipientBank: 'Bank Penerima',
+                    amount: 'Jumlah Pembayaran',
+                    date: 'Tanggal Transfer',
+                    currency: 'Mata Uang',
+                    invoiceNumber: 'Nomor Invoice',
+                    notes: 'Catatan (Opsional)',
+                    placeholderPayerName: 'Nama lengkap pengirim',
+                    placeholderReceiverName: 'Nama lengkap penerima',
+                    placeholderReceiverAccount: 'Nomor rekening penerima',
+                    placeholderRecipientBank: 'Nama bank penerima (contoh: BCA, Mandiri, BRI)',
+                    placeholderAmount: 'Jumlah pembayaran',
+                    placeholderInvoice: 'Nomor invoice yang dibayar',
+                    placeholderNotes: 'Catatan tambahan untuk pembayaran'
+                };
+            } else if (type === 'international') {
+                title = 'International Payment';
+                subtitle = 'Transfer to international bank with foreign currency';
+                currency = 'USD (US Dollar)';
+                showInvoiceField = false;
+                bankType = 'international';
+                formLabels = {
+                    payerName: 'Sender Name',
+                    receiverName: 'Recipient Name',
+                    receiverAccount: 'Recipient Account Number',
+                    recipientBank: 'Recipient Bank',
+                    amount: 'Payment Amount',
+                    date: 'Transfer Date',
+                    currency: 'Currency',
+                    invoiceNumber: 'Invoice Number',
+                    notes: 'Notes (Optional)',
+                    placeholderPayerName: 'Full sender name',
+                    placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Recipient account number',
+                    placeholderRecipientBank: 'Recipient bank name (e.g., Chase, HSBC, Citi)',
+                    placeholderAmount: 'Payment amount',
+                    placeholderInvoice: 'Invoice number',
+                    placeholderNotes: 'Additional notes for payment'
+                };
+            } else if (type === 'invoice') {
+                title = 'Invoice Payment';
+                subtitle = 'Bill payment based on issued invoices';
+                currency = 'IDR (Rupiah)';
+                showInvoiceField = true;
+                bankType = 'national';
+                formLabels = {
+                    payerName: 'Sender Name',
+                    receiverName: 'Recipient Name',
+                    receiverAccount: 'Recipient Account Number',
+                    recipientBank: 'Recipient Bank',
+                    amount: 'Payment Amount',
+                    date: 'Transfer Date',
+                    currency: 'Currency',
+                    invoiceNumber: 'Invoice Number',
+                    notes: 'Notes (Optional)',
+                    placeholderPayerName: 'Full sender name',
+                    placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Recipient account number',
+                    placeholderRecipientBank: 'Recipient bank name',
+                    placeholderAmount: 'Payment amount',
+                    placeholderInvoice: 'Invoice number',
+                    placeholderNotes: 'Additional notes for payment'
+                };
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            
+            let formHTML = `
+                <h2>${title}</h2>
+                <p>${subtitle}</p>
+                
+                <div class="auto-bank-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Sender Bank:</strong> CHOBANK (${bankType}) - <em>Recipient bank can be filled below</em>
+                </div>
+                
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label for="payer-name">${formLabels.payerName}</label>
+                        <input type="text" id="payer-name" class="form-control" placeholder="${formLabels.placeholderPayerName}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="receiver-name">${formLabels.receiverName}</label>
+                        <input type="text" id="receiver-name" class="form-control" placeholder="${formLabels.placeholderReceiverName}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="receiver-account">${formLabels.receiverAccount}</label>
+                        <input type="text" id="receiver-account" class="form-control" placeholder="${formLabels.placeholderReceiverAccount}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipient-bank">${formLabels.recipientBank}</label>
+                        <input type="text" id="recipient-bank" class="form-control" placeholder="${formLabels.placeholderRecipientBank}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">${formLabels.amount}</label>
+                        <input type="number" id="amount" class="form-control" placeholder="${formLabels.placeholderAmount}" min="1000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">${formLabels.date}</label>
+                        <input type="date" id="date" class="form-control" value="${today}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currency">${formLabels.currency}</label>
+                        <input type="text" id="currency" class="form-control" value="${currency}" required>
+                    </div>
+                    
+                    ${showInvoiceField ? `
+                    <div class="form-group">
+                        <label for="invoice-number">${formLabels.invoiceNumber}</label>
+                        <input type="text" id="invoice-number" class="form-control" placeholder="${formLabels.placeholderInvoice}">
+                    </div>
+                    ` : ''}
+                    
+                    <div class="form-group">
+                        <label for="notes">${formLabels.notes}</label>
+                        <textarea id="notes" class="form-control" rows="3" placeholder="${formLabels.placeholderNotes}"></textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-btn" class="action-btn btn-primary">Generate Payment Proof</button>
+                        <button type="reset" class="action-btn btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+                
+                <div class="preview-section hidden" id="preview-section">
+                    <h3 class="preview-title">Payment Proof Preview</h3>
+                    
+                    <div class="preview-container">
+                        <div class="proof-preview" id="proof-preview"></div>
+                    </div>
+                    
+                    <div class="download-options">
+                        <button type="button" id="download-portrait-btn" class="download-btn">Download Payment Proof</button>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary">Create New Proof</button>
+                    </div>
+                </div>
+            `;
+            
+            generator.innerHTML = formHTML;
+            generator.classList.remove('hidden');
+            generator.classList.add('fade-in');
+            
+            setTimeout(() => {
+                document.getElementById('generate-btn').addEventListener('click', generateProof);
+                document.getElementById('download-portrait-btn').addEventListener('click', downloadProof);
+                document.getElementById('new-proof-btn').addEventListener('click', function() {
+                    document.getElementById('preview-section').classList.add('hidden');
+                    document.getElementById('payment-form').reset();
+                    document.getElementById('date').value = today;
+                    document.getElementById('currency').value = currency;
+                });
+            }, 100);
+        }
+        
+        function generateProof() {
+            if (!validateForm()) {
+                if (currentPaymentType === 'domestic') {
+                    alert('Harap isi semua field yang diperlukan!');
+                } else {
+                    alert('Please fill in all required fields!');
+                }
+                return;
+            }
+            
+            const payerName = document.getElementById('payer-name').value;
+            const receiverName = document.getElementById('receiver-name').value;
+            const receiverAccount = document.getElementById('receiver-account').value;
+            const recipientBank = document.getElementById('recipient-bank').value;
+            const amount = document.getElementById('amount').value;
+            const date = document.getElementById('date').value;
+            const currency = document.getElementById('currency').value;
+            const invoiceNumber = document.getElementById('invoice-number') ? document.getElementById('invoice-number').value : '';
+            const notes = document.getElementById('notes').value;
+            
+            const formattedDate = formatDate(date);
+            const referenceNumber = generateReferenceNumber();
+            const proofPreview = document.getElementById('proof-preview');
+            const isDomestic = currentPaymentType === 'domestic';
+            
+            let headerTitle, headerSubtitle, labels;
+            
+            if (isDomestic) {
+                switch(currentPaymentType) {
+                    case 'domestic':
+                        headerTitle = 'BUKTI PEMBAYARAN ELEKTRONIK';
+                        headerSubtitle = 'Transfer Dalam Negeri';
+                        break;
+                }
+                
+                labels = {
+                    reference: 'No. Referensi',
+                    date: 'Tanggal',
+                    time: 'Waktu',
+                    sender: 'Pengirim',
+                    senderBank: 'Bank Pengirim',
+                    recipient: 'Penerima',
+                    recipientBank: 'Bank Penerima',
+                    recipientAccount: 'No. Rekening',
+                    amount: 'Jumlah Pembayaran',
+                    currency: 'Mata Uang',
+                    transactionType: 'Jenis Transaksi',
+                    invoiceNumber: 'No. Invoice',
+                    status: 'Status',
+                    notes: 'Catatan Tambahan',
+                    statusText: 'BERHASIL',
+                    transactionTypeText: 'Transfer Dalam Negeri'
+                };
+            } else {
+                switch(currentPaymentType) {
+                    case 'international':
+                        headerTitle = 'INTERNATIONAL PAYMENT CONFIRMATION';
+                        headerSubtitle = 'International Bank Transfer';
+                        break;
+                    case 'invoice':
+                        headerTitle = 'INVOICE PAYMENT CONFIRMATION';
+                        headerSubtitle = 'Invoice Payment';
+                        break;
+                }
+                
+                labels = {
+                    reference: 'Payment Reference',
+                    date: 'Date',
+                    time: 'Time',
+                    sender: 'Sender',
+                    senderBank: 'Sender Bank',
+                    recipient: 'Recipient',
+                    recipientBank: 'Recipient Bank',
+                    recipientAccount: 'Account Number',
+                    amount: 'Amount',
+                    currency: 'Currency',
+                    transactionType: 'Transaction Type',
+                    invoiceNumber: 'Invoice Number',
+                    status: 'Status',
+                    notes: 'Additional Notes',
+                    statusText: 'COMPLETED',
+                    transactionTypeText: currentPaymentType === 'international' ? 'International Transfer' : 'Invoice Payment'
+                };
+            }
+            
+            const validationCode = generateValidationCode();
+            
+            let proofContent = `
+                <div class="proof-header">
+                    <div class="proof-title">${headerTitle}</div>
+                    <div class="proof-subtitle">${headerSubtitle}</div>
+                </div>
+                
+                <div class="proof-details">
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.reference}</div>
+                        <div class="detail-value">${referenceNumber}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.date}</div>
+                        <div class="detail-value">${formattedDate}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.time}</div>
+                        <div class="detail-value">${formatTime(isDomestic)}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.sender}</div>
+                        <div class="detail-value">${payerName}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.senderBank}</div>
+                        <div class="detail-value">CHOBANK</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.recipient}</div>
+                        <div class="detail-value">${receiverName}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.recipientBank}</div>
+                        <div class="detail-value">${recipientBank}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.recipientAccount}</div>
+                        <div class="detail-value">${receiverAccount}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.amount}</div>
+                        <div class="detail-value amount">${formatCurrency(currency, amount)}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.currency}</div>
+                        <div class="detail-value">${currency}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.transactionType}</div>
+                        <div class="detail-value">${labels.transactionTypeText}</div>
+                    </div>
+            `;
+            
+            if (invoiceNumber) {
+                proofContent += `
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.invoiceNumber}</div>
+                        <div class="detail-value">${invoiceNumber}</div>
+                    </div>
+                `;
+            }
+            
+            proofContent += `
+                    <div class="detail-row">
+                        <div class="detail-label">${labels.status}</div>
+                        <div class="detail-value"><span class="status-badge">${labels.statusText}</span></div>
+                    </div>
+                </div>
+            `;
+            
+            if (notes) {
+                proofContent += `
+                    <div class="highlight-box">
+                        <div style="font-weight: 700; margin-bottom: 8px; color: #000; font-size: 16px;">${labels.notes}:</div>
+                        <div style="color: #444; font-size: 15px; line-height: 1.5;">${notes}</div>
+                    </div>
+                `;
+            }
+            
+            let footerText = `
+                <p><strong>IMPORTANT NOTES:</strong> This is for roleplay purpose by The Kachoo.</p>
+            `;
+            
+            proofContent += `
+                <div class="proof-footer">
+                    ${footerText}
+                </div>
+            `;
+            
+            proofPreview.innerHTML = proofContent;
+            
+            const previewSection = document.getElementById('preview-section');
+            previewSection.classList.remove('hidden');
+            previewSection.classList.add('fade-in');
+            
+            setTimeout(() => {
+                previewSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+        
+        function formatTime(isDomestic) {
+            const now = new Date();
+            if (isDomestic) {
+                return now.toLocaleTimeString('id-ID', { 
+                    hour: '2-digit', 
+                    minute: '2-digit'
+                });
+            } else {
+                return now.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+        }
+        
+        function generateValidationCode() {
+            const chars = '0123456789ABCDEF';
+            let result = '';
+            for (let i = 0; i < 10; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function validateForm() {
+            const requiredFields = [
+                'payer-name',
+                'receiver-name',
+                'receiver-account',
+                'recipient-bank',
+                'amount',
+                'date',
+                'currency'
+            ];
+            
+            for (let fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                if (!field || !field.value.trim()) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const isDomestic = currentPaymentType === 'domestic';
+            
+            if (isDomestic) {
+                const options = { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                };
+                return date.toLocaleDateString('id-ID', options);
+            } else {
+                const options = { 
+                    weekday: 'long',
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                };
+                return date.toLocaleDateString('en-US', options);
+            }
+        }
+        
+        function generateReferenceNumber() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'REF';
+            result += Math.floor(Math.random() * 900 + 100);
+            result += '-';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function formatCurrency(currency, amount) {
+            const numericAmount = parseFloat(amount);
+            
+            if (currency.includes('IDR') || currency.includes('Rupiah')) {
+                return `Rp ${numericAmount.toLocaleString('id-ID')}`;
+            } else if (currency.includes('USD') || currency.includes('Dollar')) {
+                return `$ ${numericAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } else {
+                return `${numericAmount.toLocaleString()} ${currency}`;
+            }
+        }
+        
+        function downloadProof() {
+            const proofElement = document.getElementById('proof-preview');
+            if (!proofElement) {
+                alert('Please generate payment proof first!');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            // Buat container untuk pengukuran yang lebih akurat
+            const tempMeasure = document.createElement('div');
+            tempMeasure.style.position = 'fixed';
+            tempMeasure.style.left = '-9999px';
+            tempMeasure.style.top = '-9999px';
+            tempMeasure.style.width = '620px';
+            tempMeasure.style.padding = '0';
+            tempMeasure.style.backgroundColor = '#ffffff';
+            tempMeasure.style.boxSizing = 'border-box';
+            
+            const clonedContentForMeasure = proofElement.cloneNode(true);
+            clonedContentForMeasure.style.background = 'none';
+            clonedContentForMeasure.style.border = 'none';
+            clonedContentForMeasure.style.boxShadow = 'none';
+            clonedContentForMeasure.style.borderRadius = '0';
+            clonedContentForMeasure.style.padding = '0';
+            clonedContentForMeasure.style.width = '620px';
+            clonedContentForMeasure.style.maxWidth = '620px';
+            clonedContentForMeasure.style.boxSizing = 'border-box';
+            
+            tempMeasure.appendChild(clonedContentForMeasure);
+            document.body.appendChild(tempMeasure);
+            
+            setTimeout(() => {
+                const contentHeight = tempMeasure.offsetHeight;
+                
+                // Hitung dengan margin dan padding yang cukup
+                const additionalPadding = 120; // Lebih banyak padding untuk pastikan footer tidak kepotong
+                const finalHeight = contentHeight + additionalPadding;
+                
+                document.body.removeChild(tempMeasure);
+                
+                // Buat container untuk download dengan tinggi yang cukup
+                const tempContainer = document.createElement('div');
+                tempContainer.style.position = 'fixed';
+                tempContainer.style.left = '-9999px';
+                tempContainer.style.top = '-9999px';
+                tempContainer.style.width = '700px';
+                tempContainer.style.height = `${finalHeight}px`;
+                tempContainer.style.padding = `${additionalPadding/2}px 40px`;
+                tempContainer.style.backgroundColor = '#ffffff';
+                tempContainer.style.backgroundImage = `
+                    linear-gradient(rgba(250, 250, 250, 0.8), rgba(250, 250, 250, 0.8)),
+                    repeating-linear-gradient(0deg, transparent, transparent 24px, #e0e0e0 24px, #e0e0e0 25px)
+                `;
+                tempContainer.style.backgroundSize = 'auto, auto 25px';
+                tempContainer.style.boxSizing = 'border-box';
+                
+                const clonedContent = proofElement.cloneNode(true);
+                clonedContent.style.background = 'none';
+                clonedContent.style.border = 'none';
+                clonedContent.style.boxShadow = 'none';
+                clonedContent.style.borderRadius = '0';
+                clonedContent.style.padding = '0';
+                clonedContent.style.maxWidth = '620px';
+                clonedContent.style.width = '100%';
+                clonedContent.style.boxSizing = 'border-box';
+                
+                // Pastikan semua elemen dalam clonedContent memiliki box-sizing border-box
+                const allElements = clonedContent.querySelectorAll('*');
+                allElements.forEach(el => {
+                    el.style.boxSizing = 'border-box';
+                });
+                
+                const header = clonedContent.querySelector('.proof-header');
+                if (header) {
+                    header.style.marginBottom = '40px';
+                    header.style.paddingBottom = '25px';
+                }
+                
+                const title = clonedContent.querySelector('.proof-title');
+                if (title) {
+                    title.style.fontSize = '38px';
+                }
+                
+                const subtitle = clonedContent.querySelector('.proof-subtitle');
+                if (subtitle) {
+                    subtitle.style.fontSize = '22px';
+                }
+                
+                const detailLabels = clonedContent.querySelectorAll('.detail-label');
+                detailLabels.forEach(label => {
+                    label.style.fontSize = '18px';
+                    label.style.boxSizing = 'border-box';
+                });
+                
+                const detailValues = clonedContent.querySelectorAll('.detail-value');
+                detailValues.forEach(value => {
+                    value.style.fontSize = '16px';
+                    value.style.boxSizing = 'border-box';
+                });
+                
+                const amountValue = clonedContent.querySelector('.detail-value.amount');
+                if (amountValue) {
+                    amountValue.style.fontSize = '24px';
+                }
+                
+                const footer = clonedContent.querySelector('.proof-footer');
+                if (footer) {
+                    footer.style.fontSize = '16px';
+                    footer.style.padding = '25px';
+                    footer.style.lineHeight = '1.8';
+                    footer.style.marginTop = '35px';
+                    footer.style.boxSizing = 'border-box';
+                }
+                
+                // WATERMARK
+                const watermark = document.createElement('div');
+                watermark.style.position = 'absolute';
+                watermark.style.top = '50%';
+                watermark.style.left = '50%';
+                watermark.style.transform = 'translate(-50%, -50%) rotate(-45deg)';
+                watermark.style.fontSize = '80px';
+                watermark.style.fontWeight = '900';
+                watermark.style.color = 'rgba(0,0,0,0.1)';
+                watermark.style.zIndex = '1';
+                watermark.style.pointerEvents = 'none';
+                watermark.style.whiteSpace = 'nowrap';
+                watermark.style.letterSpacing = '10px';
+                watermark.style.textTransform = 'uppercase';
+                watermark.textContent = 'ROLEPLAY ONLY';
+                
+                tempContainer.appendChild(clonedContent);
+                tempContainer.appendChild(watermark);
+                document.body.appendChild(tempContainer);
+                
+                setTimeout(() => {
+                    html2canvas(tempContainer, {
+                        scale: 2,
+                        backgroundColor: null,
+                        useCORS: true,
+                        width: 700,
+                        height: finalHeight,
+                        logging: false,
+                        onclone: function(clonedDoc) {
+                            // Pastikan semua elemen terlihat di clone
+                            const clonedElements = clonedDoc.querySelectorAll('*');
+                            clonedElements.forEach(el => {
+                                el.style.boxSizing = 'border-box';
+                            });
+                        }
+                    }).then(canvas => {
+                        const link = document.createElement('a');
+                        const timestamp = new Date().getTime();
+                        const typeName = currentPaymentType === 'domestic' ? 'domestic' : 
+                                         currentPaymentType === 'international' ? 'international' : 'invoice';
+                        link.download = `payment-proof-${typeName}-${timestamp}.png`;
+                        link.href = canvas.toDataURL('image/png', 1.0);
+                        link.click();
+                        
+                        document.body.removeChild(tempContainer);
+                        loading.style.display = 'none';
+                        
+                        if (currentPaymentType === 'domestic') {
+                            alert('Bukti pembayaran berhasil didownload!');
+                        } else {
+                            alert('Payment proof successfully downloaded!');
+                        }
+                    }).catch(error => {
+                        console.error('Error generating image:', error);
+                        document.body.removeChild(tempContainer);
+                        loading.style.display = 'none';
+                        
+                        if (currentPaymentType === 'domestic') {
+                            alert('Terjadi kesalahan saat membuat gambar. Silakan coba lagi.');
+                        } else {
+                            alert('Error creating image. Please try again.');
+                        }
+                    });
+                }, 500);
+                
+            }, 100);
+        }
+    </script>
+</body>
+    </html>
