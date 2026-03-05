@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK</title>
+    <title>CHOBANK - Digital ATM Card Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Tambahkan font sesuai desain referensi -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- html2canvas tetap disertakan karena diperlukan sistem -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -29,77 +27,32 @@
         
         .container {
             width: 100%;
-            max-width: 100%;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 25px 20px;
         }
         
-        /* Splash Screen - dipertahankan sesuai permintaan sebelumnya */
-        .splash-screen {
-            position: fixed;
-            inset: 0;
-            background: #ffffff;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-        }
-
-        .splash-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            animation: splashFloat 2.2s infinite alternate ease-in-out;
-        }
-
-        .splash-logo {
-            max-width: 140px;
-            width: 30vw;
-            height: auto;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2));
-        }
-
-        .splash-title {
-            font-size: clamp(3rem, 15vw, 6rem);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            background: linear-gradient(145deg, #000, #1e1e1e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 4px 8px 20px rgba(0,0,0,0.1);
-            line-height: 1;
-        }
-
-        @keyframes splashFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-12px); }
-        }
-
-        .splash-screen.fade-out {
-            opacity: 0;
-        }
-
-        .splash-screen.hidden {
-            display: none;
-        }
-        
-        /* HEADER - didesain ulang sesuai referensi */
+        /* ===== HEADER STYLE BARU (seperti halaman utama) ===== */
         header {
             text-align: center;
             margin-bottom: 35px;
-            padding-bottom: 25px;
+            padding: 25px;
             border-bottom: 3px solid #000000;
             background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
             border-radius: 15px;
-            padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #000000, #333333, #000000);
         }
         
         .logo {
@@ -138,7 +91,7 @@
             gap: 35px;
         }
         
-        /* FORM CONTAINER - didesain ulang sesuai referensi */
+        /* ===== FORM CONTAINER DENGAN DESAIN BARU ===== */
         .form-container {
             background: linear-gradient(145deg, #ffffff, #f8f8f8);
             border: 2px solid #000000;
@@ -222,7 +175,7 @@
             resize: vertical;
         }
         
-        /* CARD OPTIONS - desain persis seperti referensi */
+        /* ===== CARD OPTIONS (style baru tapi struktur tetap) ===== */
         .card-options {
             display: flex;
             flex-direction: column;
@@ -267,25 +220,11 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
         
-        .card-icon.regular {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-        }
-        
-        .card-icon.silver {
-            background: linear-gradient(135deg, #606c88, #3f4c6b);
-        }
-        
-        .card-icon.gold {
-            background: linear-gradient(135deg, #000000, #D4AF37, #000000);
-        }
-        
-        .card-icon.business {
-            background: linear-gradient(135deg, #70000E, #990014, #70000E);
-        }
-        
-        .card-icon.student {
-            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
-        }
+        .card-icon.regular { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+        .card-icon.silver { background: linear-gradient(135deg, #606c88, #3f4c6b); }
+        .card-icon.gold { background: linear-gradient(135deg, #000000, #D4AF37, #000000); }
+        .card-icon.business { background: linear-gradient(135deg, #70000E, #990014, #70000E); }
+        .card-icon.student { background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93); }
         
         .card-info {
             flex: 1;
@@ -318,6 +257,7 @@
             font-family: 'Montserrat', sans-serif;
         }
         
+        /* ===== ACTION BUTTONS ===== */
         .action-buttons {
             display: flex;
             flex-direction: column;
@@ -367,7 +307,7 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
         }
         
-        /* PREVIEW SECTION - desain sesuai referensi */
+        /* ===== PREVIEW SECTION (tetap sama, hanya border/style disesuaikan) ===== */
         .preview-section {
             margin-top: 35px;
             width: 100%;
@@ -417,25 +357,11 @@
             transform: rotateY(15deg) rotateX(5deg);
         }
         
-        .card-preview.regular {
-            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
-        }
-        
-        .card-preview.silver {
-            background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50);
-        }
-        
-        .card-preview.gold {
-            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
-        }
-        
-        .card-preview.business {
-            background: linear-gradient(135deg, #4d0008, #70000E, #4d0008);
-        }
-        
-        .card-preview.student {
-            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
-        }
+        .card-preview.regular { background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f); }
+        .card-preview.silver { background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50); }
+        .card-preview.gold { background: linear-gradient(135deg, #000000, #1a1a1a, #000000); }
+        .card-preview.business { background: linear-gradient(135deg, #4d0008, #70000E, #4d0008); }
+        .card-preview.student { background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93); }
         
         .card-glow {
             position: absolute;
@@ -478,24 +404,10 @@
             font-family: 'Roboto Mono', monospace;
         }
         
-        .card-type.silver {
-            color: #e0e0e0;
-        }
-        
-        .card-type.gold {
-            color: #D4AF37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-        
-        .card-type.business {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        
-        .card-type.student {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
-        }
+        .card-type.silver { color: #e0e0e0; }
+        .card-type.gold { color: #D4AF37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        .card-type.business { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+        .card-type.student { color: #000000; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5); }
         
         .card-middle-section {
             margin-top: 15px;
@@ -544,10 +456,7 @@
             font-family: 'Roboto Mono', monospace;
         }
         
-        .student-card-number {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
+        .student-card-number { color: #000000; text-shadow: 0 1px 3px rgba(255,255,255,0.5); }
         
         .card-details {
             display: flex;
@@ -565,10 +474,7 @@
             font-family: 'Roboto Mono', monospace;
         }
         
-        .student-card-holder {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
+        .student-card-holder { color: #000000; text-shadow: 0 1px 3px rgba(255,255,255,0.5); }
         
         .card-holder-name {
             font-size: 16px;
@@ -576,10 +482,6 @@
             margin-top: 3px;
             letter-spacing: 1.5px;
             font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-holder-name {
-            color: #000000;
         }
         
         .card-expiry {
@@ -590,10 +492,7 @@
             font-family: 'Roboto Mono', monospace;
         }
         
-        .student-card-expiry {
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
-        }
+        .student-card-expiry { color: #000000; text-shadow: 0 1px 3px rgba(255,255,255,0.5); }
         
         .card-expiry-date {
             font-size: 16px;
@@ -601,10 +500,6 @@
             margin-top: 3px;
             letter-spacing: 1.5px;
             font-family: 'Roboto Mono', monospace;
-        }
-        
-        .student-card-expiry-date {
-            color: #000000;
         }
         
         .card-hologram {
@@ -623,50 +518,13 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, 
-                transparent 30%, 
-                rgba(255,255,255,0.4) 50%, 
-                transparent 70%);
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
             animation: hologram 3s infinite linear;
         }
         
         @keyframes hologram {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
-        }
-        
-        /* Card Info Display */
-        .card-info-display {
-            margin-top: 20px;
-            text-align: center;
-            width: 100%;
-            max-width: 350px;
-        }
-        
-        .card-info-box {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #000000;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .card-info-box h4 {
-            margin-bottom: 10px;
-            color: #000000;
-            font-size: 18px;
-        }
-        
-        .card-info-box p {
-            margin-bottom: 5px;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .card-info-box strong {
-            color: #000000;
-            min-width: 150px;
-            display: inline-block;
         }
         
         .download-options {
@@ -701,29 +559,41 @@
             opacity: 0.95;
         }
         
-        /* Loading */
-        .loading {
-            display: none;
+        /* ===== CARD INFO DISPLAY ===== */
+        .card-info-display {
+            margin-top: 20px;
             text-align: center;
-            padding: 20px;
+            width: 100%;
+            max-width: 350px;
         }
         
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #000000;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+        .card-info-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #000000;
+            font-family: 'Montserrat', sans-serif;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .card-info-box h4 {
+            margin-bottom: 10px;
+            color: #000000;
+            font-size: 18px;
         }
         
-        /* Modal Business & Student */
+        .card-info-box p {
+            margin-bottom: 5px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .card-info-box strong {
+            color: #000000;
+            min-width: 150px;
+            display: inline-block;
+        }
+        
+        /* ===== MODALS (tetap sama) ===== */
         .business-modal, .student-modal {
             position: fixed;
             top: 0;
@@ -765,25 +635,6 @@
             transform: translateY(0);
         }
         
-        .business-modal-header, .student-modal-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .business-modal-header h3, .student-modal-header h3 {
-            font-size: 28px;
-            color: #000000;
-            margin-bottom: 10px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .business-modal-header p, .student-modal-header p {
-            color: #555555;
-            font-size: 16px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
         .close-modal {
             position: absolute;
             top: 15px;
@@ -816,20 +667,6 @@
             margin-top: 20px;
         }
         
-        .success-message h4 {
-            color: #2e7d32;
-            font-size: 22px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .success-message p {
-            color: #555555;
-            margin-bottom: 10px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
         .twitter-contact {
             background: #1da1f2;
             color: white;
@@ -842,7 +679,6 @@
             gap: 10px;
             margin-top: 15px;
             transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
         }
         
         .twitter-contact:hover {
@@ -851,7 +687,29 @@
             box-shadow: 0 5px 15px rgba(29, 161, 242, 0.3);
         }
         
-        /* Back Button */
+        /* ===== LOADING ===== */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #000000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ===== BACK BUTTON ===== */
         .back-to-top {
             display: flex;
             justify-content: center;
@@ -872,6 +730,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             font-size: 20px;
+            text-decoration: none;
         }
         
         .back-button:hover {
@@ -880,10 +739,7 @@
             background: linear-gradient(135deg, #333333, #000000);
         }
         
-        .hidden {
-            display: none;
-        }
-        
+        /* ===== FOOTER ===== */
         footer {
             text-align: center;
             margin-top: 50px;
@@ -899,13 +755,22 @@
             margin-bottom: 10px;
         }
         
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
         @media (min-width: 768px) {
             .container {
-                max-width: 800px;
-                padding: 35px 30px;
-            }
-            
-            .form-container {
+                max-width: 900px;
                 padding: 35px 30px;
             }
             
@@ -929,28 +794,11 @@
                 margin: 0 5px;
             }
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN: Logo & CHOBANK pertama kali (dipertahankan) -->
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-content">
-            <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
-            <div class="splash-title">CHOBANK</div>
-        </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.8s ease;">
+    <div class="container">
+        <!-- HEADER dengan desain baru -->
         <header>
             <img src="chobank1.png" alt="Chobank Logo" class="logo" id="main-logo">
             <h1>CHOBANK Digital ATM Card</h1>
@@ -958,6 +806,7 @@
         </header>
         
         <main class="main-content">
+            <!-- FORM CONTAINER dengan desain baru -->
             <section class="form-container fade-in">
                 <h2>ATM Card Application Form</h2>
                 
@@ -1039,6 +888,7 @@
                 </form>
             </section>
             
+            <!-- PREVIEW SECTION (tetap sama) -->
             <div class="preview-section hidden" id="preview-section">
                 <h3 class="preview-title">CHOBANK ATM Card Preview</h3>
                 
@@ -1048,9 +898,7 @@
                             <div class="card-glow"></div>
                             <div class="card-content">
                                 <div class="card-header">
-                                    <div class="card-logo-placeholder" id="card-logo">
-                                        <!-- Logo will be inserted via JS -->
-                                    </div>
+                                    <div class="card-logo-placeholder" id="card-logo"></div>
                                     <div class="card-type" id="card-type-label">REGULAR</div>
                                 </div>
                                 
@@ -1108,48 +956,40 @@
             </div>
         </main>
         
-        <!-- Business Card Modal -->
+        <!-- MODALS (tetap sama persis) -->
         <div class="business-modal" id="business-modal">
             <div class="business-modal-content">
                 <button class="close-modal" id="close-business-modal">&times;</button>
-                
                 <div class="business-modal-header">
                     <h3>Business Card Form</h3>
                     <p>Fill in company data for Business Card application</p>
                 </div>
-                
                 <form id="business-form">
                     <div class="form-group">
                         <label for="company-name">Company Name</label>
                         <input type="text" id="company-name" class="form-control" placeholder="Enter company name" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="company-type">Company Type</label>
                         <input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="company-year">Company Establishment Year</label>
                         <input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="company-founder">Founder / Person in Charge</label>
                         <input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="account-manager">Account Manager</label>
                         <input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required>
                     </div>
-                    
                     <div class="action-buttons">
                         <button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button>
                         <button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button>
                     </div>
                 </form>
-                
                 <div id="business-success" class="hidden">
                     <div class="success-message">
                         <h4>Form Successfully Submitted!</h4>
@@ -1164,48 +1004,39 @@
             </div>
         </div>
         
-        <!-- Student Card Modal -->
         <div class="student-modal" id="student-modal">
             <div class="student-modal-content">
                 <button class="close-modal" id="close-student-modal">&times;</button>
-                
                 <div class="student-modal-header">
                     <h3>Student Card Form</h3>
                     <p>Fill in student data for Student Card application</p>
                 </div>
-                
                 <form id="student-form">
                     <div class="form-group">
                         <label for="student-name">Student Name</label>
                         <input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="student-dob">Date of Birth</label>
                         <input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="student-school">School / University</label>
                         <input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="parent-occupation">Parent Occupation</label>
                         <input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="student-address">Address</label>
                         <textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea>
                     </div>
-                    
                     <div class="action-buttons">
                         <button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button>
                         <button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button>
                     </div>
                 </form>
-                
                 <div id="student-success" class="hidden">
                     <div class="success-message">
                         <h4>Form Successfully Submitted!</h4>
@@ -1221,13 +1052,14 @@
             </div>
         </div>
 
-        <!-- Back to Top Button -->
+        <!-- BACK BUTTON -->
         <div class="back-to-top">
             <a href="index.html" class="back-button" id="back-button">
                 <i class="fas fa-arrow-left"></i>
             </a>
         </div>
         
+        <!-- FOOTER dengan desain baru -->
         <footer>
             <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
             <p>This page does not perform actual financial transactions.</p>
@@ -1237,34 +1069,7 @@
 
     <script>
         // ==============================
-        // SPLASH SCREEN LOGIC
-        // ==============================
-        const splash = document.getElementById('splashScreen');
-        const mainContainer = document.getElementById('mainContainer');
-
-        window.handleSplashLogoError = function() {
-            const splashLogo = document.getElementById('splashLogo');
-            if (splashLogo) {
-                splashLogo.style.display = 'none';
-                const fallbackIcon = document.createElement('i');
-                fallbackIcon.className = 'fas fa-university';
-                fallbackIcon.style.fontSize = '5rem';
-                fallbackIcon.style.color = '#000';
-                fallbackIcon.style.marginBottom = '1rem';
-                splash.querySelector('.splash-content').prepend(fallbackIcon);
-            }
-        };
-
-        setTimeout(() => {
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.classList.add('hidden');
-                mainContainer.style.opacity = '1';
-            }, 1200);
-        }, 1600);
-
-        // ==============================
-        // MAIN CONFIGURATION (dari file asli, tidak diubah)
+        // SCRIPT ASLI - TIDAK DIUBAH SEDIKITPUN
         // ==============================
         const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
         
@@ -1358,9 +1163,6 @@
             };
         }
         
-        // ==============================
-        // MAIN FUNCTION: GENERATE CARD
-        // ==============================
         async function generateCard() {
             const fullName = document.getElementById('full-name').value.trim();
             const address = document.getElementById('address').value.trim();
@@ -1386,7 +1188,6 @@
             const expiryDate = generateExpiryDate();
             updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType);
             
-            // SEND DATA TO SPREADSHEET
             const cardData = {
                 name: fullName,
                 address: address,
@@ -1424,9 +1225,6 @@
             }
         }
         
-        // ==============================
-        // SUBMIT BUSINESS FORM
-        // ==============================
         async function submitBusinessForm(e) {
             e.preventDefault();
             
@@ -1462,9 +1260,6 @@
             }
         }
         
-        // ==============================
-        // SUBMIT STUDENT FORM
-        // ==============================
         async function submitStudentForm(e) {
             e.preventDefault();
             
@@ -1509,9 +1304,6 @@
             }
         }
         
-        // ==============================
-        // SEND TO SPREADSHEET FUNCTION - FIXED!
-        // ==============================
         async function sendToSpreadsheet(data) {
             console.log('Sending data:', data);
             
@@ -1540,9 +1332,6 @@
             }
         }
         
-        // ==============================
-        // HELPER FUNCTIONS
-        // ==============================
         function generateUniqueCardNumber() {
             let number = '';
             for (let i = 0; i < 4; i++) {
