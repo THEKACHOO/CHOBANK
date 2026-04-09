@@ -3,66 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>CHOBANK · Digital Roleplay Banking</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* === RESET & BASE — smooth, elegant, no grid pattern === */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
+            background: linear-gradient(145deg, #fefefe 0%, #f5f7fc 45%, #ffffff 100%);
             color: #111;
             line-height: 1.5;
+            min-height: 100vh;
             width: 100%;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* background pattern subtle - bukan polos */
+        /* no pattern, only pure subtle gradient animation — graceful motion */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(#e0e0e0 1px, transparent 1px),
-                linear-gradient(90deg, #e0e0e0 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.4;
+            inset: 0;
+            background: radial-gradient(circle at 30% 10%, rgba(210, 225, 245, 0.3) 0%, rgba(255,255,245,0) 70%);
             pointer-events: none;
-            z-index: 0;
+            z-index: -1;
+            animation: breatheGlow 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes breatheGlow {
+            0% { opacity: 0.4; transform: scale(1); }
+            100% { opacity: 0.9; transform: scale(1.08); }
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 2;
+            padding: 16px 24px 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* === SPLASH SCREEN === */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 0 20px;
+        }
+
+        /* === SPLASH SCREEN — refined & airy === */
         .splash-screen {
             position: fixed;
             inset: 0;
-            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff 0%, #f3f6fd 100%);
             z-index: 1000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 1s cubic-bezier(0.2, 0.9, 0.3, 1.2);
             pointer-events: none;
         }
 
@@ -70,28 +76,33 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            animation: splashFloat 2.2s infinite alternate ease-in-out;
+            gap: 1.4rem;
+            animation: splashFloat 2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .splash-logo {
             max-width: 140px;
             width: 30vw;
             height: auto;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.12));
+            transition: transform 0.2s ease;
         }
 
         .splash-title {
-            font-size: clamp(3rem, 15vw, 5rem);
+            font-size: clamp(3.2rem, 15vw, 6.5rem);
             font-weight: 900;
             letter-spacing: -0.02em;
-            color: #000;
+            background: linear-gradient(125deg, #0a0a0a, #2c2c2c, #101010);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
             line-height: 1;
         }
 
         @keyframes splashFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-12px); }
+            0% { transform: translateY(0px); filter: blur(0px); }
+            100% { transform: translateY(-10px); filter: blur(0px); }
         }
 
         .splash-screen.fade-out {
@@ -102,306 +113,348 @@
             display: none;
         }
 
-        /* === HEADER === */
+        /* === HEADER — clean, no container clipping, pure inline motion === */
         header {
-            padding: 24px 0;
             text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-            margin-bottom: 60px;
+            margin-bottom: 38px;
+            padding: 32px 24px 36px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 56px;
+            box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            width: 100%;
+            max-width: 860px;
+            transition: all 0.4s cubic-bezier(0.2, 0.95, 0.4, 1.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            animation: softRise 2.8s infinite alternate ease-out;
         }
 
-        .logo-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
+        @keyframes softRise {
+            0% { transform: translateY(0px); box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.05); }
+            100% { transform: translateY(-5px); box-shadow: 0 28px 40px -14px rgba(0, 0, 0, 0.12); }
         }
 
-        .logo-header img {
-            height: 56px;
-            width: auto;
+        header:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(0, 0, 0, 0.12);
+            transform: scale(1.005);
         }
 
-        .logo-header span {
-            font-size: 1.8rem;
+        /* headline tanpa background kotak — pure fluid */
+        .header-minimal {
+            font-size: 3.2rem;
             font-weight: 800;
             letter-spacing: -0.02em;
-            color: #000;
+            background: linear-gradient(135deg, #000000, #2d2d2d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.65rem;
+            display: inline-block;
+            width: auto;
+            padding: 0 6px;
         }
 
-        /* === MAIN SECTION === */
-        .main-grid {
+        .subtitle {
+            font-size: 1.28rem;
+            font-weight: 520;
+            color: #1f2937;
+            max-width: 620px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.02);
+            padding: 8px 24px;
+            border-radius: 80px;
+            backdrop-filter: blur(4px);
+            letter-spacing: -0.2px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        /* feature cards — smoother motion and elevated design */
+        .menu-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 28px;
+            margin: 30px 0 28px;
+            width: 100%;
+        }
+
+        .menu-option {
+            background: #ffffff;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 40px;
+            padding: 28px 24px 26px;
+            text-align: center;
+            transition: all 0.45s cubic-bezier(0.15, 0.85, 0.3, 1.05);
+            cursor: pointer;
             display: flex;
             flex-direction: column;
-            gap: 80px;
-            margin-bottom: 80px;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            color: #000;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: #555;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        /* Feature Cards */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 32px;
-        }
-
-        .feature-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 24px;
-            padding: 40px 32px;
-            text-align: center;
-            transition: all 0.3s ease;
+            align-items: center;
             width: 100%;
-            max-width: 320px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            max-width: 340px;
+            box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(145deg, #ffffff, #fefefe);
+            flex: 1 1 280px;
+            backdrop-filter: blur(0px);
         }
 
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: #000;
-            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.1);
+        .menu-option:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 30px 45px -14px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
         }
 
-        .feature-card h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: #000;
+        .menu-icon {
+            font-size: 3.6rem;
+            margin-bottom: 18px;
+            background: linear-gradient(145deg, #151515, #3a3a3a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
         }
 
-        .feature-card p {
-            color: #666;
-            margin-bottom: 28px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .menu-option:hover .menu-icon {
+            transform: scale(1.12) rotate(1deg);
         }
 
-        .feature-btn {
-            display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 12px 28px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.25s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .feature-btn:hover {
-            background: #222;
-            transform: translateY(-2px);
-        }
-
-        .feature-btn.coming-soon {
-            background: #ccc;
-            color: #555;
-            cursor: default;
-            pointer-events: none;
-        }
-
-        /* Secondary Cards Row */
-        .cards-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 32px;
-        }
-
-        .card-item {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 24px;
-            padding: 32px 28px;
-            text-align: center;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 280px;
-        }
-
-        .card-item:hover {
-            transform: translateY(-6px);
-            border-color: #000;
-            box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-item h3 {
-            font-size: 1.3rem;
+        .menu-option h2 {
+            font-size: 1.85rem;
             font-weight: 800;
             margin-bottom: 10px;
             color: #000;
+            letter-spacing: -0.3px;
         }
 
-        .card-item p {
-            color: #666;
-            margin-bottom: 24px;
-            font-size: 0.85rem;
+        .menu-option p {
+            color: #3a3a3a;
+            margin-bottom: 26px;
+            font-size: 0.96rem;
+            max-width: 280px;
+            font-weight: 450;
         }
 
-        .card-btn {
-            display: inline-block;
-            background: #000;
-            color: #fff;
-            padding: 10px 24px;
-            border-radius: 40px;
+        .action-btn {
+            background: #000000;
+            color: white;
+            padding: 14px 30px;
+            border-radius: 60px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: all 0.25s ease;
-        }
-
-        .card-btn:hover {
-            background: #222;
-            transform: translateY(-2px);
-        }
-
-        .card-btn.coming-soon {
-            background: #ccc;
-            color: #555;
-            cursor: default;
-            pointer-events: none;
-        }
-
-        /* Home Link - pakai icon home */
-        .home-link {
-            text-align: center;
-            margin: 60px 0 40px;
-        }
-
-        .home-link a {
+            font-weight: 700;
+            font-size: 0.98rem;
+            border: 1.5px solid #000;
+            width: 100%;
+            max-width: 220px;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 56px;
-            height: 56px;
-            background: #fff;
-            color: #000;
-            border: 2px solid #000;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.18);
             border-radius: 50%;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: all 0.25s ease;
+            transform: translate(-50%, -50%) rotate(20deg);
+            transition: width 0.5s ease-out;
+            z-index: -1;
         }
 
-        .home-link a:hover {
+        .action-btn:hover::before {
+            width: 220%;
+        }
+
+        .action-btn:hover {
+            background: #1e1e1e;
+            border-color: #1e1e1e;
             transform: translateY(-4px);
-            background: #f0f0f0;
+            box-shadow: 0 16px 24px -8px rgba(0, 0, 0, 0.2);
         }
 
-        /* FOOTER */
-        footer {
-            background: #000;
-            color: #fff;
-            padding: 60px 0 40px;
-            margin-top: 40px;
+        /* coming soon styling — clean */
+        .menu-option.coming-soon .action-btn {
+            background: #2b2b2b;
+            border-color: #2b2b2b;
+            color: #eaeaea;
+            cursor: default;
+            pointer-events: none;
+            opacity: 0.9;
+            box-shadow: none;
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 48px;
-            margin-bottom: 48px;
+        .menu-option.coming-soon {
+            cursor: default;
         }
 
-        .footer-col h4 {
-            font-size: 1rem;
+        .menu-option.coming-soon:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-option.coming-soon .menu-icon {
+            opacity: 0.75;
+        }
+
+        .coming-badge {
+            position: absolute;
+            top: -12px;
+            right: 12px;
+            background: #111;
+            color: #fafafa;
+            font-size: 0.78rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
+            padding: 5px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.4px;
+            transition: 0.2s;
+            backdrop-filter: blur(2px);
         }
 
-        .footer-col p, .footer-col a {
-            color: rgba(255,255,255,0.6);
+        .menu-option:hover .coming-badge {
+            transform: scale(1.05);
+            background: #1f1f1f;
+        }
+
+        /* home icon — sleek and bouncy */
+        .home-icon-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0 20px;
+        }
+
+        .home-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: #ffffff;
+            color: #000;
+            border: 2.5px solid #111;
+            border-radius: 40px;
+            font-size: 28px;
+            transition: all 0.35s cubic-bezier(0.2, 1.2, 0.4, 1);
+            box-shadow: 0 8px 0 #000;
             text-decoration: none;
-            font-size: 0.85rem;
-            line-height: 1.8;
-            display: block;
         }
 
-        .footer-col a:hover {
-            color: #fff;
+        .home-icon:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 0 #000;
+            background: #f8f8ff;
         }
 
-        /* Notice - pakai teks biasa tanpa emoticon */
-        .notice {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 20px;
+        /* footer — smooth */
+        footer {
             text-align: center;
-            margin-bottom: 32px;
+            margin-top: 40px;
+            padding: 26px 24px 24px;
+            border-top: 2px solid rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 56px 56px 32px 32px;
+            max-width: 980px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s;
         }
 
-        .notice strong {
-            color: #fff;
+        footer:hover {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .warning-box {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 40px;
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            transition: 0.2s;
+        }
+
+        .warning-box strong {
+            color: #000;
+            font-size: 1rem;
             display: block;
             margin-bottom: 8px;
-            font-size: 0.85rem;
         }
 
-        .notice p {
-            color: rgba(255,255,255,0.5);
-            font-size: 0.75rem;
+        .warning-box p {
+            color: #2c2c2c;
+            font-size: 0.9rem;
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 32px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.4);
-            font-size: 0.75rem;
+        footer p {
+            color: #2d2d2d;
+            font-weight: 450;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-            }
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            .feature-card, .card-item {
-                max-width: 100%;
-            }
-        }
-
-        /* animations */
-        @keyframes fadeSlide {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        /* fade-in animation for elements */
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(36px); filter: blur(1px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
         .fade-in {
-            animation: fadeSlide 0.6s ease forwards;
+            animation: fadeSlideUp 0.75s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
             opacity: 0;
+        }
+
+        /* responsive refinement */
+        @media (min-width: 680px) {
+            .menu-options {
+                max-width: 1020px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .menu-options {
+                gap: 32px;
+            }
+            .menu-option {
+                max-width: 310px;
+            }
+            .header-minimal {
+                font-size: 3.8rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .container {
+                padding: 12px 18px 28px;
+            }
+            header {
+                padding: 24px 16px 28px;
+            }
+            .header-minimal {
+                font-size: 2.3rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN -->
+
+    <!-- SPLASH SCREEN (CHOBANK + logo) motion halus -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
@@ -409,123 +462,142 @@
         </div>
     </div>
 
-    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.8s ease;">
-        <!-- HEADER dengan logo chobank1.png -->
-        <header class="fade-in" style="animation-delay: 0.1s;">
-            <div class="logo-header">
-                <img src="chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
-                <span>CHOBANK</span>
+    <!-- MAIN CONTENT — akan muncul setelah fade out -->
+    <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 1s ease;">
+        <main class="main-content">
+            <!-- HEADER: tanpa container terpisah, hanya judul dan subjudul dengan background transparan, motion smooth -->
+            <header class="fade-in" style="animation-delay: 0.05s;">
+                <div class="header-minimal">CHOBANK</div>
+                <p class="subtitle">Digital Banking for Roleplay</p>
+                <!-- tidak ada container tambahan, murni gaya fluid -->
+            </header>
+
+            <!-- 5 Cards: Digital ATM Card & Payment Proof Generator active, sisanya coming soon -->
+            <div class="menu-options">
+                <!-- Digital ATM Card (card.html) -->
+                <div class="menu-option fade-in" style="animation-delay: 0.15s;">
+                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
+                    <h2>Digital ATM Card</h2>
+                    <p>Create CHOBANK digital cards: Regular, Silver, Gold. Unique numbers & premium design.</p>
+                    <a href="card.html" class="action-btn">Create Card</a>
+                </div>
+
+                <!-- Payment Proof Generator (transaction.html) -->
+                <div class="menu-option fade-in" style="animation-delay: 0.25s;">
+                    <div class="menu-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h2>Payment Proof</h2>
+                    <p>Generate domestic/international payment proofs with realistic details.</p>
+                    <a href="transaction.html" class="action-btn">Make Transaction</a>
+                </div>
+
+                <!-- Loan (coming soon) -->
+                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.35s;">
+                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
+                    <div class="menu-icon"><i class="fas fa-hand-hold-usd"></i></div>
+                    <h2>Loan</h2>
+                    <p>Quick personal & business loans — flexible terms.</p>
+                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
+                </div>
+
+                <!-- Insurance (coming soon) -->
+                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.45s;">
+                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
+                    <div class="menu-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h2>Insurance</h2>
+                    <p>Life, health & asset protection plans.</p>
+                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
+                </div>
+
+                <!-- Equity Investment (coming soon) -->
+                <div class="menu-option coming-soon fade-in" style="animation-delay: 0.55s;">
+                    <span class="coming-badge"><i class="fa-regular fa-clock"></i> soon</span>
+                    <div class="menu-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h2>Equity Investment</h2>
+                    <p>Stocks, ETFs & long-term growth simulation.</p>
+                    <a href="#" class="action-btn"><i class="fa-regular fa-hourglass-half"></i> Coming soon</a>
+                </div>
             </div>
-        </header>
 
-        <main>
-            <div class="main-grid">
-                <!-- Hero Section -->
-                <div class="hero fade-in" style="animation-delay: 0.15s;">
-                    <h1>CHOBANK</h1>
-                    <p>Digital Banking for Roleplay</p>
-                </div>
-
-                <!-- Feature Cards: Digital ATM Card & Payment Proof -->
-                <div class="features fade-in" style="animation-delay: 0.2s;">
-                    <div class="feature-card">
-                        <h2>Digital ATM Card</h2>
-                        <p>Create CHOBANK digital cards: Regular, Silver, Gold. Unique numbers & premium design.</p>
-                        <a href="card.html" class="feature-btn">Create Card</a>
-                    </div>
-                    <div class="feature-card">
-                        <h2>Payment Proof</h2>
-                        <p>Generate domestic/international payment proofs with realistic details.</p>
-                        <a href="transaction.html" class="feature-btn">Make Transaction</a>
-                    </div>
-                </div>
-
-                <!-- Secondary Cards: Loan, Insurance, Equity Investment -->
-                <div class="cards-row fade-in" style="animation-delay: 0.25s;">
-                    <div class="card-item">
-                        <h3>Loan</h3>
-                        <p>Quick personal & business loans — flexible terms.</p>
-                        <a href="#" class="card-btn coming-soon">Coming soon</a>
-                    </div>
-                    <div class="card-item">
-                        <h3>Insurance</h3>
-                        <p>Life, health & asset protection plans.</p>
-                        <a href="#" class="card-btn coming-soon">Coming soon</a>
-                    </div>
-                    <div class="card-item">
-                        <h3>Equity Investment</h3>
-                        <p>Stocks, ETFs & long-term growth simulation.</p>
-                        <a href="#" class="card-btn coming-soon">Coming soon</a>
-                    </div>
-                </div>
-
-                <!-- Home Link - pakai icon home -->
-                <div class="home-link fade-in" style="animation-delay: 0.3s;">
-                    <a href="https://thekachoo.github.io/Home/index.html">
-                        <i class="fas fa-home"></i>
-                    </a>
-                </div>
+            <!-- home icon (link eksternal) -->
+            <div class="home-icon-container fade-in" style="animation-delay: 0.65s;">
+                <a href="https://thekachoo.github.io/Home/index.html" class="home-icon" title="home">
+                    <i class="fas fa-home"></i>
+                </a>
             </div>
         </main>
 
-        <!-- FOOTER -->
-        <footer class="fade-in" style="animation-delay: 0.35s;">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>CHOBANK</h4>
-                    <p>Digital banking solution by KACHOO, seamless transactions for all platforms.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <a href="https://twitter.com/TheKachoo" target="_blank">X / Twitter: @TheKachoo</a>
-                    <a href="mailto:ohkachoo@gmail.com">Email: ohkachoo@gmail.com</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Address</h4>
-                    <p>Jenderal Sudirman Avenue, Lots 61-62, South Jakarta 12930, Indonesia</p>
-                </div>
-            </div>
-            <div class="notice">
-                <strong>FICTIONAL NOTICE</strong>
+        <!-- footer -->
+        <footer class="fade-in" style="animation-delay: 0.75s;">
+            <div class="warning-box">
+                <strong>⚠ FICTIONAL NOTICE</strong>
                 <p>CHOBANK is a roleplay platform. No real money or assets are used. All transactions, cards, and proofs are fictional.</p>
             </div>
-            <div class="copyright">
-                &copy; 2026 CHOBANK, powered by The Kachoo
-            </div>
+            <p>© 2026 CHOBANK, powered by The Kachoo</p>
         </footer>
     </div>
 
     <script>
         (function() {
+            // === SPLASH SCREEN HALUS (tidak mengganggu system) ===
             const splash = document.getElementById('splashScreen');
             const mainContainer = document.getElementById('mainContainer');
 
+            // fallback jika gambar logo splash error
             window.handleSplashLogoError = function() {
                 const splashLogo = document.getElementById('splashLogo');
-                if (splashLogo) {
+                if (splashLogo && splashLogo.parentElement) {
                     splashLogo.style.display = 'none';
-                    const fallbackText = document.createElement('div');
-                    fallbackText.textContent = 'CHOBANK';
-                    fallbackText.style.fontSize = '3rem';
-                    fallbackText.style.fontWeight = '900';
-                    fallbackText.style.color = '#000';
+                    const fallbackIcon = document.createElement('i');
+                    fallbackIcon.className = 'fas fa-building-columns';
+                    fallbackIcon.style.fontSize = '4.8rem';
+                    fallbackIcon.style.color = '#0a0a0a';
+                    fallbackIcon.style.marginBottom = '1rem';
+                    fallbackIcon.style.opacity = '0.9';
                     const splashContent = splash.querySelector('.splash-content');
-                    if (splashContent) splashContent.prepend(fallbackText);
+                    if (splashContent) splashContent.prepend(fallbackIcon);
                 }
             };
 
+            // Tampilkan splash minimal 1.5 detik lalu fade out smooth
             setTimeout(() => {
                 splash.classList.add('fade-out');
                 setTimeout(() => {
                     splash.classList.add('hidden');
                     mainContainer.style.opacity = '1';
-                }, 1200);
-            }, 1600);
+                }, 1000);
+            }, 1550);
 
-            const comingSoonBtns = document.querySelectorAll('.coming-soon');
-            comingSoonBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => e.preventDefault());
+            // === micro-interaction: background breathing tetap gradasi (tanpa pattern) ===
+            // sedikit efek mouse parallax pada radial glow (tapi tetap gradasi murni)
+            document.addEventListener('mousemove', function(e) {
+                const xPercent = (e.clientX / window.innerWidth) * 100;
+                const yPercent = (e.clientY / window.innerHeight) * 100;
+                // ubah posisi radial gradient secara halus
+                document.body.style.background = `radial-gradient(circle at ${xPercent}% ${yPercent}%, #fefefe 0%, #f4f8ff 65%, #ffffff 100%)`;
             });
+
+            // reset background style saat mouse tidak bergerak untuk mengurangi jitter (optional)
+            let mouseTimer;
+            document.addEventListener('mousemove', () => {
+                clearTimeout(mouseTimer);
+                mouseTimer = setTimeout(() => {
+                    document.body.style.background = '';
+                }, 200);
+            });
+
+            // disable aksi untuk tombol coming soon (tetap prevent)
+            const soonBtns = document.querySelectorAll('.coming-soon .action-btn');
+            soonBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // bisa ditambahkan efek feedback halus (opsional, tidak merusak)
+                });
+            });
+
+            // memastikan semua link card.html & transaction.html berfungsi normal tanpa hambatan
+            const cardLink = document.querySelector('.menu-option:first-child .action-btn');
+            const paymentLink = document.querySelector('.menu-option:nth-child(2) .action-btn');
+            // tidak ada perubahan link, tetap original
         })();
     </script>
 </body>
