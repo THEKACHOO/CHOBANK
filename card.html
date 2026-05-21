@@ -17,7 +17,7 @@
         body {
             background: #ffffff;
             color: #000000;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
             line-height: 1.5;
             min-height: 100vh;
             overflow-x: hidden;
@@ -41,7 +41,7 @@
             z-index: 2;
         }
 
-        /* HEADER - hanya teks CHOBANK */
+        /* HEADER - hanya CHOBANK */
         .site-header {
             text-align: center;
             margin-bottom: 32px;
@@ -68,12 +68,6 @@
             margin-bottom: 32px;
             border: 1px solid rgba(0,0,0,0.08);
             box-shadow: 0 15px 35px -12px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .form-container:hover {
-            background: rgba(255,255,255,0.8);
-            box-shadow: 0 20px 40px -14px rgba(0,0,0,0.1);
         }
 
         .form-container h2 {
@@ -82,7 +76,6 @@
             margin-bottom: 28px;
             color: #000000;
             text-align: center;
-            letter-spacing: -0.3px;
             font-family: 'Outfit', sans-serif;
         }
 
@@ -123,7 +116,7 @@
             resize: vertical;
         }
 
-        /* CARD OPTIONS - glass grid */
+        /* CARD OPTIONS */
         .card-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -148,7 +141,6 @@
             transform: translateY(-4px);
             background: rgba(255,255,255,0.85);
             border-color: rgba(0,0,0,0.25);
-            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.1);
         }
 
         .card-option.selected {
@@ -227,7 +219,6 @@
         .btn-primary:hover {
             background: #1a1a1a;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .btn-secondary {
@@ -329,7 +320,7 @@
         }
 
         .card-type.silver { color: #e0e0e0; }
-        .card-type.gold { color: #D4AF37; text-shadow: 0 0 6px rgba(212,175,55,0.5); }
+        .card-type.gold { color: #D4AF37; }
         .card-type.student { color: #000000; }
 
         .card-middle-section {
@@ -480,7 +471,6 @@
         .download-btn:hover {
             background: #1a1a1a;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
         .loading {
@@ -545,13 +535,6 @@
             overflow-y: auto;
             border: 1px solid rgba(0,0,0,0.1);
             position: relative;
-            transform: translateY(30px);
-            transition: transform 0.3s ease;
-        }
-
-        .active .business-modal-content,
-        .active .student-modal-content {
-            transform: translateY(0);
         }
 
         .close-modal {
@@ -571,7 +554,6 @@
 
         .close-modal:hover {
             transform: rotate(90deg);
-            background: #333;
         }
 
         .success-message {
@@ -592,12 +574,6 @@
             align-items: center;
             gap: 10px;
             margin-top: 15px;
-            transition: all 0.2s;
-        }
-
-        .twitter-contact:hover {
-            background: #0d8bd9;
-            transform: translateY(-2px);
         }
 
         .back-button {
@@ -636,9 +612,6 @@
             .form-container { padding: 24px 18px; }
             .card-preview { width: 320px; height: 210px; padding: 16px; }
             .card-number { font-size: 16px; }
-            .card-holder-name { font-size: 12px; }
-            .card-expiry-date { font-size: 12px; }
-            .card-logo { width: 55px; }
         }
     </style>
 </head>
@@ -688,39 +661,244 @@
 
         <div class="loading hidden" id="loading"><div class="spinner"></div><p>Creating card...</p></div>
 
-        <div class="back-to-top" style="display: flex; justify-content: center; margin: 30px 0 20px;"><a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i></a></div>
+        <div style="display: flex; justify-content: center; margin: 30px 0 20px;"><a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i></a></div>
 
         <footer><p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p><p>This page does not perform actual financial transactions.</p><p>Each card number is unique and will never be repeated.</p></footer>
     </div>
 
-    <!-- MODALS -->
+    <!-- MODALS SAMA PERSIS DENGAN HTML ASLI -->
     <div class="business-modal" id="business-modal"><div class="business-modal-content"><button class="close-modal" id="close-business-modal">&times;</button><div class="business-modal-header"><h3>Business Card Form</h3><p>Fill in company data for Business Card application</p></div><form id="business-form"><div class="form-group"><label for="company-name">Company Name</label><input type="text" id="company-name" class="form-control" placeholder="Enter company name" required></div><div class="form-group"><label for="company-type">Company Type</label><input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required></div><div class="form-group"><label for="company-year">Company Establishment Year</label><input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required></div><div class="form-group"><label for="company-founder">Founder / Person in Charge</label><input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required></div><div class="form-group"><label for="account-manager">Account Manager</label><input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required></div><div class="action-buttons"><button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button></div></form><div id="business-success" class="hidden"><div class="success-message"><h4>Form Successfully Submitted!</h4><p>Thank you for completing the Business Card form. Your company data has been recorded.</p><p>For further process and ATM card delivery, please contact:</p><a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact"><i class="fab fa-twitter"></i> @HAIKACHOO on Twitter</a><p style="margin-top: 15px; font-size: 14px;">Business Card will be processed within 1-3 working days after confirmation.</p></div></div></div></div>
 
     <div class="student-modal" id="student-modal"><div class="student-modal-content"><button class="close-modal" id="close-student-modal">&times;</button><div class="student-modal-header"><h3>Student Card Form</h3><p>Fill in student data for Student Card application</p></div><form id="student-form"><div class="form-group"><label for="student-name">Student Name</label><input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required></div><div class="form-group"><label for="student-dob">Date of Birth</label><input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required></div><div class="form-group"><label for="student-school">School / University</label><input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required></div><div class="form-group"><label for="parent-occupation">Parent Occupation</label><input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required></div><div class="form-group"><label for="student-address">Address</label><textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea></div><div class="action-buttons"><button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button></div></form><div id="student-success" class="hidden"><div class="success-message"><h4>Form Successfully Submitted!</h4><p>Thank you for completing the Student Card form. Your data has been recorded.</p><p>Student Card number: <strong id="student-card-number-display">•••• •••• •••• ••••</strong></p><p>For further process and ATM card delivery, please contact:</p><a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact"><i class="fab fa-twitter"></i> @HAIKACHOO on Twitter</a><p style="margin-top: 15px; font-size: 14px;">Student Card will be processed within 1-3 working days after confirmation.</p></div></div></div></div>
 
     <script>
-        // SCRIPT SISTEM SAMA PERSIS, TIDAK DIUBAH
+        // ========== SISTEM SAMA PERSIS DENGAN HTML ASLI ==========
         const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
         const usedCardNumbers = new Set();
         let selectedCardType = '';
         let currentAccountNumber = '';
-        
-        document.querySelectorAll('.card-option').forEach(opt => { opt.addEventListener('click', function() { document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); this.classList.add('selected'); selectedCardType = this.getAttribute('data-type'); if(selectedCardType==='business') document.getElementById('business-modal').classList.add('active'); else if(selectedCardType==='student') document.getElementById('student-modal').classList.add('active'); }); });
-        document.getElementById('generate-card-btn').addEventListener('click', generateCard);
-        document.getElementById('download-card-btn').addEventListener('click', downloadCard);
-        document.getElementById('new-card-btn').addEventListener('click', ()=>{ document.getElementById('preview-section').classList.add('hidden'); document.getElementById('card-form').reset(); document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); selectedCardType=''; currentAccountNumber=''; });
-        document.getElementById('close-business-modal').addEventListener('click',()=>{document.getElementById('business-modal').classList.remove('active'); selectedCardType='';});
-        document.getElementById('cancel-business-btn').addEventListener('click',()=>{document.getElementById('business-modal').classList.remove('active'); selectedCardType='';});
-        document.getElementById('close-student-modal').addEventListener('click',()=>{document.getElementById('student-modal').classList.remove('active'); selectedCardType='';});
-        document.getElementById('cancel-student-btn').addEventListener('click',()=>{document.getElementById('student-modal').classList.remove('active'); selectedCardType='';});
-        document.getElementById('business-form').addEventListener('submit', async(e)=>{ e.preventDefault(); const data={companyName:e.target[0].value,companyType:e.target[1].value,companyYear:e.target[2].value,founder:e.target[3].value,accountManager:e.target[4].value}; await fetch(SPREADSHEET_URL,{method:'POST',body:JSON.stringify(data)}); document.getElementById('business-form').classList.add('hidden'); document.getElementById('business-success').classList.remove('hidden'); document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); selectedCardType=''; });
-        document.getElementById('student-form').addEventListener('submit', async(e)=>{ e.preventDefault(); let cn; do{ cn=Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000); }while(usedCardNumbers.has(cn)); usedCardNumbers.add(cn); const data={studentName:e.target[0].value,dateOfBirth:e.target[1].value,school:e.target[2].value,parentOccupation:e.target[3].value,address:e.target[4].value,cardNumber:cn.replace(/\s/g,'')}; await fetch(SPREADSHEET_URL,{method:'POST',body:JSON.stringify(data)}); document.getElementById('student-card-number-display').textContent=cn; document.getElementById('student-form').classList.add('hidden'); document.getElementById('student-success').classList.remove('hidden'); document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); selectedCardType=''; });
-        
-        async function generateCard(){ const name=document.getElementById('full-name').value.trim(); const addr=document.getElementById('address').value.trim(); if(!name||!addr){alert('Please fill in full name and address!');return;} if(!selectedCardType||selectedCardType==='business'||selectedCardType==='student'){alert('Please select a valid card type (Regular, Silver, or Gold)!');return;} let cn; do{ cn=Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000)+' '+Math.floor(1000+Math.random()*9000); }while(usedCardNumbers.has(cn)); usedCardNumbers.add(cn); currentAccountNumber=cn.replace(/\s/g,''); const exp=()=>{const d=new Date(); return String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getFullYear()+5).slice(-2);}(); updatePreview(name,cn,exp,selectedCardType); document.getElementById('loading').style.display='block'; try{ await fetch(SPREADSHEET_URL,{method:'POST',body:JSON.stringify({name:name,address:addr,cardType:selectedCardType,cardNumber:currentAccountNumber,accountNumber:currentAccountNumber,expiryDate:exp})}); document.getElementById('preview-section').classList.remove('hidden'); alert('✅ Card successfully created!'); }catch(e){alert('❌ Failed to save data');} finally{document.getElementById('loading').style.display='none';} }
-        
-        function updatePreview(name,cardNumber,expiry,type){ const preview=document.getElementById('card-preview'); preview.className='card-preview '+type; document.getElementById('card-type-label').textContent=type.toUpperCase(); document.getElementById('card-number-display').textContent=cardNumber; document.getElementById('card-holder-name').textContent=name.toUpperCase(); document.getElementById('card-expiry-date').textContent=expiry; document.getElementById('display-card-number').textContent=cardNumber; document.getElementById('display-holder-name').textContent=name; document.getElementById('display-expiry-date').textContent=expiry; document.getElementById('display-card-type').textContent=type.toUpperCase(); const logoDiv=document.getElementById('card-logo'); logoDiv.innerHTML='<img src="chobank1.png" class="card-logo" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div style=\\\'font-weight:800;font-size:16px;color:'+(type==='student'?'#000':'white')+'\\\'>CHOBANK</div>\';">'; }
-        
-        function downloadCard(){ const card=document.getElementById('card-preview'); if(!card){alert('Generate card first!');return;} const loading=document.getElementById('loading'); loading.style.display='block'; const clone=card.cloneNode(true); clone.style.width='450px'; clone.style.height='300px'; clone.style.borderRadius='20px'; const watermark=document.createElement('div'); watermark.style.position='absolute'; watermark.style.bottom='10px'; watermark.style.right='10px'; watermark.style.fontSize='12px'; watermark.style.fontWeight='600'; watermark.style.fontFamily="'Roboto Mono', monospace"; watermark.textContent='ROLEPLAY ONLY'; watermark.style.color=selectedCardType==='student'?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.5)'; clone.appendChild(watermark); const temp=document.createElement('div'); temp.style.position='fixed'; temp.style.left='-9999px'; temp.appendChild(clone); document.body.appendChild(temp); setTimeout(()=>{ html2canvas(clone,{scale:2,backgroundColor:null}).then(canvas=>{ const a=document.createElement('a'); a.download=`chobank_${selectedCardType}_card_${Date.now()}.png`; a.href=canvas.toDataURL(); a.click(); document.body.removeChild(temp); loading.style.display='none'; alert('Card downloaded!'); }).catch(()=>{ document.body.removeChild(temp); loading.style.display='none'; alert('Error'); }); },300); }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.card-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedCardType = this.getAttribute('data-type');
+                    if (selectedCardType === 'business') {
+                        document.getElementById('business-modal').classList.add('active');
+                    } else if (selectedCardType === 'student') {
+                        document.getElementById('student-modal').classList.add('active');
+                    }
+                });
+            });
+            document.getElementById('generate-card-btn').addEventListener('click', generateCard);
+            document.getElementById('download-card-btn').addEventListener('click', downloadCard);
+            document.getElementById('new-card-btn').addEventListener('click', function() {
+                document.getElementById('preview-section').classList.add('hidden');
+                document.getElementById('card-form').reset();
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+                currentAccountNumber = '';
+            });
+            document.getElementById('close-business-modal').addEventListener('click', function() {
+                document.getElementById('business-modal').classList.remove('active');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            });
+            document.getElementById('cancel-business-btn').addEventListener('click', function() {
+                document.getElementById('business-modal').classList.remove('active');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            });
+            document.getElementById('close-student-modal').addEventListener('click', function() {
+                document.getElementById('student-modal').classList.remove('active');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            });
+            document.getElementById('cancel-student-btn').addEventListener('click', function() {
+                document.getElementById('student-modal').classList.remove('active');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            });
+            document.getElementById('business-form').addEventListener('submit', submitBusinessForm);
+            document.getElementById('student-form').addEventListener('submit', submitStudentForm);
+        });
+
+        function generateUniqueCardNumber() {
+            let number = '';
+            for (let i = 0; i < 4; i++) {
+                number += Math.floor(1000 + Math.random() * 9000);
+                if (i < 3) number += ' ';
+            }
+            return number;
+        }
+
+        function generateExpiryDate() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear() + 5).slice(-2);
+            return `${month}/${year}`;
+        }
+
+        function updateCardPreview(name, cardNumber, expiryDate, type) {
+            const cardPreview = document.getElementById('card-preview');
+            const cardTypeLabel = document.getElementById('card-type-label');
+            const cardNumberDisplay = document.getElementById('card-number-display');
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardExpiryDate = document.getElementById('card-expiry-date');
+            document.getElementById('display-card-number').textContent = cardNumber;
+            document.getElementById('display-holder-name').textContent = name;
+            document.getElementById('display-expiry-date').textContent = expiryDate;
+            document.getElementById('display-card-type').textContent = type.toUpperCase();
+            cardPreview.className = 'card-preview ' + type;
+            const logoPlaceholder = document.getElementById('card-logo');
+            logoPlaceholder.innerHTML = '';
+            const logoImg = document.createElement('img');
+            logoImg.src = 'chobank1.png';
+            logoImg.alt = 'CHOBANK Logo';
+            logoImg.className = 'card-logo';
+            logoImg.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.style.fontWeight = '800';
+                placeholder.style.fontSize = '16px';
+                placeholder.style.color = (type === 'student' ? '#000000' : 'white');
+                placeholder.textContent = 'CHOBANK';
+                logoPlaceholder.appendChild(placeholder);
+            };
+            logoPlaceholder.appendChild(logoImg);
+            cardTypeLabel.textContent = type.toUpperCase();
+            cardTypeLabel.className = 'card-type';
+            if (type === 'silver') cardTypeLabel.classList.add('silver');
+            else if (type === 'gold') cardTypeLabel.classList.add('gold');
+            else if (type === 'student') cardTypeLabel.classList.add('student');
+            cardNumberDisplay.textContent = cardNumber;
+            if (type === 'student') cardNumberDisplay.classList.add('student-card-number');
+            else cardNumberDisplay.classList.remove('student-card-number');
+            cardHolderName.textContent = name.toUpperCase();
+            if (type === 'student') {
+                cardHolderName.classList.add('student-card-holder-name');
+                cardHolderName.closest('.card-holder').classList.add('student-card-holder');
+            } else {
+                cardHolderName.classList.remove('student-card-holder-name');
+                cardHolderName.closest('.card-holder').classList.remove('student-card-holder');
+            }
+            cardExpiryDate.textContent = expiryDate;
+            if (type === 'student') {
+                cardExpiryDate.classList.add('student-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.add('student-card-expiry');
+            } else {
+                cardExpiryDate.classList.remove('student-card-expiry-date');
+                cardExpiryDate.closest('.card-expiry').classList.remove('student-card-expiry');
+            }
+        }
+
+        async function generateCard() {
+            const fullName = document.getElementById('full-name').value.trim();
+            const address = document.getElementById('address').value.trim();
+            if (!fullName || !address) { alert('Please fill in full name and address!'); return; }
+            if (!selectedCardType || selectedCardType === 'business' || selectedCardType === 'student') { alert('Please select a valid card type (Regular, Silver, or Gold)!'); return; }
+            let cardNumber;
+            do { cardNumber = generateUniqueCardNumber(); } while (usedCardNumbers.has(cardNumber));
+            usedCardNumbers.add(cardNumber);
+            currentAccountNumber = cardNumber.replace(/\s/g, '');
+            const expiryDate = generateExpiryDate();
+            updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType);
+            const cardData = { name: fullName, address: address, cardType: selectedCardType, cardNumber: currentAccountNumber, accountNumber: currentAccountNumber, expiryDate: expiryDate };
+            document.getElementById('loading').style.display = 'block';
+            try {
+                await fetch(SPREADSHEET_URL, { method: 'POST', body: JSON.stringify(cardData) });
+                document.getElementById('preview-section').classList.remove('hidden');
+                document.getElementById('preview-section').classList.add('fade-in');
+                setTimeout(() => { document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+                alert('✅ Card successfully created and data saved to spreadsheet!');
+            } catch (error) { alert('❌ Failed to save data to spreadsheet: ' + error.message); }
+            finally { document.getElementById('loading').style.display = 'none'; }
+        }
+
+        async function submitBusinessForm(e) {
+            e.preventDefault();
+            const companyName = document.getElementById('company-name').value.trim();
+            const companyType = document.getElementById('company-type').value.trim();
+            const companyYear = document.getElementById('company-year').value.trim();
+            const companyFounder = document.getElementById('company-founder').value.trim();
+            const accountManager = document.getElementById('account-manager').value.trim();
+            if (!companyName || !companyType || !companyYear || !companyFounder || !accountManager) { alert('Please complete all company data!'); return; }
+            const businessData = { companyName, companyType, companyYear, founder: companyFounder, accountManager };
+            try {
+                await fetch(SPREADSHEET_URL, { method: 'POST', body: JSON.stringify(businessData) });
+                document.getElementById('business-form').classList.add('hidden');
+                document.getElementById('business-success').classList.remove('hidden');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            } catch (error) { alert('Failed to send data: ' + error.message); }
+        }
+
+        async function submitStudentForm(e) {
+            e.preventDefault();
+            const studentName = document.getElementById('student-name').value.trim();
+            const studentDOB = document.getElementById('student-dob').value.trim();
+            const studentSchool = document.getElementById('student-school').value.trim();
+            const parentOccupation = document.getElementById('parent-occupation').value.trim();
+            const studentAddress = document.getElementById('student-address').value.trim();
+            if (!studentName || !studentDOB || !studentSchool || !parentOccupation || !studentAddress) { alert('Please complete all student data!'); return; }
+            let cardNumber;
+            do { cardNumber = generateUniqueCardNumber(); } while (usedCardNumbers.has(cardNumber));
+            usedCardNumbers.add(cardNumber);
+            const studentData = { studentName, dateOfBirth: studentDOB, school: studentSchool, parentOccupation, address: studentAddress, cardNumber: cardNumber.replace(/\s/g, '') };
+            try {
+                await fetch(SPREADSHEET_URL, { method: 'POST', body: JSON.stringify(studentData) });
+                document.getElementById('student-card-number-display').textContent = cardNumber;
+                document.getElementById('student-form').classList.add('hidden');
+                document.getElementById('student-success').classList.remove('hidden');
+                document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
+                selectedCardType = '';
+            } catch (error) { alert('Failed to send data: ' + error.message); }
+        }
+
+        function downloadCard() {
+            const cardPreview = document.getElementById('card-preview');
+            if (!cardPreview) { alert('Please generate a card first!'); return; }
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '-9999px';
+            const clonedCard = cardPreview.cloneNode(true);
+            clonedCard.style.width = '450px';
+            clonedCard.style.height = '300px';
+            clonedCard.style.borderRadius = '20px';
+            const watermark = document.createElement('div');
+            watermark.style.position = 'absolute';
+            watermark.style.bottom = '10px';
+            watermark.style.right = '10px';
+            watermark.style.fontSize = '12px';
+            watermark.style.fontWeight = '600';
+            watermark.style.fontFamily = "'Roboto Mono', monospace";
+            watermark.textContent = 'ROLEPLAY ONLY';
+            watermark.style.color = (selectedCardType === 'student' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.5)');
+            clonedCard.appendChild(watermark);
+            tempContainer.appendChild(clonedCard);
+            document.body.appendChild(tempContainer);
+            setTimeout(() => {
+                html2canvas(clonedCard, { scale: 2, backgroundColor: null, useCORS: true }).then(canvas => {
+                    const link = document.createElement('a');
+                    const name = document.getElementById('full-name').value.trim().replace(/\s+/g, '_');
+                    const type = selectedCardType;
+                    link.download = `chobank_${type}_card_${name}_${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    alert('ATM card downloaded successfully!');
+                }).catch(() => {
+                    document.body.removeChild(tempContainer);
+                    loading.style.display = 'none';
+                    alert('An error occurred while creating the card image.');
+                });
+            }, 300);
+        }
     </script>
 </body>
-    </html>
+                            </html>
