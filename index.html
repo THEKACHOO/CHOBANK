@@ -87,19 +87,23 @@
             display: none;
         }
 
-        /* HEADER - hanya logo + CHOBANK */
+        /* HEADER - logo dan teks CHOBANK dalam satu baris (sampingan) */
         .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
             text-align: center;
             margin-bottom: 40px;
             padding: 8px 0 12px;
             background: transparent;
+            flex-wrap: wrap;
         }
 
         .header-logo {
-            max-width: 100px;
+            max-width: 65px;
             height: auto;
             display: inline-block;
-            margin-bottom: 12px;
         }
 
         .header-chobank-text {
@@ -226,7 +230,7 @@
             border-color: #000;
         }
 
-        /* FOOTER - dengan informasi rapat */
+        /* FOOTER */
         .site-footer {
             margin-top: 20px;
             padding: 24px 20px 20px;
@@ -261,7 +265,6 @@
             line-height: 1.4;
         }
 
-        /* informasi kontak footer - rapat tanpa jarak berlebih */
         .footer-contact {
             background: rgba(0,0,0,0.02);
             border-radius: 32px;
@@ -369,7 +372,7 @@
             }
             
             .header-logo {
-                max-width: 120px;
+                max-width: 80px;
             }
             
             .header-chobank-text {
@@ -412,6 +415,12 @@
             .card-icon {
                 font-size: 2rem;
             }
+            .header-logo {
+                max-width: 55px;
+            }
+            .header-chobank-text {
+                font-size: 1.8rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -442,10 +451,13 @@
                 margin-bottom: 8px;
             }
             .header-logo {
-                max-width: 75px;
+                max-width: 50px;
             }
             .header-chobank-text {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+            .site-header {
+                gap: 10px;
             }
             .footer-contact p,
             .footer-contact a {
@@ -471,9 +483,9 @@
     </div>
 
     <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.85s ease;">
-        <!-- HEADER: logo + CHOBANK saja -->
+        <!-- HEADER: logo dan teks CHOBANK dalam satu baris (samping) -->
         <div class="site-header fade-reveal" style="animation-delay: 0.05s;">
-            <img src="chobank1.png" alt="CHOBANK Logo" class="header-logo" id="headerLogoImg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="chobank1.png" alt="CHOBANK Logo" class="header-logo" id="headerLogoImg" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
             <div class="header-chobank-text" id="headerChobankText">CHOBANK</div>
         </div>
 
@@ -515,7 +527,7 @@
             </a>
         </div>
 
-        <!-- FOOTER dengan informasi rapat dan copyright -->
+        <!-- FOOTER -->
         <div class="site-footer fade-reveal" style="animation-delay: 0.35s;">
             <div class="footer-notice">
                 <strong>FICTIONAL NOTICE</strong>
@@ -557,7 +569,7 @@
             if (headerLogo) {
                 headerLogo.onerror = function() {
                     this.style.display = 'none';
-                    if (headerChobankText) headerChobankText.style.display = 'block';
+                    if (headerChobankText) headerChobankText.style.display = 'inline-block';
                 };
             }
 
@@ -571,4 +583,4 @@
         })();
     </script>
 </body>
-                </html>
+                    </html>
