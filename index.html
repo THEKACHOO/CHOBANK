@@ -40,7 +40,7 @@
             z-index: 2;
         }
 
-        /* SPLASH SCREEN */
+        /* SPLASH SCREEN - hanya logo, tanpa teks CHOBANK */
         .splash-screen {
             position: fixed;
             inset: 0;
@@ -59,19 +59,10 @@
         }
 
         .splash-logo {
-            max-width: 150px;
-            width: 28vw;
+            max-width: 160px;
+            width: 30vw;
             height: auto;
             filter: drop-shadow(0 12px 20px rgba(0,0,0,0.08));
-            margin-bottom: 16px;
-        }
-
-        .splash-title {
-            font-size: clamp(2.8rem, 12vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
-            font-family: 'Outfit', sans-serif;
         }
 
         @keyframes splashPulse {
@@ -87,32 +78,21 @@
             display: none;
         }
 
-        /* HEADER - logo dan teks CHOBANK dalam satu baris (sampingan) */
+        /* HEADER - hanya teks CHOBANK, tanpa logo gambar, ukuran lebih besar */
         .site-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
             text-align: center;
             margin-bottom: 40px;
-            padding: 8px 0 12px;
+            padding: 16px 0 12px;
             background: transparent;
-            flex-wrap: wrap;
-        }
-
-        .header-logo {
-            max-width: 65px;
-            height: auto;
-            display: inline-block;
         }
 
         .header-chobank-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
+            font-size: 3.2rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #000000;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         /* MENU GRID - 2x2 mobile, desktop 4 kolom */
@@ -371,12 +351,8 @@
                 max-width: 200px;
             }
             
-            .header-logo {
-                max-width: 80px;
-            }
-            
             .header-chobank-text {
-                font-size: 2.5rem;
+                font-size: 4rem;
             }
             
             .footer-notice p,
@@ -415,11 +391,8 @@
             .card-icon {
                 font-size: 2rem;
             }
-            .header-logo {
-                max-width: 55px;
-            }
             .header-chobank-text {
-                font-size: 1.8rem;
+                font-size: 2.8rem;
             }
         }
 
@@ -450,14 +423,8 @@
                 font-size: 1.8rem;
                 margin-bottom: 8px;
             }
-            .header-logo {
-                max-width: 50px;
-            }
             .header-chobank-text {
-                font-size: 1.5rem;
-            }
-            .site-header {
-                gap: 10px;
+                font-size: 2.2rem;
             }
             .footer-contact p,
             .footer-contact a {
@@ -474,19 +441,17 @@
 </head>
 <body>
 
-    <!-- SPLASH SCREEN -->
+    <!-- SPLASH SCREEN - hanya logo saja -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
-            <div class="splash-title">CHOBANK</div>
         </div>
     </div>
 
     <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.85s ease;">
-        <!-- HEADER: logo dan teks CHOBANK dalam satu baris (samping) -->
+        <!-- HEADER - hanya teks CHOBANK, tanpa logo gambar, ukuran besar -->
         <div class="site-header fade-reveal" style="animation-delay: 0.05s;">
-            <img src="chobank1.png" alt="CHOBANK Logo" class="header-logo" id="headerLogoImg" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-            <div class="header-chobank-text" id="headerChobankText">CHOBANK</div>
+            <div class="header-chobank-text">CHOBANK</div>
         </div>
 
         <!-- MENU GRID 2x2 mobile, desktop 4 kolom -->
@@ -540,8 +505,7 @@
                 <p>Contact Person : @tuaipuji</p>
                 <p>Email : ohkachoo@gmail.com</p>
             </div>
-            <div class="footer-copyright">2026 CHOBANK</div>
-            <div class="footer-featured">Featured by The Kachoo</div>
+            <div class="footer-copyright">2026 CHOBANK, Featured by The Kachoo</div>
         </div>
     </div>
 
@@ -549,15 +513,13 @@
         (function() {
             const splash = document.getElementById('splashScreen');
             const mainContainer = document.getElementById('mainContainer');
-            const headerLogo = document.getElementById('headerLogoImg');
-            const headerChobankText = document.getElementById('headerChobankText');
 
             window.handleSplashLogoError = function() {
                 const splashLogo = document.getElementById('splashLogo');
                 if (splashLogo) {
                     splashLogo.style.display = 'none';
                     const fallbackText = document.createElement('div');
-                    fallbackText.style.fontSize = '3.5rem';
+                    fallbackText.style.fontSize = '3rem';
                     fallbackText.style.fontWeight = '800';
                     fallbackText.style.fontFamily = 'Outfit, sans-serif';
                     fallbackText.style.color = '#000';
@@ -565,13 +527,6 @@
                     document.querySelector('.splash-content').prepend(fallbackText);
                 }
             };
-
-            if (headerLogo) {
-                headerLogo.onerror = function() {
-                    this.style.display = 'none';
-                    if (headerChobankText) headerChobankText.style.display = 'inline-block';
-                };
-            }
 
             setTimeout(() => {
                 splash.classList.add('fade-out');
@@ -583,4 +538,4 @@
         })();
     </script>
 </body>
-                    </html>
+    </html>
