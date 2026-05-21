@@ -2,661 +2,514 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Payment Proof Generator - The Kachoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CHOBANK - Payment Proof Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: #f8f8f8;
-            color: #222222;
-            line-height: 1.6;
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.5;
             min-height: 100vh;
-            width: 100%;
             overflow-x: hidden;
         }
-        
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle at 25% 30%, rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .container {
-            width: 100%;
-            max-width: 700px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 25px 20px;
+            padding: 24px 20px 48px;
+            position: relative;
+            z-index: 2;
         }
-        
-        header {
+
+        /* HEADER - hanya CHOBANK */
+        .site-header {
             text-align: center;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
-            border-bottom: 3px solid #000000;
-            background: linear-gradient(to right, #ffffff, #f5f5f5, #ffffff);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 32px;
+            padding: 16px 0 8px;
+            background: transparent;
         }
-        
-        .logo {
-            max-width: 80px;
-            height: auto;
-            margin: 0 auto 10px;
-            display: block;
-            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
-        }
-        
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+
+        .header-chobank-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
             color: #000000;
-            line-height: 1.3;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            line-height: 1.1;
         }
-        
-        .subtitle {
-            font-size: 16px;
-            color: #444444;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-        }
-        
+
+        /* PAYMENT OPTIONS - glass cards */
         .payment-options {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
-        
+
         .payment-option {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border: 2px solid #000000;
-            border-radius: 12px;
-            padding: 25px 20px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 32px;
+            padding: 28px 20px;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.35s ease;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.05);
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
         }
-        
-        .payment-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(to right, #000000, #333333, #000000);
-        }
-        
+
         .payment-option:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
-            border-color: #222222;
+            transform: translateY(-6px);
+            background: rgba(255,255,255,0.85);
+            border-color: rgba(0,0,0,0.15);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
         }
-        
+
         .payment-icon {
-            font-size: 42px;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
+            margin-bottom: 16px;
             color: #000000;
-            background: linear-gradient(135deg, #000000, #333333);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
         }
-        
+
         .payment-option h2 {
-            font-size: 22px;
-            margin-bottom: 12px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
             color: #000000;
-            line-height: 1.3;
-            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
         }
-        
+
         .payment-option p {
-            color: #444444;
+            font-size: 0.85rem;
+            color: #555;
             margin-bottom: 20px;
-            font-size: 15px;
-            line-height: 1.5;
-            max-width: 300px;
         }
-        
+
         .select-btn {
-            display: inline-block;
-            background: linear-gradient(to right, #000000, #222222);
-            color: #ffffff;
-            padding: 14px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            border: 2px solid #000000;
-            font-size: 16px;
-            width: 100%;
-            max-width: 240px;
+            background: #000000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
             cursor: pointer;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+            width: 100%;
+            max-width: 200px;
         }
-        
+
         .select-btn:hover {
-            background: linear-gradient(to right, #222222, #000000);
+            background: #1a1a1a;
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
-        
+
+        /* GENERATOR CONTAINER - glass */
         .generator-container {
-            background: linear-gradient(145deg, #ffffff, #f8f8f8);
-            border: 2px solid #000000;
-            border-radius: 15px;
-            padding: 30px 25px;
-            margin-top: 15px;
-            width: 100%;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 40px;
+            padding: 32px 28px;
+            margin-top: 16px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 15px 35px -12px rgba(0,0,0,0.05);
         }
-        
-        .generator-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, #000000, #333333, #000000);
+
+        .generator-container h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #000000;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
         }
-        
+
+        .generator-container > p {
+            text-align: center;
+            color: #555;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
         .hidden {
             display: none;
         }
-        
-        .generator-container h2 {
-            font-size: 26px;
-            margin-bottom: 12px;
-            color: #000000;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        
-        .generator-container p {
-            font-size: 16px;
-            color: #444444;
-            margin-bottom: 25px;
-            text-align: center;
-            line-height: 1.5;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
+
         .form-group {
-            margin-bottom: 22px;
-            position: relative;
+            margin-bottom: 20px;
         }
-        
+
         .form-group label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 700;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: #000000;
-            font-size: 18px;
-            letter-spacing: 0.3px;
+            font-size: 0.9rem;
+            font-family: 'Outfit', sans-serif;
         }
-        
+
         .form-control {
             width: 100%;
-            padding: 15px 18px;
-            border: 2px solid #000000;
-            border-radius: 8px;
+            padding: 12px 16px;
+            border: 1.5px solid rgba(0,0,0,0.12);
+            border-radius: 24px;
             background-color: #ffffff;
-            color: #222222;
-            font-size: 16px;
+            color: #222;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+            font-family: 'Outfit', sans-serif;
         }
-        
+
         .form-control:focus {
             outline: none;
-            border-color: #333333;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-color: #000000;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.06);
             transform: translateY(-2px);
         }
-        
+
         textarea.form-control {
-            min-height: 100px;
+            min-height: 90px;
             resize: vertical;
         }
-        
-        .preview-section {
-            margin-top: 35px;
-            width: 100%;
+
+        .auto-bank-info {
+            background: rgba(0,0,0,0.03);
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #444;
+            border-left: 3px solid #000000;
         }
-        
-        .preview-title {
-            font-size: 26px;
-            margin-bottom: 25px;
-            color: #000000;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        
-        .preview-container {
-            width: 100%;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .proof-preview {
-            background: linear-gradient(145deg, #ffffff, #fafafa);
-            border: 3px solid #000000;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
-            max-width: 700px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .proof-preview::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(to right, #000000, #333333, #000000);
-        }
-        
-        .proof-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #000000;
-            position: relative;
-        }
-        
-        .proof-header::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 25%;
-            width: 50%;
-            height: 3px;
-            background: linear-gradient(to right, #333333, #000000, #333333);
-        }
-        
-        .proof-title {
-            font-size: 35px;
-            font-weight: 800;
-            color: #000000;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .proof-subtitle {
-            font-size: 20px;
-            color: #555555;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        
-        .proof-details {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px dashed #ddd;
-            padding-bottom: 12px;
-            align-items: center;
-        }
-        
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        
-        .detail-label {
-            font-weight: 700;
-            color: #333333;
-            font-size: 18px;
-            flex: 1;
-        }
-        
-        .detail-value {
-            font-weight: 700;
-            color: #000000;
-            font-size: 16px;
-            text-align: right;
-            flex: 1;
-        }
-        
-        .detail-value.amount {
-            font-size: 22px;
-            color: #000;
-            font-weight: 800;
-        }
-        
-        .proof-footer {
-            margin-top: 35px;
-            padding: 20px;
-            border-top: 2px solid #000000;
-            text-align: center;
-            color: #444444;
-            font-size: 16px;
-            line-height: 1.6;
-            background: linear-gradient(to right, #f9f9f9, #ffffff, #f9f9f9);
-            border-radius: 8px;
-        }
-        
-        .proof-footer p {
-            margin-bottom: 10px;
-        }
-        
-        .proof-footer strong {
-            color: #000000;
-        }
-        
+
         .action-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
-            width: 100%;
+            gap: 12px;
+            margin-top: 24px;
         }
-        
+
         .action-btn {
-            display: block;
-            padding: 16px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            border: 2px solid #000000;
-            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
             text-align: center;
-            width: 100%;
             cursor: pointer;
-            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            border: none;
+            font-family: 'Outfit', sans-serif;
         }
-        
+
         .btn-primary {
-            background: linear-gradient(to right, #000000, #222222);
-            color: #ffffff;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+            background: #000000;
+            color: white;
         }
-        
+
         .btn-primary:hover {
-            background: linear-gradient(to right, #222222, #000000);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            background: #1a1a1a;
+            transform: translateY(-2px);
         }
-        
+
         .btn-secondary {
-            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            background: rgba(0,0,0,0.05);
             color: #000000;
-            border: 2px solid #000000;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+            border: 1.5px solid rgba(0,0,0,0.1);
         }
-        
+
         .btn-secondary:hover {
-            background: linear-gradient(to right, #f5f5f5, #ffffff);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
-        
-        .download-options {
+
+        /* PREVIEW SECTION */
+        .preview-section {
+            margin-top: 32px;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #000000;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .proof-preview {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+            max-width: 700px;
+            width: 100%;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .proof-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .proof-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 6px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .proof-subtitle {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .proof-details {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-top: 20px;
+            margin-bottom: 24px;
         }
-        
-        .download-btn {
-            padding: 16px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            border: 2px solid #000000;
-            font-size: 16px;
-            text-align: center;
-            width: 100%;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(to right, #000000, #333333);
-            color: white;
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(0,0,0,0.08);
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-            opacity: 0.95;
+
+        .detail-label {
+            font-weight: 600;
+            color: #444;
+            font-size: 0.85rem;
+            flex: 1;
         }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 25px;
-            border-top: 2px solid #000000;
-            color: #444444;
-            font-size: 18px;
-            line-height: 1.6;
+
+        .detail-value {
+            font-weight: 600;
+            color: #000000;
+            font-size: 0.85rem;
+            text-align: right;
+            flex: 1;
         }
-        
-        footer p {
-            margin-bottom: 10px;
+
+        .detail-value.amount {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #000;
         }
-        
-        .back-to-index {
-            text-align: center;
-            margin: 40px 0 30px;
-        }
-        
-        .back-btn {
-            display: inline-block;
-            background: linear-gradient(to right, #000000, #333333);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 18px;
-            border: 2px solid #000000;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .back-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            background: linear-gradient(to right, #333333, #000000);
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                padding: 35px 30px;
-            }
-            
-            .payment-options {
-                gap: 30px;
-            }
-            
-            .payment-option {
-                padding: 30px 25px;
-            }
-            
-            .generator-container {
-                padding: 35px 30px;
-            }
-            
-            .proof-preview {
-                padding: 35px;
-            }
-            
-            .action-buttons, .download-options {
-                flex-direction: row;
-            }
-            
-            .action-btn, .download-btn {
-                width: auto;
-                flex: 1;
-                margin: 0 5px;
-            }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        .highlight-box {
-            background: linear-gradient(135deg, #f9f9f9, #ffffff);
-            border-left: 5px solid #000000;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-        
+
         .status-badge {
             display: inline-block;
-            padding: 6px 15px;
-            background: linear-gradient(135deg, #000000, #333333);
+            padding: 4px 12px;
+            background: #000000;
             color: white;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: rgba(0,0,0,0.03);
             border-radius: 20px;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 0.5px;
+            padding: 16px;
+            margin: 20px 0;
         }
-        
-        .loading {
-            display: none;
+
+        .proof-footer {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(0,0,0,0.08);
             text-align: center;
-            padding: 20px;
+            font-size: 0.7rem;
+            color: #666;
         }
-        
+
+        .download-options {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background: #000000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+            flex: 1;
+        }
+
+        .download-btn:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+        }
+
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #000000;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top: 3px solid #000000;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .auto-bank-info {
-            background: linear-gradient(135deg, #f0f0f0, #e8e8e8);
-            border-left: 4px solid #000000;
-            padding: 12px 15px;
-            margin: 10px 0 20px;
-            border-radius: 0 8px 8px 0;
-            font-size: 14px;
-            color: #333;
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
-        
-        .auto-bank-info i {
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-to-index {
+            text-align: center;
+            margin: 40px 0 30px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.05);
             color: #000;
-            margin-right: 8px;
+            padding: 12px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        @media (min-width: 768px) {
+            .action-buttons, .download-options {
+                flex-direction: row;
+            }
+            .action-btn, .download-btn {
+                width: auto;
+                flex: 1;
+            }
+            .payment-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            .header-chobank-text { font-size: 2.2rem; }
+            .generator-container { padding: 24px 18px; }
+            .proof-preview { padding: 20px; }
+            .proof-title { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <img src="chobank1.png" alt="Chobank Logo" class="logo" id="main-logo">
-            <h1>Payment Proof Generator</h1>
-            <p class="subtitle">Feature to create fictional payment proof for roleplay purposes.</p>
-        </header>
-        
-        <main class="main-content">
-            <section class="payment-options">
-                <div class="payment-option fade-in" id="domestic-btn">
-                    <div class="payment-icon">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <h2>Domestic Payment</h2>
-                    <p>Transfer to local bank in Rupiah currency</p>
-                    <button class="select-btn" data-type="domestic">Select Payment Type</button>
-                </div>
-                
-                <div class="payment-option fade-in" id="international-btn">
-                    <div class="payment-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <h2>International Payment</h2>
-                    <p>Transfer to international bank in foreign currency</p>
-                    <button class="select-btn" data-type="international">Select Payment Type</button>
-                </div>
-                
-                <div class="payment-option fade-in" id="invoice-btn">
-                    <div class="payment-icon">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                    </div>
-                    <h2>Invoice Payment</h2>
-                    <p>Payment for issued invoices</p>
-                    <button class="select-btn" data-type="invoice">Select Payment Type</button>
-                </div>
-            </section>
-            
-            <section class="generator-container hidden" id="generator"></section>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Creating image...</p>
+        <div class="site-header">
+            <div class="header-chobank-text">CHOBANK</div>
+        </div>
+
+        <div class="payment-options">
+            <div class="payment-option fade-in" id="domestic-btn">
+                <div class="payment-icon"><i class="fas fa-landmark"></i></div>
+                <h2>Domestic Payment</h2>
+                <p>Transfer to local bank in Rupiah currency</p>
+                <button class="select-btn" data-type="domestic">Select Payment Type</button>
             </div>
             
-            <!-- Back to Index Button -->
-            <div class="back-to-index">
-                <a href="index.html" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Back to Home
-                </a>
+            <div class="payment-option fade-in" id="international-btn">
+                <div class="payment-icon"><i class="fas fa-globe-americas"></i></div>
+                <h2>International Payment</h2>
+                <p>Transfer to international bank in foreign currency</p>
+                <button class="select-btn" data-type="international">Select Payment Type</button>
             </div>
-        </main>
-        
+            
+            <div class="payment-option fade-in" id="invoice-btn">
+                <div class="payment-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h2>Invoice Payment</h2>
+                <p>Payment for issued invoices</p>
+                <button class="select-btn" data-type="invoice">Select Payment Type</button>
+            </div>
+        </div>
+
+        <section class="generator-container hidden" id="generator"></section>
+
+        <div class="loading hidden" id="loading">
+            <div class="spinner"></div>
+            <p>Creating image...</p>
+        </div>
+
+        <div class="back-to-index">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+
         <footer>
             <p>© 2026 The Kachoo Payment Proof Generator. All payments are fictional and for roleplay purposes only.</p>
             <p>This page does not perform actual financial transactions.</p>
@@ -664,6 +517,7 @@
     </div>
 
     <script>
+        // ========== SISTEM SAMA PERSIS DENGAN HTML ASLI ==========
         let currentPaymentType = '';
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -679,20 +533,7 @@
                     });
                 });
             });
-            
-            checkLogo();
         });
-        
-        function checkLogo() {
-            const logo = document.getElementById('main-logo');
-            logo.onerror = function() {
-                this.style.display = 'none';
-                const header = document.querySelector('header');
-                const placeholder = document.createElement('div');
-                placeholder.innerHTML = '<h2 style="font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px;"><i class="fas fa-university"></i> THE KACHOO</h2>';
-                header.insertBefore(placeholder, header.firstChild);
-            };
-        }
         
         function loadPaymentForm(type) {
             const generator = document.getElementById('generator');
@@ -956,8 +797,6 @@
                 };
             }
             
-            const validationCode = generateValidationCode();
-            
             let proofContent = `
                 <div class="proof-header">
                     <div class="proof-title">${headerTitle}</div>
@@ -1041,19 +880,15 @@
             if (notes) {
                 proofContent += `
                     <div class="highlight-box">
-                        <div style="font-weight: 700; margin-bottom: 8px; color: #000; font-size: 16px;">${labels.notes}:</div>
-                        <div style="color: #444; font-size: 15px; line-height: 1.5;">${notes}</div>
+                        <div style="font-weight: 700; margin-bottom: 8px; color: #000;">${labels.notes}:</div>
+                        <div style="color: #444;">${notes}</div>
                     </div>
                 `;
             }
             
-            let footerText = `
-                <p><strong>IMPORTANT NOTES:</strong> This is for roleplay purpose by The Kachoo.</p>
-            `;
-            
             proofContent += `
                 <div class="proof-footer">
-                    ${footerText}
+                    <p><strong>IMPORTANT NOTES:</strong> This is for roleplay purpose by The Kachoo.</p>
                 </div>
             `;
             
@@ -1074,68 +909,28 @@
         function formatTime(isDomestic) {
             const now = new Date();
             if (isDomestic) {
-                return now.toLocaleTimeString('id-ID', { 
-                    hour: '2-digit', 
-                    minute: '2-digit'
-                });
+                return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
             } else {
-                return now.toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: true
-                });
+                return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             }
-        }
-        
-        function generateValidationCode() {
-            const chars = '0123456789ABCDEF';
-            let result = '';
-            for (let i = 0; i < 10; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
         }
         
         function validateForm() {
-            const requiredFields = [
-                'payer-name',
-                'receiver-name',
-                'receiver-account',
-                'recipient-bank',
-                'amount',
-                'date',
-                'currency'
-            ];
-            
+            const requiredFields = ['payer-name', 'receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date', 'currency'];
             for (let fieldId of requiredFields) {
                 const field = document.getElementById(fieldId);
-                if (!field || !field.value.trim()) {
-                    return false;
-                }
+                if (!field || !field.value.trim()) return false;
             }
-            
             return true;
         }
         
         function formatDate(dateString) {
             const date = new Date(dateString);
             const isDomestic = currentPaymentType === 'domestic';
-            
             if (isDomestic) {
-                const options = { 
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric' 
-                };
-                return date.toLocaleDateString('id-ID', options);
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
             } else {
-                const options = { 
-                    weekday: 'long',
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric' 
-                };
-                return date.toLocaleDateString('en-US', options);
+                return date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             }
         }
         
@@ -1144,15 +939,12 @@
             let result = 'REF';
             result += Math.floor(Math.random() * 900 + 100);
             result += '-';
-            for (let i = 0; i < 8; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < 8; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
             return result;
         }
         
         function formatCurrency(currency, amount) {
             const numericAmount = parseFloat(amount);
-            
             if (currency.includes('IDR') || currency.includes('Rupiah')) {
                 return `Rp ${numericAmount.toLocaleString('id-ID')}`;
             } else if (currency.includes('USD') || currency.includes('Dollar')) {
@@ -1172,7 +964,6 @@
             const loading = document.getElementById('loading');
             loading.style.display = 'block';
             
-            // Buat container untuk pengukuran yang lebih akurat
             const tempMeasure = document.createElement('div');
             tempMeasure.style.position = 'fixed';
             tempMeasure.style.left = '-9999px';
@@ -1180,31 +971,23 @@
             tempMeasure.style.width = '620px';
             tempMeasure.style.padding = '0';
             tempMeasure.style.backgroundColor = '#ffffff';
-            tempMeasure.style.boxSizing = 'border-box';
             
             const clonedContentForMeasure = proofElement.cloneNode(true);
-            clonedContentForMeasure.style.background = 'none';
+            clonedContentForMeasure.style.background = '#ffffff';
             clonedContentForMeasure.style.border = 'none';
             clonedContentForMeasure.style.boxShadow = 'none';
-            clonedContentForMeasure.style.borderRadius = '0';
             clonedContentForMeasure.style.padding = '0';
             clonedContentForMeasure.style.width = '620px';
-            clonedContentForMeasure.style.maxWidth = '620px';
-            clonedContentForMeasure.style.boxSizing = 'border-box';
             
             tempMeasure.appendChild(clonedContentForMeasure);
             document.body.appendChild(tempMeasure);
             
             setTimeout(() => {
                 const contentHeight = tempMeasure.offsetHeight;
-                
-                // Hitung dengan margin dan padding yang cukup
-                const additionalPadding = 120; // Lebih banyak padding untuk pastikan footer tidak kepotong
+                const additionalPadding = 120;
                 const finalHeight = contentHeight + additionalPadding;
-                
                 document.body.removeChild(tempMeasure);
                 
-                // Buat container untuk download dengan tinggi yang cukup
                 const tempContainer = document.createElement('div');
                 tempContainer.style.position = 'fixed';
                 tempContainer.style.left = '-9999px';
@@ -1213,85 +996,28 @@
                 tempContainer.style.height = `${finalHeight}px`;
                 tempContainer.style.padding = `${additionalPadding/2}px 40px`;
                 tempContainer.style.backgroundColor = '#ffffff';
-                tempContainer.style.backgroundImage = `
-                    linear-gradient(rgba(250, 250, 250, 0.8), rgba(250, 250, 250, 0.8)),
-                    repeating-linear-gradient(0deg, transparent, transparent 24px, #e0e0e0 24px, #e0e0e0 25px)
-                `;
-                tempContainer.style.backgroundSize = 'auto, auto 25px';
                 tempContainer.style.boxSizing = 'border-box';
                 
                 const clonedContent = proofElement.cloneNode(true);
-                clonedContent.style.background = 'none';
+                clonedContent.style.background = '#ffffff';
                 clonedContent.style.border = 'none';
                 clonedContent.style.boxShadow = 'none';
-                clonedContent.style.borderRadius = '0';
                 clonedContent.style.padding = '0';
                 clonedContent.style.maxWidth = '620px';
                 clonedContent.style.width = '100%';
-                clonedContent.style.boxSizing = 'border-box';
                 
-                // Pastikan semua elemen dalam clonedContent memiliki box-sizing border-box
-                const allElements = clonedContent.querySelectorAll('*');
-                allElements.forEach(el => {
-                    el.style.boxSizing = 'border-box';
-                });
-                
-                const header = clonedContent.querySelector('.proof-header');
-                if (header) {
-                    header.style.marginBottom = '40px';
-                    header.style.paddingBottom = '25px';
-                }
-                
-                const title = clonedContent.querySelector('.proof-title');
-                if (title) {
-                    title.style.fontSize = '38px';
-                }
-                
-                const subtitle = clonedContent.querySelector('.proof-subtitle');
-                if (subtitle) {
-                    subtitle.style.fontSize = '22px';
-                }
-                
-                const detailLabels = clonedContent.querySelectorAll('.detail-label');
-                detailLabels.forEach(label => {
-                    label.style.fontSize = '18px';
-                    label.style.boxSizing = 'border-box';
-                });
-                
-                const detailValues = clonedContent.querySelectorAll('.detail-value');
-                detailValues.forEach(value => {
-                    value.style.fontSize = '16px';
-                    value.style.boxSizing = 'border-box';
-                });
-                
-                const amountValue = clonedContent.querySelector('.detail-value.amount');
-                if (amountValue) {
-                    amountValue.style.fontSize = '24px';
-                }
-                
-                const footer = clonedContent.querySelector('.proof-footer');
-                if (footer) {
-                    footer.style.fontSize = '16px';
-                    footer.style.padding = '25px';
-                    footer.style.lineHeight = '1.8';
-                    footer.style.marginTop = '35px';
-                    footer.style.boxSizing = 'border-box';
-                }
-                
-                // WATERMARK
                 const watermark = document.createElement('div');
                 watermark.style.position = 'absolute';
                 watermark.style.top = '50%';
                 watermark.style.left = '50%';
                 watermark.style.transform = 'translate(-50%, -50%) rotate(-45deg)';
-                watermark.style.fontSize = '80px';
+                watermark.style.fontSize = '70px';
                 watermark.style.fontWeight = '900';
-                watermark.style.color = 'rgba(0,0,0,0.1)';
+                watermark.style.color = 'rgba(0,0,0,0.06)';
                 watermark.style.zIndex = '1';
                 watermark.style.pointerEvents = 'none';
                 watermark.style.whiteSpace = 'nowrap';
-                watermark.style.letterSpacing = '10px';
-                watermark.style.textTransform = 'uppercase';
+                watermark.style.letterSpacing = '8px';
                 watermark.textContent = 'ROLEPLAY ONLY';
                 
                 tempContainer.appendChild(clonedContent);
@@ -1301,18 +1027,11 @@
                 setTimeout(() => {
                     html2canvas(tempContainer, {
                         scale: 2,
-                        backgroundColor: null,
+                        backgroundColor: '#ffffff',
                         useCORS: true,
                         width: 700,
                         height: finalHeight,
-                        logging: false,
-                        onclone: function(clonedDoc) {
-                            // Pastikan semua elemen terlihat di clone
-                            const clonedElements = clonedDoc.querySelectorAll('*');
-                            clonedElements.forEach(el => {
-                                el.style.boxSizing = 'border-box';
-                            });
-                        }
+                        logging: false
                     }).then(canvas => {
                         const link = document.createElement('a');
                         const timestamp = new Date().getTime();
@@ -1321,28 +1040,16 @@
                         link.download = `payment-proof-${typeName}-${timestamp}.png`;
                         link.href = canvas.toDataURL('image/png', 1.0);
                         link.click();
-                        
                         document.body.removeChild(tempContainer);
                         loading.style.display = 'none';
-                        
-                        if (currentPaymentType === 'domestic') {
-                            alert('Bukti pembayaran berhasil didownload!');
-                        } else {
-                            alert('Payment proof successfully downloaded!');
-                        }
+                        alert(currentPaymentType === 'domestic' ? 'Bukti pembayaran berhasil didownload!' : 'Payment proof successfully downloaded!');
                     }).catch(error => {
-                        console.error('Error generating image:', error);
+                        console.error('Error:', error);
                         document.body.removeChild(tempContainer);
                         loading.style.display = 'none';
-                        
-                        if (currentPaymentType === 'domestic') {
-                            alert('Terjadi kesalahan saat membuat gambar. Silakan coba lagi.');
-                        } else {
-                            alert('Error creating image. Please try again.');
-                        }
+                        alert(currentPaymentType === 'domestic' ? 'Terjadi kesalahan. Silakan coba lagi.' : 'Error creating image. Please try again.');
                     });
                 }, 500);
-                
             }, 100);
         }
     </script>
