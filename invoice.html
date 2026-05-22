@@ -383,6 +383,7 @@
             padding-bottom: 20px;
             margin-bottom: 28px;
             gap: 20px;
+            position: relative;
         }
         .invoice-brand h2 {
             font-size: 1.6rem;
@@ -396,6 +397,16 @@
         }
         .invoice-details {
             text-align: right;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .chobank-logo-small {
+            width: 40px;
+            height: auto;
+            margin-bottom: 8px;
+            display: block;
         }
         .invoice-details p {
             margin: 5px 0;
@@ -586,21 +597,21 @@
             <div class="form-row-2">
                 <div class="form-group">
                     <label id="lblCompany">Nama Perusahaan</label>
-                    <input type="text" id="companyName" class="form-control" placeholder="Nama Perusahaan" value="NAMA PERUSAHAAN">
+                    <input type="text" id="companyName" class="form-control" placeholder="Nama Perusahaan" value="">
                 </div>
                 <div class="form-group">
                     <label id="lblClient">Nama Klien</label>
-                    <input type="text" id="clientName" class="form-control" placeholder="Nama Klien" value="NAMA KLIEN">
+                    <input type="text" id="clientName" class="form-control" placeholder="Nama Klien" value="">
                 </div>
             </div>
             <div class="form-row-2">
                 <div class="form-group">
                     <label id="lblEmail">Email Klien</label>
-                    <input type="email" id="clientEmail" class="form-control" placeholder="contoh@misal.aja" value="contoh@misal.aja">
+                    <input type="email" id="clientEmail" class="form-control" placeholder="contoh@misal.aja" value="">
                 </div>
                 <div class="form-group">
                     <label id="lblInvoiceNo">No. Invoice</label>
-                    <input type="text" id="invoiceNumber" class="form-control" placeholder="INV-001" value="INV-001">
+                    <input type="text" id="invoiceNumber" class="form-control" placeholder="INV-001" value="">
                 </div>
             </div>
             <div class="form-row-2">
@@ -623,11 +634,11 @@
                 </div>
                 <div class="form-group">
                     <label id="lblBankName">Nama Bank</label>
-                    <input type="text" id="bankName" class="form-control" placeholder="Nama Bank" value="Chobank">
+                    <input type="text" id="bankName" class="form-control" placeholder="Nama Bank" value="">
                 </div>
                 <div class="form-group">
                     <label id="lblAccountNumber">Nomor Rekening</label>
-                    <input type="text" id="accountNumber" class="form-control" placeholder="Nomor Rekening" value="CHB-1234567890">
+                    <input type="text" id="accountNumber" class="form-control" placeholder="Nomor Rekening" value="">
                 </div>
             </div>
             
@@ -643,15 +654,15 @@
                         </thead>
                         <tbody id="tableBody">
                             <tr class="item-row">
-                                <td><input type="text" class="item-desc" value="Desain Logo" placeholder="Deskripsi"></td>
+                                <td><input type="text" class="item-desc" value="" placeholder="Deskripsi"></td>
                                 <td><input type="number" class="item-qty" value="1" step="1" min="1"></td>
-                                <td><input type="number" class="item-price" value="500000" step="50000"></td>
+                                <td><input type="number" class="item-price" value="" placeholder="Harga"></td>
                                 <td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td>
                             </tr>
                             <tr class="item-row">
-                                <td><input type="text" class="item-desc" value="Pengembangan Web" placeholder="Deskripsi"></td>
-                                <td><input type="number" class="item-qty" value="2" step="1" min="1"></td>
-                                <td><input type="number" class="item-price" value="750000" step="50000"></td>
+                                <td><input type="text" class="item-desc" value="" placeholder="Deskripsi"></td>
+                                <td><input type="number" class="item-qty" value="1" step="1" min="1"></td>
+                                <td><input type="number" class="item-price" value="" placeholder="Harga"></td>
                                 <td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td>
                             </tr>
                         </tbody>
@@ -775,9 +786,9 @@
         const newRow = document.createElement('tr');
         newRow.className = 'item-row';
         newRow.innerHTML = `
-            <td><input type="text" class="item-desc" placeholder="Deskripsi" value="Item Baru"></td>
+            <tr><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td>
             <td><input type="number" class="item-qty" value="1" step="1" min="1"></td>
-            <td><input type="number" class="item-price" value="100000" step="50000"></td>
+            <td><input type="number" class="item-price" value="" placeholder="Harga" step="50000"></td>
             <td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td>
         `;
         tableBody.appendChild(newRow);
@@ -815,18 +826,18 @@
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
     function generateInvoiceHTML() {
-        const company = document.getElementById('companyName').value || 'NAMA PERUSAHAAN';
-        const client = document.getElementById('clientName').value || 'NAMA KLIEN';
-        const email = document.getElementById('clientEmail').value || 'contoh@misal.aja';
-        const invNo = document.getElementById('invoiceNumber').value || 'INV-001';
+        const company = document.getElementById('companyName').value || '';
+        const client = document.getElementById('clientName').value || '';
+        const email = document.getElementById('clientEmail').value || '';
+        const invNo = document.getElementById('invoiceNumber').value || '';
         let dueDateVal = document.getElementById('dueDate').value;
         if (!dueDateVal) {
             const today = new Date();
             dueDateVal = today.toISOString().split('T')[0];
         }
         const paymentStatus = document.getElementById('paymentStatus').value;
-        const bankName = document.getElementById('bankName').value || '-';
-        const accountNumber = document.getElementById('accountNumber').value || '-';
+        const bankName = document.getElementById('bankName').value || '';
+        const accountNumber = document.getElementById('accountNumber').value || '';
         const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
         
         const items = [];
@@ -852,10 +863,10 @@
         let tableRowsHtml = '';
         items.forEach(it => {
             tableRowsHtml += `<tr>
-                <td>${escapeHtml(it.desc)}</td>
+                <td>${escapeHtml(it.desc) || '-'}</td>
                 <td style="text-align:center">${it.qty}</td>
-                <td style="text-align:right">${fmt(it.price)}</td>
-                <td style="text-align:right">${fmt(it.amount)}</td>
+                <td style="text-align:right">${it.price ? fmt(it.price) : '-'}</td>
+                <td style="text-align:right">${it.amount ? fmt(it.amount) : '-'}</td>
             </tr>`;
         });
         
@@ -864,26 +875,30 @@
             adminRowHtml = `<p>${isId ? 'Admin Chobank (1%)' : 'Chobank Admin Fee (1%)'}: ${fmt(adminFee)}</p>`;
         }
         
+        // Logo base64 sederhana (Chobank Logo Placeholder - huruf C dalam lingkaran hitam)
+        const chobankLogoBase64 = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23000000'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='%23ffffff' font-family='Arial, sans-serif' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E";
+        
         return `
         <div class="invoice-card" id="invoiceToDownload">
             <div class="invoice-header">
                 <div class="invoice-brand">
-                    <h2>${escapeHtml(company)}</h2>
+                    <h2>${escapeHtml(company) || (isId ? 'NAMA PERUSAHAAN' : 'COMPANY NAME')}</h2>
                     <p>${isId ? 'Invoice Digital' : 'Digital Invoice'}</p>
                 </div>
                 <div class="invoice-details">
-                    <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo)}</p>
+                    <img src="${chobankLogoBase64}" alt="Chobank Logo" class="chobank-logo-small">
+                    <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo) || (isId ? 'INV-001' : 'INV-001')}</p>
                     <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
                 </div>
             </div>
             <div class="client-info">
-                <div><strong>${isId ? 'Kepada' : 'Bill To'}:</strong><br>${escapeHtml(client)}<br>${escapeHtml(email)}</div>
+                <div><strong>${isId ? 'Kepada' : 'Bill To'}:</strong><br>${escapeHtml(client) || '-'}<br>${escapeHtml(email) || '-'}</div>
                 <div><strong>${isId ? 'Status' : 'Status'}:</strong><br> <span class="status-badge ${statusClass}">${statusText}</span></div>
             </div>
             <div class="bank-info">
                 <strong>${isId ? 'Informasi Pembayaran' : 'Payment Information'}</strong><br>
-                ${isId ? 'Bank' : 'Bank'}: ${escapeHtml(bankName)}<br>
-                ${isId ? 'Nomor Rekening' : 'Account Number'}: ${escapeHtml(accountNumber)}
+                ${isId ? 'Bank' : 'Bank'}: ${escapeHtml(bankName) || '-'}<br>
+                ${isId ? 'Nomor Rekening' : 'Account Number'}: ${escapeHtml(accountNumber) || '-'}
             </div>
             <table class="inv-table">
                 <thead>
@@ -894,7 +909,7 @@
                         <th>${isId ? 'Jumlah' : 'Amount'}</th>
                     </tr>
                 </thead>
-                <tbody>${tableRowsHtml}</tbody>
+                <tbody>${tableRowsHtml || `<tr><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td><tr>`}</tbody>
             </table>
             <div class="total-invoice">
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
@@ -903,7 +918,7 @@
                 <p style="margin-top:12px; font-size:1.1rem;"><strong>${isId ? 'TOTAL' : 'TOTAL'}: ${fmt(total)}</strong></p>
             </div>
             <div class="footer-note">
-                Featured by The Kachoo in Chobank
+                For Roleplay Purpose Only, Featured by The Kachoo in Chobank
             </div>
         </div>
         <button id="downloadInvoicePngBtn" class="btn-download">${isId ? 'Unduh Invoice (PNG)' : 'Download Invoice (PNG)'}</button>
@@ -944,7 +959,7 @@
                             
                             const link = document.createElement('a');
                             const invNoRaw = document.getElementById('invoiceNumber').value || 'invoice';
-                            link.download = `invoice_${invNoRaw.replace(/\s/g,'_')}.png`;
+                            link.download = `invoice_${invNoRaw.replace(/\s/g,'_') || 'preview'}.png`;
                             link.href = canvas.toDataURL('image/png');
                             link.click();
                         }
@@ -958,19 +973,19 @@
     }
 
     function resetFormComplete() {
-        document.getElementById('companyName').value = 'NAMA PERUSAHAAN';
-        document.getElementById('clientName').value = 'NAMA KLIEN';
-        document.getElementById('clientEmail').value = 'contoh@misal.aja';
-        document.getElementById('invoiceNumber').value = 'INV-001';
+        document.getElementById('companyName').value = '';
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientEmail').value = '';
+        document.getElementById('invoiceNumber').value = '';
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('dueDate').value = today;
         document.getElementById('taxPercent').value = '0';
         document.getElementById('paymentStatus').value = 'unpaid';
-        document.getElementById('bankName').value = 'Chobank';
-        document.getElementById('accountNumber').value = 'CHB-1234567890';
+        document.getElementById('bankName').value = '';
+        document.getElementById('accountNumber').value = '';
         tableBody.innerHTML = `
-            <tr class="item-row"><td><input type="text" class="item-desc" value="Desain Logo"></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" value="500000" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
-            <tr class="item-row"><td><input type="text" class="item-desc" value="Pengembangan Web"></td><td><input type="number" class="item-qty" value="2" step="1" min="1"></td><td><input type="number" class="item-price" value="750000" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
+            <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga" value="" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
+            <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga" value="" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
         `;
         attachRowEvents();
         recalcTotals();
