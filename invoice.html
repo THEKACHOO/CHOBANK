@@ -355,20 +355,23 @@
             }
         }
 
+        /* INVOICE PREVIEW - STYLE SURAT / LETTER */
         .invoice-preview {
             margin-top: 24px;
         }
         .invoice-card {
             background: white;
-            border-radius: 32px;
-            padding: 22px 20px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            border: 1px solid #eaeaea;
-            overflow-x: auto;
+            border-radius: 8px;
+            padding: 32px 36px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            border: 1px solid #e0e0e0;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-family: 'Outfit', sans-serif;
         }
-        @media (min-width: 640px) {
+        @media (max-width: 640px) {
             .invoice-card {
-                padding: 28px 28px;
+                padding: 20px 18px;
             }
         }
         .invoice-header {
@@ -376,90 +379,114 @@
             justify-content: space-between;
             flex-wrap: wrap;
             border-bottom: 2px solid #000;
-            padding-bottom: 16px;
-            margin-bottom: 20px;
-            gap: 12px;
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+            gap: 20px;
         }
         .invoice-brand h2 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .invoice-brand p {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        .invoice-details {
+            text-align: right;
         }
         .invoice-details p {
-            margin: 4px 0;
-            font-size: 0.8rem;
+            margin: 5px 0;
+            font-size: 0.85rem;
+        }
+        .invoice-details strong {
+            font-weight: 700;
         }
         .client-info {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
-            background: #f9f9f9;
-            padding: 14px 18px;
-            border-radius: 24px;
-            font-size: 0.85rem;
+            gap: 20px;
+            background: #fafafa;
+            padding: 18px 22px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            border-left: 4px solid #000;
         }
         .bank-info {
-            margin: 16px 0;
-            background: #f0f0f0;
-            padding: 12px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            margin: 20px 0 24px;
+            background: #f5f5f5;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            border: 1px solid #eee;
         }
         .inv-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 18px 0;
-            font-size: 0.8rem;
-        }
-        .inv-table th, .inv-table td {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 6px;
-            text-align: left;
+            margin: 24px 0;
+            font-size: 0.85rem;
         }
         .inv-table th {
             background: #f2f2f2;
+            padding: 12px 10px;
+            text-align: left;
             font-weight: 700;
+            border-bottom: 1px solid #ddd;
         }
         .inv-table td {
-            text-align: right;
+            padding: 10px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
         }
         .inv-table td:first-child, .inv-table th:first-child {
             text-align: left;
         }
+        .inv-table td:nth-child(2), .inv-table th:nth-child(2) {
+            text-align: center;
+        }
+        .inv-table td:nth-child(3), .inv-table th:nth-child(3),
+        .inv-table td:nth-child(4), .inv-table th:nth-child(4) {
+            text-align: right;
+        }
         .total-invoice {
             text-align: right;
-            margin-top: 18px;
-            border-top: 2px solid #ccc;
-            padding-top: 16px;
-            font-size: 0.9rem;
+            margin-top: 24px;
+            border-top: 2px solid #ddd;
+            padding-top: 20px;
+            font-size: 1rem;
         }
         .total-invoice p {
-            margin: 6px 0;
+            margin: 8px 0;
         }
         .total-invoice p strong {
             font-weight: 800;
+            font-size: 1.1rem;
         }
         .footer-note {
-            margin-top: 24px;
-            font-size: 9px;
+            margin-top: 32px;
+            padding-top: 16px;
             text-align: center;
-            color: gray;
+            font-size: 9px;
+            color: #888;
+            border-top: 1px solid #eee;
         }
         .btn-download {
             background: #000;
             color: white;
             width: 100%;
-            padding: 12px;
+            max-width: 300px;
+            margin: 20px auto 0;
+            display: block;
+            padding: 12px 20px;
             border: none;
             border-radius: 60px;
             font-weight: 700;
-            margin-top: 18px;
             cursor: pointer;
             font-family: 'Outfit';
-        }
-        .btn-download:hover {
-            background: #2b2b2b;
+            text-align: center;
         }
         .empty-message {
             text-align: center;
@@ -517,18 +544,23 @@
         }
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 40px;
             font-weight: 600;
             font-size: 0.75rem;
         }
         .status-unpaid {
-            background: #ffe0b3;
-            color: #a85d00;
+            background: #fff3e0;
+            color: #cc7b00;
         }
         .status-paid {
-            background: #d4f5d4;
+            background: #e0f5e0;
             color: #1e7a1e;
+        }
+        @media print {
+            .btn-download, .action-buttons, .setting-bar, .form-container, .social-links, footer, .btn-add-item, .action-btn {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -824,14 +856,13 @@
         let tableRowsHtml = '';
         items.forEach(it => {
             tableRowsHtml += `<tr>
-                <td style="text-align:left">${escapeHtml(it.desc)}</td>
+                <td>${escapeHtml(it.desc)}</td>
                 <td style="text-align:center">${it.qty}</td>
                 <td style="text-align:right">${fmt(it.price)}</td>
                 <td style="text-align:right">${fmt(it.amount)}</td>
-            </tr>`;
+            </td>`;
         });
         
-        // Admin row hanya muncul jika bukan Chobank
         let adminRowHtml = '';
         if (useAdmin) {
             adminRowHtml = `<p>${isId ? 'Admin Chobank (1%)' : 'Chobank Admin Fee (1%)'}: ${fmt(adminFee)}</p>`;
@@ -846,11 +877,11 @@
                 </div>
                 <div class="invoice-details">
                     <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo)}</p>
-                    <p><strong>${isId ? 'Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
+                    <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
                 </div>
             </div>
             <div class="client-info">
-                <div><strong>${isId ? 'Kepada' : 'Billed To'}:</strong><br>${escapeHtml(client)}<br>${escapeHtml(email)}</div>
+                <div><strong>${isId ? 'Kepada' : 'Bill To'}:</strong><br>${escapeHtml(client)}<br>${escapeHtml(email)}</div>
                 <div><strong>${isId ? 'Status' : 'Status'}:</strong><br> <span class="status-badge ${statusClass}">${statusText}</span></div>
             </div>
             <div class="bank-info">
@@ -859,14 +890,21 @@
                 ${isId ? 'Nomor Rekening' : 'Account Number'}: ${escapeHtml(accountNumber)}
             </div>
             <table class="inv-table">
-                <thead><tr><th>${isId ? 'Deskripsi' : 'Description'}</th><th style="width:70px">Qty</th><th>${isId ? 'Harga' : 'Price'}</th><th>${isId ? 'Jumlah' : 'Amount'}</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>${isId ? 'Deskripsi' : 'Description'}</th>
+                        <th style="width:70px">Qty</th>
+                        <th>${isId ? 'Harga Satuan' : 'Unit Price'}</th>
+                        <th>${isId ? 'Jumlah' : 'Amount'}</th>
+                    </tr>
+                </thead>
                 <tbody>${tableRowsHtml}</tbody>
             </table>
             <div class="total-invoice">
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
                 <p>${isId ? 'Pajak' : 'Tax'} (${taxPercent}%): ${fmt(taxAmount)}</p>
                 ${adminRowHtml}
-                <p style="font-size:1.2rem; margin-top:10px;"><strong>${isId ? 'TOTAL' : 'TOTAL'}: ${fmt(total)}</strong></p>
+                <p style="margin-top:12px; font-size:1.15rem;"><strong>${isId ? 'TOTAL' : 'TOTAL'}: ${fmt(total)}</strong></p>
             </div>
             <div class="footer-note">
                 Featured by The Kachoo in Chobank
@@ -892,7 +930,7 @@
                     downloadBtn.addEventListener('click', async function() {
                         const element = document.getElementById('invoiceToDownload');
                         if(element) {
-                            const canvas = await html2canvas(element, { scale: 2.5, backgroundColor: '#ffffff' });
+                            const canvas = await html2canvas(element, { scale: 2.8, backgroundColor: '#ffffff', logging: false });
                             const link = document.createElement('a');
                             const invNoRaw = document.getElementById('invoiceNumber').value || 'invoice';
                             link.download = `invoice_${invNoRaw.replace(/\s/g,'_')}.png`;
@@ -958,4 +996,4 @@
     init();
 </script>
 </body>
-</html>
+    </html>
