@@ -612,22 +612,26 @@
             cloneCard.style.position = 'fixed';
             cloneCard.style.left = '-9999px';
             cloneCard.style.top = '-9999px';
-            cloneCard.style.width = '360px';
-            cloneCard.style.maxWidth = '360px';
-            cloneCard.style.padding = '24px 20px';
-            cloneCard.style.borderRadius = '16px';
+            cloneCard.style.width = '400px';
+            cloneCard.style.maxWidth = '400px';
+            cloneCard.style.padding = '28px 24px';
+            cloneCard.style.borderRadius = '12px';
             cloneCard.style.boxSizing = 'border-box';
+            cloneCard.style.fontFamily = "'Outfit', sans-serif";
             
             const style = document.createElement('style');
             style.textContent = `
-                .detail-row { font-size: 11px !important; margin-bottom: 10px !important; padding-bottom: 6px !important; }
-                .detail-label, .detail-value { font-size: 11px !important; }
-                .detail-value.amount { font-size: 13px !important; }
-                .proof-title { font-size: 16px !important; }
-                .proof-subtitle { font-size: 9px !important; }
-                .status-badge { font-size: 8px !important; padding: 3px 10px !important; }
-                .highlight-box div { font-size: 10px !important; }
-                .proof-footer { font-size: 7px !important; }
+                .proof-header { border-bottom: 2px solid #000000 !important; padding-bottom: 14px !important; margin-bottom: 18px !important; }
+                .proof-title { font-size: 18px !important; font-weight: 800 !important; }
+                .proof-subtitle { font-size: 10px !important; margin-top: 4px !important; color: #666 !important; }
+                .detail-row { display: flex !important; justify-content: space-between !important; margin-bottom: 12px !important; font-size: 12px !important; border-bottom: 1px dotted #ddd !important; padding-bottom: 8px !important; }
+                .detail-label { font-weight: 700 !important; color: #222 !important; }
+                .detail-value { font-weight: 500 !important; text-align: right !important; color: #111 !important; }
+                .detail-value.amount { font-size: 14px !important; font-weight: 800 !important; }
+                .status-badge { padding: 3px 10px !important; font-size: 9px !important; }
+                .highlight-box { padding: 10px !important; margin: 14px 0 !important; }
+                .highlight-box div { font-size: 11px !important; }
+                .proof-footer { margin-top: 16px !important; font-size: 8px !important; padding-top: 10px !important; }
                 .watermark-bg img { max-width: 70% !important; }
             `;
             cloneCard.appendChild(style);
@@ -637,7 +641,7 @@
             setTimeout(async () => {
                 try {
                     const canvas = await html2canvas(cloneCard, {
-                        scale: 2.8,
+                        scale: 2.5,
                         backgroundColor: '#ffffff',
                         useCORS: true,
                         logging: false
