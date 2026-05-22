@@ -399,21 +399,24 @@
             text-align: right;
             position: relative;
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
         }
-        .chobank-logo-small {
-            width: 40px;
-            height: auto;
-            margin-bottom: 8px;
-            display: block;
+        /* Gaya untuk kontainer teks nomor invoice dan tanggal */
+        .details-text {
+            text-align: right;
         }
-        .invoice-details p {
+        .details-text p {
             margin: 5px 0;
             font-size: 0.8rem;
         }
-        .invoice-details strong {
-            font-weight: 700;
+        .chobank-logo-small {
+            width: 48px;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
         .client-info {
             margin-bottom: 24px;
@@ -786,7 +789,7 @@
         const newRow = document.createElement('tr');
         newRow.className = 'item-row';
         newRow.innerHTML = `
-            <tr><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td>
+            <td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td>
             <td><input type="number" class="item-qty" value="1" step="1" min="1"></td>
             <td><input type="number" class="item-price" value="" placeholder="Harga" step="50000"></td>
             <td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td>
@@ -875,8 +878,10 @@
             adminRowHtml = `<p>${isId ? 'Admin Chobank (1%)' : 'Chobank Admin Fee (1%)'}: ${fmt(adminFee)}</p>`;
         }
         
-        // Logo base64 sederhana (Chobank Logo Placeholder - huruf C dalam lingkaran hitam)
-        const chobankLogoBase64 = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23000000'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='%23ffffff' font-family='Arial, sans-serif' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E";
+        // Ganti URL logo di bawah ini dengan "chobank1.png" yang sudah diupload. 
+        // Untuk contoh, kita gunakan data url gambar C, tapi Anda harus mengganti dengan lokasi file chobank1.png yang benar.
+        // Asumsikan file chobank1.png berada di direktori yang sama.
+        const logoSrc = "chobank1.png"; // Pastikan file ini tersedia, jika tidak, ganti dengan URL gambar yang valid.
         
         return `
         <div class="invoice-card" id="invoiceToDownload">
@@ -886,9 +891,11 @@
                     <p>${isId ? 'Invoice Digital' : 'Digital Invoice'}</p>
                 </div>
                 <div class="invoice-details">
-                    <img src="${chobankLogoBase64}" alt="Chobank Logo" class="chobank-logo-small">
-                    <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo) || (isId ? 'INV-001' : 'INV-001')}</p>
-                    <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
+                    <div class="details-text">
+                        <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo) || (isId ? 'INV-001' : 'INV-001')}</p>
+                        <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
+                    </div>
+                    <img src="${logoSrc}" alt="Chobank Logo" class="chobank-logo-small" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Ccircle cx=\\'50\\' cy=\\'50\\' r=\\'45\\' fill=\\'%23000000\\'/%3E%3Ctext x=\\'50\\' y=\\'70\\' font-size=\\'50\\' text-anchor=\\'middle\\' fill=\\'%23ffffff\\' font-family=\\'Arial, sans-serif\\' font-weight=\\'bold\\'%3EC%3C/text%3E%3C/svg%3E';">
                 </div>
             </div>
             <div class="client-info">
@@ -909,7 +916,7 @@
                         <th>${isId ? 'Jumlah' : 'Amount'}</th>
                     </tr>
                 </thead>
-                <tbody>${tableRowsHtml || `<tr><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td><tr>`}</tbody>
+                <tbody>${tableRowsHtml || `<td><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td></tr>`}</tbody>
             </table>
             <div class="total-invoice">
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
@@ -950,9 +957,8 @@
                                 scale: 2.5,
                                 backgroundColor: '#ffffff',
                                 logging: false,
-                                useCORS: false,
-                                windowWidth: element.scrollWidth,
-                                windowHeight: element.scrollHeight
+                                useCORS: true, // Diaktifkan untuk mengizinkan gambar cross-origin jika diperlukan
+                                allowTaint: false
                             });
                             
                             element.style.width = originalWidth;
