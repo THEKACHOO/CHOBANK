@@ -378,6 +378,7 @@
         .invoice-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
             border-bottom: 2px solid #000;
             padding-bottom: 20px;
@@ -878,10 +879,8 @@
             adminRowHtml = `<p>${isId ? 'Admin Chobank (1%)' : 'Chobank Admin Fee (1%)'}: ${fmt(adminFee)}</p>`;
         }
         
-        // Ganti URL logo di bawah ini dengan "chobank1.png" yang sudah diupload. 
-        // Untuk contoh, kita gunakan data url gambar C, tapi Anda harus mengganti dengan lokasi file chobank1.png yang benar.
-        // Asumsikan file chobank1.png berada di direktori yang sama.
-        const logoSrc = "chobank1.png"; // Pastikan file ini tersedia, jika tidak, ganti dengan URL gambar yang valid.
+        // LANGSUNG PAKAI chobank1.png (tanpa kapital, file lokal)
+        const logoSrc = "chobank1.png";
         
         return `
         <div class="invoice-card" id="invoiceToDownload">
@@ -895,7 +894,7 @@
                         <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo) || (isId ? 'INV-001' : 'INV-001')}</p>
                         <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
                     </div>
-                    <img src="${logoSrc}" alt="Chobank Logo" class="chobank-logo-small" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Ccircle cx=\\'50\\' cy=\\'50\\' r=\\'45\\' fill=\\'%23000000\\'/%3E%3Ctext x=\\'50\\' y=\\'70\\' font-size=\\'50\\' text-anchor=\\'middle\\' fill=\\'%23ffffff\\' font-family=\\'Arial, sans-serif\\' font-weight=\\'bold\\'%3EC%3C/text%3E%3C/svg%3E';">
+                    <img src="${logoSrc}" alt="Chobank Logo" class="chobank-logo-small">
                 </div>
             </div>
             <div class="client-info">
@@ -916,7 +915,7 @@
                         <th>${isId ? 'Jumlah' : 'Amount'}</th>
                     </tr>
                 </thead>
-                <tbody>${tableRowsHtml || `<td><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td></tr>`}</tbody>
+                <tbody>${tableRowsHtml || `</table><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td></tr>`}</tbody>
             </table>
             <div class="total-invoice">
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
@@ -957,7 +956,7 @@
                                 scale: 2.5,
                                 backgroundColor: '#ffffff',
                                 logging: false,
-                                useCORS: true, // Diaktifkan untuk mengizinkan gambar cross-origin jika diperlukan
+                                useCORS: true,
                                 allowTaint: false
                             });
                             
