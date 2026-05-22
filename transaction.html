@@ -23,16 +23,6 @@
             overflow-x: hidden;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(circle at 25% 30%, rgba(0,0,0,0.02) 1px, transparent 1px);
-            background-size: 32px 32px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -41,24 +31,21 @@
             z-index: 2;
         }
 
-        /* HEADER - hanya CHOBANK */
+        /* HEADER */
         .site-header {
             text-align: center;
             margin-bottom: 32px;
             padding: 16px 0 8px;
-            background: transparent;
         }
 
         .header-chobank-text {
-            font-family: 'Outfit', sans-serif;
             font-size: 3rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #000000;
-            line-height: 1.1;
         }
 
-        /* PAYMENT OPTIONS - glass cards */
+        /* PAYMENT OPTIONS */
         .payment-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -69,7 +56,6 @@
         .payment-option {
             background: rgba(255,255,255,0.7);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             border-radius: 32px;
             padding: 28px 20px;
             text-align: center;
@@ -83,7 +69,6 @@
             transform: translateY(-6px);
             background: rgba(255,255,255,0.85);
             border-color: rgba(0,0,0,0.15);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
         }
 
         .payment-icon {
@@ -96,8 +81,6 @@
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #000000;
-            font-family: 'Outfit', sans-serif;
         }
 
         .payment-option p {
@@ -116,7 +99,6 @@
             border: none;
             cursor: pointer;
             transition: all 0.25s ease;
-            font-family: 'Outfit', sans-serif;
             width: 100%;
             max-width: 200px;
         }
@@ -126,11 +108,10 @@
             transform: translateY(-2px);
         }
 
-        /* GENERATOR CONTAINER - glass */
+        /* GENERATOR CONTAINER */
         .generator-container {
             background: rgba(255,255,255,0.7);
             backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
             border-radius: 40px;
             padding: 32px 28px;
             margin-top: 16px;
@@ -142,9 +123,7 @@
             font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #000000;
             text-align: center;
-            font-family: 'Outfit', sans-serif;
         }
 
         .generator-container > p {
@@ -166,9 +145,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #000000;
             font-size: 0.9rem;
-            font-family: 'Outfit', sans-serif;
         }
 
         .form-control {
@@ -177,7 +154,6 @@
             border: 1.5px solid rgba(0,0,0,0.12);
             border-radius: 24px;
             background-color: #ffffff;
-            color: #222;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             font-family: 'Outfit', sans-serif;
@@ -186,8 +162,6 @@
         .form-control:focus {
             outline: none;
             border-color: #000000;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.06);
-            transform: translateY(-2px);
         }
 
         textarea.form-control {
@@ -201,7 +175,6 @@
             padding: 12px 16px;
             margin-bottom: 20px;
             font-size: 0.8rem;
-            color: #444;
             border-left: 3px solid #000000;
         }
 
@@ -221,7 +194,6 @@
             cursor: pointer;
             transition: all 0.25s ease;
             border: none;
-            font-family: 'Outfit', sans-serif;
         }
 
         .btn-primary {
@@ -242,10 +214,9 @@
 
         .btn-secondary:hover {
             background: rgba(0,0,0,0.1);
-            transform: translateY(-2px);
         }
 
-        /* PREVIEW SECTION */
+        /* PREVIEW SECTION - STYLE SEPERTI SLIP GAJI (template 1) */
         .preview-section {
             margin-top: 32px;
         }
@@ -255,8 +226,6 @@
             font-weight: 700;
             text-align: center;
             margin-bottom: 24px;
-            color: #000000;
-            font-family: 'Outfit', sans-serif;
         }
 
         .preview-container {
@@ -265,20 +234,22 @@
             margin-bottom: 24px;
         }
 
-        .proof-preview {
-            background: #ffffff;
-            border-radius: 32px;
-            padding: 32px;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
-            max-width: 700px;
+        /* INI DIA STYLE SLIP CARD - SAMA PERSIS DENGAN TEMPLATE PERTAMA */
+        .payslip-card {
+            background: white;
+            color: black;
+            padding: 28px;
+            border: 1px solid rgba(0,0,0,0.15);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
             width: 100%;
-            border: 1px solid rgba(0,0,0,0.08);
+            max-width: 700px;
+            font-family: 'Outfit', sans-serif;
+            border-radius: 28px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Watermark transparan menggunakan chobank1.png */
-        .watermark-bg-preview {
+        .watermark-bg {
             position: absolute;
             top: 0;
             left: 0;
@@ -291,13 +262,13 @@
             z-index: 0;
             opacity: 0.03;
         }
-        .watermark-bg-preview img {
+        .watermark-bg img {
             max-width: 80%;
             max-height: 80%;
             object-fit: contain;
         }
 
-        .proof-content-relative {
+        .slip-content-relative {
             position: relative;
             z-index: 2;
             background: transparent;
@@ -305,61 +276,55 @@
 
         .proof-header {
             text-align: center;
-            margin-bottom: 28px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(0,0,0,0.1);
+            border-bottom: 2px solid #000000;
+            padding-bottom: 18px;
+            margin-bottom: 22px;
         }
 
         .proof-title {
-            font-size: 1.8rem;
+            font-size: 28px;
             font-weight: 800;
-            color: #000000;
-            margin-bottom: 6px;
-            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.3px;
+            color: #000;
         }
 
         .proof-subtitle {
-            font-size: 1rem;
-            color: #666;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 400;
+            color: #4a4a4a;
+            margin-top: 8px;
         }
 
         .proof-details {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
+            margin: 20px 0 18px;
         }
 
         .detail-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            margin-bottom: 14px;
+            font-size: 14px;
+            border-bottom: 1px dotted #ddd;
             padding-bottom: 10px;
-            border-bottom: 1px dashed rgba(0,0,0,0.08);
             flex-wrap: wrap;
             gap: 8px;
         }
 
         .detail-label {
-            font-weight: 600;
-            color: #444;
-            font-size: 0.85rem;
-            flex: 1;
+            font-weight: 700;
+            color: #222;
         }
 
         .detail-value {
-            font-weight: 600;
-            color: #000000;
-            font-size: 0.85rem;
+            font-weight: 500;
             text-align: right;
-            flex: 1;
+            word-break: break-word;
+            color: #111;
         }
 
         .detail-value.amount {
             font-size: 1.2rem;
             font-weight: 800;
-            color: #000;
         }
 
         .status-badge {
@@ -373,19 +338,20 @@
         }
 
         .highlight-box {
-            background: rgba(0,0,0,0.03);
+            background: #f8f8f8;
             border-radius: 20px;
             padding: 16px;
             margin: 20px 0;
         }
 
         .proof-footer {
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(0,0,0,0.08);
+            margin-top: 22px;
             text-align: center;
-            font-size: 0.7rem;
-            color: #666;
+            font-size: 9px;
+            font-weight: 400;
+            color: #6b6b6b;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 14px;
         }
 
         .download-options {
@@ -398,18 +364,17 @@
             background: #000000;
             color: white;
             padding: 12px 24px;
-            border-radius: 40px;
+            border-radius: 60px;
             font-weight: 600;
             font-size: 0.9rem;
             border: none;
             cursor: pointer;
-            transition: all 0.25s ease;
             font-family: 'Outfit', sans-serif;
             flex: 1;
         }
 
         .download-btn:hover {
-            background: #1a1a1a;
+            background: #2c2c2c;
             transform: translateY(-2px);
         }
 
@@ -458,7 +423,6 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: all 0.25s ease;
             border: 1px solid rgba(0,0,0,0.1);
         }
 
@@ -476,14 +440,9 @@
             font-size: 0.7rem;
         }
 
-        /* Responsive lebih rapi */
         @media (min-width: 768px) {
             .action-buttons, .download-options {
                 flex-direction: row;
-            }
-            .action-btn, .download-btn {
-                width: auto;
-                flex: 1;
             }
             .payment-options {
                 grid-template-columns: repeat(3, 1fr);
@@ -494,11 +453,9 @@
             .container { padding: 16px; }
             .header-chobank-text { font-size: 2.2rem; }
             .generator-container { padding: 24px 18px; }
-            .proof-preview { padding: 20px; }
-            .proof-title { font-size: 1.4rem; }
-            .payment-option { padding: 20px 15px; }
-            .detail-row { flex-direction: column; align-items: flex-start; }
-            .detail-value { text-align: left; width: 100%; }
+            .payslip-card { padding: 20px 18px; }
+            .proof-title { font-size: 22px; }
+            .detail-row { font-size: 12px; }
         }
     </style>
 </head>
@@ -539,17 +496,15 @@
         </div>
 
         <div class="back-to-index">
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <a href="#" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
         </div>
 
         <footer>
             <p>© 2026 The Kachoo Payment Proof Generator. All payments are fictional and for roleplay purposes only.</p>
-            <p>This page does not perform actual financial transactions.</p>
         </footer>
     </div>
 
     <script>
-        // ========== SISTEM SAMA PERSIS DENGAN HTML ASLI ==========
         let currentPaymentType = '';
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -558,18 +513,13 @@
                     const type = this.getAttribute('data-type');
                     currentPaymentType = type;
                     loadPaymentForm(type);
-                    
-                    document.getElementById('generator').scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    document.getElementById('generator').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             });
         });
         
         function loadPaymentForm(type) {
             const generator = document.getElementById('generator');
-            
             let title, subtitle, currency, showInvoiceField, formLabels, bankType;
             
             if (type === 'domestic') {
@@ -579,22 +529,13 @@
                 showInvoiceField = false;
                 bankType = 'nasional';
                 formLabels = {
-                    payerName: 'Nama Pengirim',
-                    receiverName: 'Nama Penerima',
-                    receiverAccount: 'Nomor Rekening Penerima',
-                    recipientBank: 'Bank Penerima',
-                    amount: 'Jumlah Pembayaran',
-                    date: 'Tanggal Transfer',
-                    currency: 'Mata Uang',
-                    invoiceNumber: 'Nomor Invoice',
-                    notes: 'Catatan (Opsional)',
-                    placeholderPayerName: 'Nama lengkap pengirim',
-                    placeholderReceiverName: 'Nama lengkap penerima',
-                    placeholderReceiverAccount: 'Nomor rekening penerima',
-                    placeholderRecipientBank: 'Nama bank penerima (contoh: CHOBANK, etc)',
-                    placeholderAmount: 'Jumlah pembayaran',
-                    placeholderInvoice: 'Nomor invoice yang dibayar',
-                    placeholderNotes: 'Catatan tambahan untuk pembayaran'
+                    payerName: 'Nama Pengirim', receiverName: 'Nama Penerima',
+                    receiverAccount: 'Nomor Rekening Penerima', recipientBank: 'Bank Penerima',
+                    amount: 'Jumlah Pembayaran', date: 'Tanggal Transfer',
+                    currency: 'Mata Uang', invoiceNumber: 'Nomor Invoice', notes: 'Catatan (Opsional)',
+                    placeholderPayerName: 'Nama lengkap pengirim', placeholderReceiverName: 'Nama lengkap penerima',
+                    placeholderReceiverAccount: 'Nomor rekening penerima', placeholderRecipientBank: 'Nama bank penerima',
+                    placeholderAmount: 'Jumlah pembayaran', placeholderInvoice: 'Nomor invoice', placeholderNotes: 'Catatan tambahan'
                 };
             } else if (type === 'international') {
                 title = 'International Payment';
@@ -603,46 +544,28 @@
                 showInvoiceField = false;
                 bankType = 'international';
                 formLabels = {
-                    payerName: 'Sender Name',
-                    receiverName: 'Recipient Name',
-                    receiverAccount: 'Recipient Account Number',
-                    recipientBank: 'Recipient Bank',
-                    amount: 'Payment Amount',
-                    date: 'Transfer Date',
-                    currency: 'Currency',
-                    invoiceNumber: 'Invoice Number',
-                    notes: 'Notes (Optional)',
-                    placeholderPayerName: 'Full sender name',
-                    placeholderReceiverName: 'Full recipient name',
-                    placeholderReceiverAccount: 'Recipient account number',
-                    placeholderRecipientBank: 'Recipient bank name (e.g., Chase, HSBC, Citi)',
-                    placeholderAmount: 'Payment amount',
-                    placeholderInvoice: 'Invoice number',
-                    placeholderNotes: 'Additional notes for payment'
+                    payerName: 'Sender Name', receiverName: 'Recipient Name',
+                    receiverAccount: 'Recipient Account Number', recipientBank: 'Recipient Bank',
+                    amount: 'Payment Amount', date: 'Transfer Date',
+                    currency: 'Currency', invoiceNumber: 'Invoice Number', notes: 'Notes (Optional)',
+                    placeholderPayerName: 'Full sender name', placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Recipient account number', placeholderRecipientBank: 'Recipient bank name',
+                    placeholderAmount: 'Payment amount', placeholderInvoice: 'Invoice number', placeholderNotes: 'Additional notes'
                 };
-            } else if (type === 'invoice') {
+            } else {
                 title = 'Invoice Payment';
                 subtitle = 'Bill payment based on issued invoices';
                 currency = 'IDR (Rupiah)';
                 showInvoiceField = true;
                 bankType = 'national';
                 formLabels = {
-                    payerName: 'Sender Name',
-                    receiverName: 'Recipient Name',
-                    receiverAccount: 'Recipient Account Number',
-                    recipientBank: 'Recipient Bank',
-                    amount: 'Payment Amount',
-                    date: 'Transfer Date',
-                    currency: 'Currency',
-                    invoiceNumber: 'Invoice Number',
-                    notes: 'Notes (Optional)',
-                    placeholderPayerName: 'Full sender name',
-                    placeholderReceiverName: 'Full recipient name',
-                    placeholderReceiverAccount: 'Recipient account number',
-                    placeholderRecipientBank: 'Recipient bank name',
-                    placeholderAmount: 'Payment amount',
-                    placeholderInvoice: 'Invoice number',
-                    placeholderNotes: 'Additional notes for payment'
+                    payerName: 'Sender Name', receiverName: 'Recipient Name',
+                    receiverAccount: 'Recipient Account Number', recipientBank: 'Recipient Bank',
+                    amount: 'Payment Amount', date: 'Transfer Date',
+                    currency: 'Currency', invoiceNumber: 'Invoice Number', notes: 'Notes (Optional)',
+                    placeholderPayerName: 'Full sender name', placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Recipient account number', placeholderRecipientBank: 'Recipient bank name',
+                    placeholderAmount: 'Payment amount', placeholderInvoice: 'Invoice number', placeholderNotes: 'Additional notes'
                 };
             }
             
@@ -651,82 +574,62 @@
             let formHTML = `
                 <h2>${title}</h2>
                 <p>${subtitle}</p>
-                
                 <div class="auto-bank-info">
                     <i class="fas fa-info-circle"></i>
-                    <strong>Sender Bank:</strong> CHOBANK (${bankType}) - <em>Recipient bank can be filled below</em>
+                    <strong>Sender Bank:</strong> CHOBANK (${bankType})
                 </div>
-                
                 <form id="payment-form">
                     <div class="form-group">
                         <label for="payer-name">${formLabels.payerName}</label>
                         <input type="text" id="payer-name" class="form-control" placeholder="${formLabels.placeholderPayerName}" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="receiver-name">${formLabels.receiverName}</label>
                         <input type="text" id="receiver-name" class="form-control" placeholder="${formLabels.placeholderReceiverName}" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="receiver-account">${formLabels.receiverAccount}</label>
                         <input type="text" id="receiver-account" class="form-control" placeholder="${formLabels.placeholderReceiverAccount}" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="recipient-bank">${formLabels.recipientBank}</label>
                         <input type="text" id="recipient-bank" class="form-control" placeholder="${formLabels.placeholderRecipientBank}" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="amount">${formLabels.amount}</label>
                         <input type="number" id="amount" class="form-control" placeholder="${formLabels.placeholderAmount}" min="1000" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="date">${formLabels.date}</label>
                         <input type="date" id="date" class="form-control" value="${today}" required>
                     </div>
-                    
                     <div class="form-group">
                         <label for="currency">${formLabels.currency}</label>
                         <input type="text" id="currency" class="form-control" value="${currency}" required>
                     </div>
-                    
-                    ${showInvoiceField ? `
-                    <div class="form-group">
-                        <label for="invoice-number">${formLabels.invoiceNumber}</label>
-                        <input type="text" id="invoice-number" class="form-control" placeholder="${formLabels.placeholderInvoice}">
-                    </div>
-                    ` : ''}
-                    
+                    ${showInvoiceField ? `<div class="form-group"><label for="invoice-number">${formLabels.invoiceNumber}</label><input type="text" id="invoice-number" class="form-control" placeholder="${formLabels.placeholderInvoice}"></div>` : ''}
                     <div class="form-group">
                         <label for="notes">${formLabels.notes}</label>
                         <textarea id="notes" class="form-control" rows="3" placeholder="${formLabels.placeholderNotes}"></textarea>
                     </div>
-                    
                     <div class="action-buttons">
                         <button type="button" id="generate-btn" class="action-btn btn-primary">Generate Payment Proof</button>
                         <button type="reset" class="action-btn btn-secondary">Reset Form</button>
                     </div>
                 </form>
-                
                 <div class="preview-section hidden" id="preview-section">
                     <h3 class="preview-title">Payment Proof Preview</h3>
-                    
                     <div class="preview-container">
-                        <div class="proof-preview" id="proof-preview">
-                            <div class="watermark-bg-preview">
+                        <div class="payslip-card" id="proof-preview">
+                            <div class="watermark-bg">
                                 <img src="chobank1.png" alt="watermark" onerror="this.style.display='none'">
                             </div>
-                            <div class="proof-content-relative" id="proof-content-relative"></div>
+                            <div class="slip-content-relative" id="proof-content-relative"></div>
                         </div>
                     </div>
-                    
                     <div class="download-options">
                         <button type="button" id="download-portrait-btn" class="download-btn">Download Payment Proof</button>
                     </div>
-                    
                     <div class="action-buttons">
                         <button type="button" id="new-proof-btn" class="action-btn btn-secondary">Create New Proof</button>
                     </div>
@@ -751,11 +654,7 @@
         
         function generateProof() {
             if (!validateForm()) {
-                if (currentPaymentType === 'domestic') {
-                    alert('Harap isi semua field yang diperlukan!');
-                } else {
-                    alert('Please fill in all required fields!');
-                }
+                alert(currentPaymentType === 'domestic' ? 'Harap isi semua field!' : 'Please fill all required fields!');
                 return;
             }
             
@@ -766,7 +665,7 @@
             const amount = document.getElementById('amount').value;
             const date = document.getElementById('date').value;
             const currency = document.getElementById('currency').value;
-            const invoiceNumber = document.getElementById('invoice-number') ? document.getElementById('invoice-number').value : '';
+            const invoiceNumber = document.getElementById('invoice-number')?.value || '';
             const notes = document.getElementById('notes').value;
             
             const formattedDate = formatDate(date);
@@ -777,60 +676,28 @@
             let headerTitle, headerSubtitle, labels;
             
             if (isDomestic) {
-                switch(currentPaymentType) {
-                    case 'domestic':
-                        headerTitle = 'BUKTI PEMBAYARAN ELEKTRONIK';
-                        headerSubtitle = 'Transfer Dalam Negeri';
-                        break;
-                }
-                
+                headerTitle = 'BUKTI PEMBAYARAN ELEKTRONIK';
+                headerSubtitle = 'Transfer Dalam Negeri';
                 labels = {
-                    reference: 'No. Referensi',
-                    date: 'Tanggal',
-                    time: 'Waktu',
-                    sender: 'Pengirim',
-                    senderBank: 'Bank Pengirim',
-                    recipient: 'Penerima',
-                    recipientBank: 'Bank Penerima',
-                    recipientAccount: 'No. Rekening',
-                    amount: 'Jumlah Pembayaran',
-                    currency: 'Mata Uang',
-                    transactionType: 'Jenis Transaksi',
-                    invoiceNumber: 'No. Invoice',
-                    status: 'Status',
-                    notes: 'Catatan Tambahan',
-                    statusText: 'BERHASIL',
-                    transactionTypeText: 'Transfer Dalam Negeri'
+                    reference: 'No. Referensi', date: 'Tanggal', time: 'Waktu',
+                    sender: 'Pengirim', senderBank: 'Bank Pengirim', recipient: 'Penerima',
+                    recipientBank: 'Bank Penerima', recipientAccount: 'No. Rekening',
+                    amount: 'Jumlah Pembayaran', currency: 'Mata Uang',
+                    transactionType: 'Jenis Transaksi', invoiceNumber: 'No. Invoice',
+                    status: 'Status', notes: 'Catatan Tambahan',
+                    statusText: 'BERHASIL', transactionTypeText: 'Transfer Dalam Negeri'
                 };
             } else {
-                switch(currentPaymentType) {
-                    case 'international':
-                        headerTitle = 'INTERNATIONAL PAYMENT CONFIRMATION';
-                        headerSubtitle = 'International Bank Transfer';
-                        break;
-                    case 'invoice':
-                        headerTitle = 'INVOICE PAYMENT CONFIRMATION';
-                        headerSubtitle = 'Invoice Payment';
-                        break;
-                }
-                
+                headerTitle = currentPaymentType === 'international' ? 'INTERNATIONAL PAYMENT CONFIRMATION' : 'INVOICE PAYMENT CONFIRMATION';
+                headerSubtitle = currentPaymentType === 'international' ? 'International Bank Transfer' : 'Invoice Payment';
                 labels = {
-                    reference: 'Payment Reference',
-                    date: 'Date',
-                    time: 'Time',
-                    sender: 'Sender',
-                    senderBank: 'Sender Bank',
-                    recipient: 'Recipient',
-                    recipientBank: 'Recipient Bank',
-                    recipientAccount: 'Account Number',
-                    amount: 'Amount',
-                    currency: 'Currency',
-                    transactionType: 'Transaction Type',
-                    invoiceNumber: 'Invoice Number',
-                    status: 'Status',
-                    notes: 'Additional Notes',
-                    statusText: 'COMPLETED',
-                    transactionTypeText: currentPaymentType === 'international' ? 'International Transfer' : 'Invoice Payment'
+                    reference: 'Payment Reference', date: 'Date', time: 'Time',
+                    sender: 'Sender', senderBank: 'Sender Bank', recipient: 'Recipient',
+                    recipientBank: 'Recipient Bank', recipientAccount: 'Account Number',
+                    amount: 'Amount', currency: 'Currency',
+                    transactionType: 'Transaction Type', invoiceNumber: 'Invoice Number',
+                    status: 'Status', notes: 'Additional Notes',
+                    statusText: 'COMPLETED', transactionTypeText: currentPaymentType === 'international' ? 'International Transfer' : 'Invoice Payment'
                 };
             }
             
@@ -839,223 +706,74 @@
                     <div class="proof-title">${headerTitle}</div>
                     <div class="proof-subtitle">${headerSubtitle}</div>
                 </div>
-                
                 <div class="proof-details">
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.reference}</div>
-                        <div class="detail-value">${referenceNumber}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.date}</div>
-                        <div class="detail-value">${formattedDate}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.time}</div>
-                        <div class="detail-value">${formatTime(isDomestic)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.sender}</div>
-                        <div class="detail-value">${escapeHtml(payerName)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.senderBank}</div>
-                        <div class="detail-value">CHOBANK</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.recipient}</div>
-                        <div class="detail-value">${escapeHtml(receiverName)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.recipientBank}</div>
-                        <div class="detail-value">${escapeHtml(recipientBank)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.recipientAccount}</div>
-                        <div class="detail-value">${escapeHtml(receiverAccount)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.amount}</div>
-                        <div class="detail-value amount">${formatCurrency(currency, amount)}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.currency}</div>
-                        <div class="detail-value">${currency}</div>
-                    </div>
-                    
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.transactionType}</div>
-                        <div class="detail-value">${labels.transactionTypeText}</div>
-                    </div>
+                    <div class="detail-row"><div class="detail-label">${labels.reference}</div><div class="detail-value">${referenceNumber}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.date}</div><div class="detail-value">${formattedDate}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.time}</div><div class="detail-value">${formatTime(isDomestic)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.sender}</div><div class="detail-value">${escapeHtml(payerName)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.senderBank}</div><div class="detail-value">CHOBANK</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.recipient}</div><div class="detail-value">${escapeHtml(receiverName)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.recipientBank}</div><div class="detail-value">${escapeHtml(recipientBank)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.recipientAccount}</div><div class="detail-value">${escapeHtml(receiverAccount)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.amount}</div><div class="detail-value amount">${formatCurrency(currency, amount)}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.currency}</div><div class="detail-value">${currency}</div></div>
+                    <div class="detail-row"><div class="detail-label">${labels.transactionType}</div><div class="detail-value">${labels.transactionTypeText}</div></div>
             `;
             
             if (invoiceNumber) {
-                proofContent += `
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.invoiceNumber}</div>
-                        <div class="detail-value">${escapeHtml(invoiceNumber)}</div>
-                    </div>
-                `;
+                proofContent += `<div class="detail-row"><div class="detail-label">${labels.invoiceNumber}</div><div class="detail-value">${escapeHtml(invoiceNumber)}</div></div>`;
             }
             
-            proofContent += `
-                    <div class="detail-row">
-                        <div class="detail-label">${labels.status}</div>
-                        <div class="detail-value"><span class="status-badge">${labels.statusText}</span></div>
-                    </div>
-                </div>
-            `;
+            proofContent += `<div class="detail-row"><div class="detail-label">${labels.status}</div><div class="detail-value"><span class="status-badge">${labels.statusText}</span></div></div></div>`;
             
             if (notes) {
-                proofContent += `
-                    <div class="highlight-box">
-                        <div style="font-weight: 700; margin-bottom: 8px; color: #000;">${labels.notes}:</div>
-                        <div style="color: #444;">${escapeHtml(notes)}</div>
-                    </div>
-                `;
+                proofContent += `<div class="highlight-box"><div style="font-weight:700;margin-bottom:8px;">${labels.notes}:</div><div>${escapeHtml(notes)}</div></div>`;
             }
             
-            proofContent += `
-                <div class="proof-footer">
-                    <p><strong>IMPORTANT NOTES:</strong> This is for roleplay purpose by The Kachoo.</p>
-                </div>
-            `;
+            proofContent += `<div class="proof-footer"><p><strong>IMPORTANT NOTES:</strong> This is for roleplay purpose by The Kachoo.</p></div>`;
             
             proofContentRelative.innerHTML = proofContent;
-            
-            const previewSection = document.getElementById('preview-section');
-            previewSection.classList.remove('hidden');
-            previewSection.classList.add('fade-in');
-            
-            setTimeout(() => {
-                previewSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }, 300);
+            document.getElementById('preview-section').classList.remove('hidden');
+            document.getElementById('preview-section').classList.add('fade-in');
+            setTimeout(() => { document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
         }
         
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
-        
-        function formatTime(isDomestic) {
-            const now = new Date();
-            if (isDomestic) {
-                return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            } else {
-                return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            }
-        }
-        
-        function validateForm() {
-            const requiredFields = ['payer-name', 'receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date', 'currency'];
-            for (let fieldId of requiredFields) {
-                const field = document.getElementById(fieldId);
-                if (!field || !field.value.trim()) return false;
-            }
-            return true;
-        }
-        
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const isDomestic = currentPaymentType === 'domestic';
-            if (isDomestic) {
-                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            } else {
-                return date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            }
-        }
-        
-        function generateReferenceNumber() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = 'REF';
-            result += Math.floor(Math.random() * 900 + 100);
-            result += '-';
-            for (let i = 0; i < 8; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-            return result;
-        }
-        
-        function formatCurrency(currency, amount) {
-            const numericAmount = parseFloat(amount);
-            if (currency.includes('IDR') || currency.includes('Rupiah')) {
-                return `Rp ${numericAmount.toLocaleString('id-ID')}`;
-            } else if (currency.includes('USD') || currency.includes('Dollar')) {
-                return `$ ${numericAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            } else {
-                return `${numericAmount.toLocaleString()} ${currency}`;
-            }
-        }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m] || m)); }
+        function formatTime(isDomestic) { const now = new Date(); return isDomestic ? now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }) : now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true }); }
+        function validateForm() { return ['payer-name','receiver-name','receiver-account','recipient-bank','amount','date','currency'].every(id => { const f = document.getElementById(id); return f && f.value.trim(); }); }
+        function formatDate(dateString) { const date = new Date(dateString); return currentPaymentType === 'domestic' ? date.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' }) : date.toLocaleDateString('en-US', { weekday:'long', day:'numeric', month:'long', year:'numeric' }); }
+        function generateReferenceNumber() { let result = 'REF' + Math.floor(Math.random()*900+100) + '-'; for(let i=0;i<8;i++) result += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.charAt(Math.floor(Math.random()*36)); return result; }
+        function formatCurrency(currency, amount) { const num = parseFloat(amount); return currency.includes('IDR') ? `Rp ${num.toLocaleString('id-ID')}` : currency.includes('USD') ? `$ ${num.toLocaleString('en-US', {minimumFractionDigits:2})}` : `${num.toLocaleString()} ${currency}`; }
         
         function downloadProof() {
             const proofElement = document.getElementById('proof-preview');
-            if (!proofElement) {
-                alert('Please generate payment proof first!');
-                return;
-            }
-            
+            if (!proofElement) { alert('Generate proof first!'); return; }
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
-            
-            // Clone untuk capture
             const cloneContainer = document.createElement('div');
             cloneContainer.style.position = 'fixed';
             cloneContainer.style.left = '-9999px';
             cloneContainer.style.top = '-9999px';
             cloneContainer.style.width = '700px';
             cloneContainer.style.backgroundColor = '#ffffff';
-            cloneContainer.style.padding = '32px';
-            cloneContainer.style.borderRadius = '28px';
-            cloneContainer.style.boxSizing = 'border-box';
-            
+            cloneContainer.style.padding = '0';
             const clonedProof = proofElement.cloneNode(true);
             clonedProof.style.margin = '0';
-            clonedProof.style.padding = '32px';
             clonedProof.style.width = '100%';
-            clonedProof.style.maxWidth = 'none';
-            
             cloneContainer.appendChild(clonedProof);
             document.body.appendChild(cloneContainer);
-            
             setTimeout(() => {
-                html2canvas(cloneContainer, {
-                    scale: 2.8,
-                    backgroundColor: '#ffffff',
-                    useCORS: true,
-                    logging: false
-                }).then(canvas => {
+                html2canvas(cloneContainer, { scale: 2.8, backgroundColor: '#ffffff', useCORS: true, logging: false }).then(canvas => {
                     const link = document.createElement('a');
-                    const timestamp = new Date().getTime();
-                    const typeName = currentPaymentType === 'domestic' ? 'domestic' : 
-                                     currentPaymentType === 'international' ? 'international' : 'invoice';
-                    link.download = `payment-proof-${typeName}-${timestamp}.png`;
+                    link.download = `payment-proof-${currentPaymentType}-${Date.now()}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     document.body.removeChild(cloneContainer);
                     loading.classList.add('hidden');
-                    alert(currentPaymentType === 'domestic' ? 'Bukti pembayaran berhasil didownload!' : 'Payment proof successfully downloaded!');
-                }).catch(error => {
-                    console.error('Error:', error);
-                    document.body.removeChild(cloneContainer);
-                    loading.classList.add('hidden');
-                    alert(currentPaymentType === 'domestic' ? 'Terjadi kesalahan. Silakan coba lagi.' : 'Error creating image. Please try again.');
-                });
+                    alert('Payment proof downloaded!');
+                }).catch(e => { console.error(e); document.body.removeChild(cloneContainer); loading.classList.add('hidden'); alert('Error!'); });
             }, 200);
         }
     </script>
 </body>
-    </html>
+        </html>
