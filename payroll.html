@@ -175,6 +175,16 @@
             flex: 1;
             min-width: 140px;
         }
+        
+        .row-3cols {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .row-3cols .form-group {
+            flex: 1;
+            min-width: 110px;
+        }
 
         .action-buttons {
             display: flex;
@@ -276,19 +286,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .fade-in {
-            animation: fadeSlide 0.5s ease;
-        }
-
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .slip-preview-container {
             margin-top: 32px;
         }
@@ -303,6 +300,33 @@
             margin: 0 auto;
             font-family: 'Outfit', sans-serif;
             border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .watermark-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.02;
+        }
+        .watermark-bg img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        
+        .slip-content-relative {
+            position: relative;
+            z-index: 2;
+            background: transparent;
         }
 
         .company-header {
@@ -310,13 +334,25 @@
             border-bottom: 2px solid #000;
             padding-bottom: 16px;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
-
+        
+        .logo-header-img {
+            max-width: 70px;
+            max-height: 70px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
         .company-name-header {
             font-size: 26px;
             font-weight: 800;
         }
-
+        
         .company-address {
             font-size: 11px;
             font-weight: 400;
@@ -437,7 +473,16 @@
             border-radius: 32px;
             color: #777;
         }
-
+        
+        .logo-preview-small {
+            max-width: 60px;
+            max-height: 60px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        
         @media (min-width: 768px) {
             .container { padding: 28px 36px 48px; }
             .action-buttons { flex-direction: row; gap: 18px; }
@@ -464,34 +509,45 @@
                 
                 <form id="payroll-form">
                     <div class="form-group">
+                        <label for="logo-upload">Logo Perusahaan (Optional)</label>
+                        <input type="file" id="logo-upload" class="form-control" accept="image/*">
+                        <div id="logoPreview" style="margin-top: 8px;"></div>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="company-name">Nama Perusahaan</label>
-                        <input type="text" id="company-name" class="form-control" placeholder="Nama Perusahaan" value="CHOBANK" required>
+                        <input type="text" id="company-name" class="form-control" placeholder="Nama Perusahaan" value="">
                     </div>
                     
                     <div class="form-group">
-                        <label for="company-address">Alamat Perusahaan (untuk slip)</label>
-                        <input type="text" id="company-address" class="form-control" placeholder="Jl. Contoh No. 123, Jakarta" value="Jl. Sudirman No. 45, Jakarta Selatan">
+                        <label for="company-address">Alamat Perusahaan (Optional)</label>
+                        <input type="text" id="company-address" class="form-control" placeholder="Jl. Contoh No. 123, Jakarta" value="">
                     </div>
                     
                     <div class="form-group">
-                        <label for="employee-name">Nama Karyawan (Lengkap)</label>
-                        <input type="text" id="employee-name" class="form-control" placeholder="Nama lengkap karyawan" value="Nama Lengkap" required>
+                        <label for="employee-name">Nama Lengkap</label>
+                        <input type="text" id="employee-name" class="form-control" placeholder="Nama lengkap karyawan" value="">
                     </div>
 
                     <div class="form-group">
-                        <label for="employee-position" id="positionLabel">Posisi / Jabatan</label>
-                        <input type="text" id="employee-position" class="form-control" placeholder="Contoh: Manager, Staff" value="Karyawan">
+                        <label for="employee-position">Posisi / Jabatan</label>
+                        <input type="text" id="employee-position" class="form-control" placeholder="Contoh: Manager, Staff" value="">
                     </div>
                     
                     <div class="row-2cols">
                         <div class="form-group">
                             <label for="base-salary">Gaji Pokok</label>
-                            <input type="number" id="base-salary" class="form-control" placeholder="0" value="5000000" step="1000" required>
+                            <input type="number" id="base-salary" class="form-control" placeholder="0" value="" step="1000">
                         </div>
                         <div class="form-group">
                             <label for="salary-increase">Kenaikan Gaji (%)</label>
                             <input type="number" id="salary-increase" class="form-control" placeholder="Persen" value="0" step="0.5">
                         </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="custom-tax-percent">Persen Pajak</label>
+                        <input type="number" id="custom-tax-percent" class="form-control" placeholder="0" value="0" step="0.1">
                     </div>
                     
                     <div class="form-group">
@@ -506,26 +562,36 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="month-select">Periode Bulan</label>
-                        <select id="month-select" class="form-control">
-                            <option value="Januari">Januari</option>
-                            <option value="Februari">Februari</option>
-                            <option value="Maret">Maret</option>
-                            <option value="April">April</option>
-                            <option value="Mei">Mei</option>
-                            <option value="Juni">Juni</option>
-                            <option value="Juli">Juli</option>
-                            <option value="Agustus">Agustus</option>
-                            <option value="September">September</option>
-                            <option value="Oktober">Oktober</option>
-                            <option value="November">November</option>
-                            <option value="Desember">Desember</option>
-                        </select>
+                    <div class="row-3cols">
+                        <div class="form-group">
+                            <label for="day-date">Tanggal</label>
+                            <input type="number" id="day-date" class="form-control" placeholder="1-31" min="1" max="31" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="month-select">Bulan</label>
+                            <select id="month-select" class="form-control">
+                                <option value="Januari">Januari</option>
+                                <option value="Februari">Februari</option>
+                                <option value="Maret">Maret</option>
+                                <option value="April">April</option>
+                                <option value="Mei">Mei</option>
+                                <option value="Juni">Juni</option>
+                                <option value="Juli">Juli</option>
+                                <option value="Agustus">Agustus</option>
+                                <option value="September">September</option>
+                                <option value="Oktober">Oktober</option>
+                                <option value="November">November</option>
+                                <option value="Desember">Desember</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year-date">Tahun</label>
+                            <input type="number" id="year-date" class="form-control" placeholder="Tahun" value="2026">
+                        </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="bonus-extra">Bonus / Insentif (Opsional)</label>
+                        <label for="bonus-extra">Bonus / Insentif</label>
                         <input type="number" id="bonus-extra" class="form-control" placeholder="0" value="0" step="100000">
                     </div>
                     
@@ -567,251 +633,54 @@
             const loadingDiv = document.getElementById('loading');
             const emptyMessageDiv = document.getElementById('emptyMessage');
             const slipContentArea = document.getElementById('slipContentArea');
+            const logoUpload = document.getElementById('logo-upload');
+            let uploadedLogoDataURL = null;
             
-            // Set default month to current month
+            logoUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        uploadedLogoDataURL = ev.target.result;
+                        const previewDiv = document.getElementById('logoPreview');
+                        previewDiv.innerHTML = `<img src="${uploadedLogoDataURL}" class="logo-preview-small" alt="logo preview">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    uploadedLogoDataURL = null;
+                    document.getElementById('logoPreview').innerHTML = '';
+                }
+            });
+            
             const currentDate = new Date();
             const currentMonthIndex = currentDate.getMonth();
             const monthSelect = document.getElementById('month-select');
             const monthOptions = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            if (currentMonthIndex >= 0 && currentMonthIndex <= 11) {
-                monthSelect.value = monthOptions[currentMonthIndex];
-            } else {
-                monthSelect.value = 'Mei';
-            }
-            
-            // Progressive Tax untuk Rupiah (IDR) - hitung persentase efektif
-            function calculateTaxIDR(grossIncome) {
-                let tax = 0;
-                let percent = 0;
-                if (grossIncome <= 60000000) {
-                    tax = grossIncome * 0.05;
-                    percent = 5;
-                } else if (grossIncome <= 250000000) {
-                    tax = 60000000 * 0.05 + (grossIncome - 60000000) * 0.15;
-                    percent = 15;
-                } else if (grossIncome <= 500000000) {
-                    tax = 60000000 * 0.05 + (250000000 - 60000000) * 0.15 + (grossIncome - 250000000) * 0.25;
-                    percent = 25;
-                } else if (grossIncome <= 5000000000) {
-                    tax = 60000000 * 0.05 + (250000000 - 60000000) * 0.15 + (500000000 - 250000000) * 0.25 + (grossIncome - 500000000) * 0.30;
-                    percent = 30;
-                } else {
-                    tax = 60000000 * 0.05 + (250000000 - 60000000) * 0.15 + (500000000 - 250000000) * 0.25 + (5000000000 - 500000000) * 0.30 + (grossIncome - 5000000000) * 0.35;
-                    percent = 35;
-                }
-                return { tax, percent };
-            }
-            
-            // Progressive Tax untuk Dollar (USD)
-            function calculateTaxUSD(grossIncome) {
-                let tax = 0;
-                let percent = 0;
-                if (grossIncome <= 11925) {
-                    tax = grossIncome * 0.10;
-                    percent = 10;
-                } else if (grossIncome <= 48475) {
-                    tax = 11925 * 0.10 + (grossIncome - 11925) * 0.12;
-                    percent = 12;
-                } else if (grossIncome <= 103350) {
-                    tax = 11925 * 0.10 + (48475 - 11925) * 0.12 + (grossIncome - 48475) * 0.22;
-                    percent = 22;
-                } else if (grossIncome <= 197300) {
-                    tax = 11925 * 0.10 + (48475 - 11925) * 0.12 + (103350 - 48475) * 0.22 + (grossIncome - 103350) * 0.24;
-                    percent = 24;
-                } else if (grossIncome <= 250525) {
-                    tax = 11925 * 0.10 + (48475 - 11925) * 0.12 + (103350 - 48475) * 0.22 + (197300 - 103350) * 0.24 + (grossIncome - 197300) * 0.32;
-                    percent = 32;
-                } else if (grossIncome <= 626350) {
-                    tax = 11925 * 0.10 + (48475 - 11925) * 0.12 + (103350 - 48475) * 0.22 + (197300 - 103350) * 0.24 + (250525 - 197300) * 0.32 + (grossIncome - 250525) * 0.35;
-                    percent = 35;
-                } else {
-                    tax = 11925 * 0.10 + (48475 - 11925) * 0.12 + (103350 - 48475) * 0.22 + (197300 - 103350) * 0.24 + (250525 - 197300) * 0.32 + (626350 - 250525) * 0.35 + (grossIncome - 626350) * 0.37;
-                    percent = 37;
-                }
-                return { tax, percent };
-            }
+            if (currentMonthIndex >= 0) monthSelect.value = monthOptions[currentMonthIndex];
+            const yearInput = document.getElementById('year-date');
+            if (yearInput && !yearInput.value) yearInput.value = currentDate.getFullYear();
             
             function formatCurrencyIDR(amount) {
                 return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
             }
-            
             function formatCurrencyUSD(amount) {
                 return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
             }
             
-            function calculateSalary(baseAmount, increasePercent, bonusAmount, currency) {
+            function calculateSalaryWithCustomTax(baseAmount, increasePercent, bonusAmount, customTaxPercent) {
                 const increaseValue = baseAmount * (increasePercent / 100);
                 const grossSalary = baseAmount + increaseValue + bonusAmount;
-                
-                let taxResult;
-                if (currency === 'IDR') {
-                    taxResult = calculateTaxIDR(grossSalary);
-                } else {
-                    taxResult = calculateTaxUSD(grossSalary);
+                let taxAmount = 0;
+                let finalTaxPercent = customTaxPercent || 0;
+                if (finalTaxPercent > 0) {
+                    taxAmount = grossSalary * (finalTaxPercent / 100);
                 }
-                
                 const adminFee = grossSalary * 0.01;
-                const netSalary = grossSalary - taxResult.tax - adminFee;
+                const netSalary = grossSalary - taxAmount - adminFee;
                 return {
-                    baseAmount: baseAmount,
-                    increaseValue: increaseValue,
-                    bonusAmount: bonusAmount,
-                    grossSalary: grossSalary,
-                    tax: taxResult.tax,
-                    taxPercent: taxResult.percent,
-                    adminFee: adminFee,
-                    netSalary: netSalary
+                    baseAmount, increaseValue, bonusAmount, grossSalary,
+                    taxAmount, taxPercent: finalTaxPercent, adminFee, netSalary
                 };
-            }
-            
-            function getMonthYearString(monthName, currency) {
-                const year = 2026;
-                if (currency === 'IDR') {
-                    return `${monthName} ${year}`;
-                } else {
-                    const monthMap = {
-                        'Januari': 'January', 'Februari': 'February', 'Maret': 'March', 'April': 'April',
-                        'Mei': 'May', 'Juni': 'June', 'Juli': 'July', 'Agustus': 'August',
-                        'September': 'September', 'Oktober': 'October', 'November': 'November', 'Desember': 'December'
-                    };
-                    return `${monthMap[monthName]} ${year}`;
-                }
-            }
-            
-            function updatePositionLabel() {
-                const currencyRadios = document.querySelectorAll('input[name="currency"]');
-                let currency = 'IDR';
-                for (let radio of currencyRadios) {
-                    if (radio.checked) {
-                        currency = radio.value;
-                        break;
-                    }
-                }
-                const positionLabel = document.getElementById('positionLabel');
-                if (currency === 'IDR') {
-                    positionLabel.innerHTML = 'Posisi / Jabatan';
-                } else {
-                    positionLabel.innerHTML = 'Position / Job Title';
-                }
-            }
-            
-            const currencyRadios = document.querySelectorAll('input[name="currency"]');
-            currencyRadios.forEach(radio => {
-                radio.addEventListener('change', updatePositionLabel);
-            });
-            updatePositionLabel();
-            
-            function renderPayslip(data) {
-                const { companyName, companyAddress, employeeName, employeePosition, baseSalary, increasePercent, bonus, currency, salaryCalc, monthName } = data;
-                const period = getMonthYearString(monthName, currency);
-                const isIDR = currency === 'IDR';
-                
-                let baseFormatted, increaseFormatted, bonusFormatted, grossFormatted, taxFormatted, adminFormatted, netFormatted;
-                if (isIDR) {
-                    baseFormatted = formatCurrencyIDR(salaryCalc.baseAmount);
-                    increaseFormatted = formatCurrencyIDR(salaryCalc.increaseValue);
-                    bonusFormatted = formatCurrencyIDR(salaryCalc.bonusAmount);
-                    grossFormatted = formatCurrencyIDR(salaryCalc.grossSalary);
-                    taxFormatted = formatCurrencyIDR(salaryCalc.tax);
-                    adminFormatted = formatCurrencyIDR(salaryCalc.adminFee);
-                    netFormatted = formatCurrencyIDR(salaryCalc.netSalary);
-                } else {
-                    baseFormatted = formatCurrencyUSD(salaryCalc.baseAmount);
-                    increaseFormatted = formatCurrencyUSD(salaryCalc.increaseValue);
-                    bonusFormatted = formatCurrencyUSD(salaryCalc.bonusAmount);
-                    grossFormatted = formatCurrencyUSD(salaryCalc.grossSalary);
-                    taxFormatted = formatCurrencyUSD(salaryCalc.tax);
-                    adminFormatted = formatCurrencyUSD(salaryCalc.adminFee);
-                    netFormatted = formatCurrencyUSD(salaryCalc.netSalary);
-                }
-                
-                const taxLabel = isIDR ? `Pajak Penghasilan (${salaryCalc.taxPercent}%)` : `Income Tax (${salaryCalc.taxPercent}%)`;
-                
-                const labels = isIDR ? {
-                    baseLabel: 'Gaji Pokok',
-                    increaseLabel: `Kenaikan Gaji (${increasePercent}%)`,
-                    bonusLabel: 'Bonus / Insentif',
-                    grossLabel: 'Total Penghasilan Kotor',
-                    taxLabel: taxLabel,
-                    adminLabel: 'Biaya Admin Chobank (1%)',
-                    netLabel: 'GAJI BERSIH (Take Home)',
-                    positionLabel: 'Posisi / Jabatan',
-                    footerSlip: 'For Roleplay Purpose Only, featured by Kachoo in Chobank'
-                } : {
-                    baseLabel: 'Base Salary',
-                    increaseLabel: `Salary Increase (${increasePercent}%)`,
-                    bonusLabel: 'Bonus / Incentive',
-                    grossLabel: 'Total Gross Income',
-                    taxLabel: taxLabel,
-                    adminLabel: 'Chobank Admin Fee (1%)',
-                    netLabel: 'NET SALARY (Take Home)',
-                    positionLabel: 'Position / Job Title',
-                    footerSlip: 'For Roleplay Purpose Only, featured by Kachoo in Chobank'
-                };
-                
-                const increaseRow = salaryCalc.increaseValue !== 0 ? `
-                    <tr>
-                        <td>${labels.increaseLabel}</td>
-                        <td>${increaseFormatted}</td>
-                    </tr>
-                ` : '';
-                
-                const bonusRow = salaryCalc.bonusAmount !== 0 ? `
-                    <tr>
-                        <td>${labels.bonusLabel}</td>
-                        <td>${bonusFormatted}</td>
-                    </tr>
-                ` : '';
-                
-                const addressHtml = companyAddress ? `<div class="company-address">${escapeHtml(companyAddress)}</div>` : '<div class="company-address">Jakarta, Indonesia</div>';
-                const positionValue = employeePosition && employeePosition.trim() !== '' ? escapeHtml(employeePosition) : (isIDR ? 'Karyawan' : 'Employee');
-                
-                return `
-                    <div class="payslip-card" id="payslipToDownload">
-                        <div class="company-header">
-                            <div class="company-name-header">${escapeHtml(companyName)}</div>
-                            ${addressHtml}
-                        </div>
-                        <div class="slip-title">${isIDR ? 'SLIP GAJI BULANAN' : 'MONTHLY PAYSLIP'}</div>
-                        <div style="text-align:center;">
-                            <div class="period-badge">${period}</div>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">${isIDR ? 'Nama Karyawan' : 'Employee Name'}</span>
-                            <span class="info-value">${escapeHtml(employeeName)}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">${labels.positionLabel}</span>
-                            <span class="info-value">${positionValue}</span>
-                        </div>
-                        <table class="salary-table">
-                            <tr>
-                                <td>${labels.baseLabel}</td>
-                                <td>${baseFormatted}</td>
-                            </tr>
-                            ${increaseRow}
-                            ${bonusRow}
-                            <tr>
-                                <td style="border-top:1px solid #aaa;">${labels.grossLabel}</td>
-                                <td style="border-top:1px solid #aaa;">${grossFormatted}</td>
-                            </tr>
-                            <tr>
-                                <td>${labels.taxLabel}</td>
-                                <td>${taxFormatted}</td>
-                            </tr>
-                            <tr>
-                                <td>${labels.adminLabel}</td>
-                                <td>${adminFormatted}</td>
-                            </tr>
-                            <tr class="total-net">
-                                <td><strong>${labels.netLabel}</strong></td>
-                                <td><strong>${netFormatted}</strong></td>
-                            </tr>
-                        </table>
-                        <div class="footer-note-slip">${labels.footerSlip}</div>
-                    </div>
-                    <button id="downloadPngBtn" class="btn-download">UNDUH SLIP</button>
-                `;
             }
             
             function escapeHtml(str) {
@@ -824,59 +693,123 @@
                 });
             }
             
+            function renderPayslip(data) {
+                const { companyName, companyAddress, employeeName, employeePosition, baseSalary, increasePercent, bonus, currency, salaryCalc, monthName, dayDate, yearValue, customTaxPercent, logoDataURL } = data;
+                const isIDR = currency === 'IDR';
+                const periodText = dayDate && dayDate !== '' ? `${dayDate} ${monthName} ${yearValue}` : `${monthName} ${yearValue}`;
+                
+                let baseFormatted, increaseFormatted, bonusFormatted, grossFormatted, taxFormatted, adminFormatted, netFormatted;
+                if (isIDR) {
+                    baseFormatted = formatCurrencyIDR(salaryCalc.baseAmount);
+                    increaseFormatted = formatCurrencyIDR(salaryCalc.increaseValue);
+                    bonusFormatted = formatCurrencyIDR(salaryCalc.bonusAmount);
+                    grossFormatted = formatCurrencyIDR(salaryCalc.grossSalary);
+                    taxFormatted = salaryCalc.taxAmount ? formatCurrencyIDR(salaryCalc.taxAmount) : formatCurrencyIDR(0);
+                    adminFormatted = formatCurrencyIDR(salaryCalc.adminFee);
+                    netFormatted = formatCurrencyIDR(salaryCalc.netSalary);
+                } else {
+                    baseFormatted = formatCurrencyUSD(salaryCalc.baseAmount);
+                    increaseFormatted = formatCurrencyUSD(salaryCalc.increaseValue);
+                    bonusFormatted = formatCurrencyUSD(salaryCalc.bonusAmount);
+                    grossFormatted = formatCurrencyUSD(salaryCalc.grossSalary);
+                    taxFormatted = salaryCalc.taxAmount ? formatCurrencyUSD(salaryCalc.taxAmount) : formatCurrencyUSD(0);
+                    adminFormatted = formatCurrencyUSD(salaryCalc.adminFee);
+                    netFormatted = formatCurrencyUSD(salaryCalc.netSalary);
+                }
+                
+                const taxLabel = customTaxPercent > 0 ? (isIDR ? `Pajak (${customTaxPercent}%)` : `Tax (${customTaxPercent}%)`) : null;
+                const increaseRow = salaryCalc.increaseValue !== 0 ? `<tr><td>${isIDR ? 'Kenaikan Gaji' : 'Salary Increase'} (${increasePercent}%)</td><td>${increaseFormatted}</td>` : '';
+                const bonusRow = salaryCalc.bonusAmount !== 0 ? `<tr><td>${isIDR ? 'Bonus / Insentif' : 'Bonus / Incentive'}</td><td>${bonusFormatted}</td>` : '';
+                const taxRow = (customTaxPercent > 0 && salaryCalc.taxAmount > 0) ? `<tr><td>${taxLabel}</td><td>${taxFormatted}</td>` : '';
+                
+                const addressHtml = (companyAddress && companyAddress.trim() !== '') ? `<div class="company-address">${escapeHtml(companyAddress)}</div>` : '';
+                let logoHeaderHtml = '';
+                if (logoDataURL) {
+                    logoHeaderHtml = `<img src="${logoDataURL}" class="logo-header-img" alt="logo perusahaan">`;
+                }
+                const positionValue = employeePosition && employeePosition.trim() !== '' ? escapeHtml(employeePosition) : (isIDR ? 'Karyawan' : 'Employee');
+                
+                return `
+                    <div class="payslip-card" id="payslipToDownload">
+                        <div class="watermark-bg">
+                            <img src="chobank1.png" alt="watermark" onerror="this.style.display='none'">
+                        </div>
+                        <div class="slip-content-relative">
+                            <div class="company-header">
+                                ${logoHeaderHtml}
+                                <div class="company-name-header">${escapeHtml(companyName)}</div>
+                                ${addressHtml}
+                            </div>
+                            <div class="slip-title">${isIDR ? 'SLIP GAJI BULANAN' : 'MONTHLY PAYSLIP'}</div>
+                            <div style="text-align:center;"><div class="period-badge">${periodText}</div></div>
+                            
+                            <div class="info-row">
+                                <span class="info-label">${isIDR ? 'Nama Perusahaan' : 'Company Name'}</span>
+                                <span class="info-value">${escapeHtml(companyName)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">${isIDR ? 'Nama Lengkap' : 'Full Name'}</span>
+                                <span class="info-value">${escapeHtml(employeeName)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">${isIDR ? 'Posisi / Jabatan' : 'Position'}</span>
+                                <span class="info-value">${positionValue}</span>
+                            </div>
+                            <table class="salary-table">
+                                <tr><td>${isIDR ? 'Gaji Pokok' : 'Base Salary'}</td><td>${baseFormatted}</td></tr>
+                                ${increaseRow}
+                                ${bonusRow}
+                                <tr><td style="border-top:1px solid #aaa;">${isIDR ? 'Total Penghasilan Kotor' : 'Total Gross Income'}</td><td style="border-top:1px solid #aaa;">${grossFormatted}</td></tr>
+                                ${taxRow}
+                                <tr><td>${isIDR ? 'Biaya Admin Chobank (1%)' : 'Admin Fee (1%)'}</td><td>${adminFormatted}</td></tr>
+                                <tr class="total-net"><td><strong>${isIDR ? 'GAJI BERSIH (Take Home)' : 'NET SALARY'}</strong></td><td><strong>${netFormatted}</strong></td></tr>
+                            </table>
+                            <div class="footer-note-slip">For Roleplay Purpose Only, featured by Kachoo in Chobank</div>
+                        </div>
+                    </div>
+                    <button id="downloadPngBtn" class="btn-download">UNDUH SLIP</button>
+                `;
+            }
+            
             async function generateSlip() {
                 const companyName = document.getElementById('company-name').value.trim();
+                if (!companyName) { alert('Nama perusahaan wajib diisi'); return; }
                 const companyAddress = document.getElementById('company-address').value.trim();
                 let employeeName = document.getElementById('employee-name').value.trim();
+                if (!employeeName) employeeName = 'Nama Lengkap';
                 const employeePosition = document.getElementById('employee-position').value.trim();
                 let baseSalary = parseFloat(document.getElementById('base-salary').value);
                 let increasePercent = parseFloat(document.getElementById('salary-increase').value);
                 let bonus = parseFloat(document.getElementById('bonus-extra').value);
-                const monthSelect = document.getElementById('month-select');
+                let customTaxPercent = parseFloat(document.getElementById('custom-tax-percent').value);
+                if (isNaN(customTaxPercent)) customTaxPercent = 0;
+                if (customTaxPercent < 0) customTaxPercent = 0;
+                
+                const dayDate = document.getElementById('day-date').value.trim();
                 const monthName = monthSelect.options[monthSelect.selectedIndex].value;
+                let yearValue = document.getElementById('year-date').value.trim();
+                if (!yearValue) yearValue = '2026';
                 
                 const currencyRadios = document.querySelectorAll('input[name="currency"]');
                 let currency = 'IDR';
-                for (let radio of currencyRadios) {
-                    if (radio.checked) {
-                        currency = radio.value;
-                        break;
-                    }
-                }
+                for (let radio of currencyRadios) if (radio.checked) { currency = radio.value; break; }
                 
-                if (!companyName) {
-                    alert('Nama perusahaan wajib diisi');
-                    return;
-                }
-                if (!employeeName) {
-                    employeeName = 'Nama Lengkap';
-                }
-                if (isNaN(baseSalary) || baseSalary <= 0) {
-                    alert('Gaji pokok harus lebih dari 0');
-                    return;
-                }
+                if (isNaN(baseSalary) || baseSalary <= 0) { alert('Gaji pokok harus lebih dari 0'); return; }
                 if (isNaN(increasePercent)) increasePercent = 0;
                 if (isNaN(bonus)) bonus = 0;
                 
                 loadingDiv.style.display = 'block';
                 emptyMessageDiv.style.display = 'none';
                 slipContentArea.style.display = 'none';
+                await new Promise(r => setTimeout(r, 50));
                 
-                await new Promise(r => setTimeout(r, 200));
-                
-                const salaryCalc = calculateSalary(baseSalary, increasePercent, bonus, currency);
+                const salaryCalc = calculateSalaryWithCustomTax(baseSalary, increasePercent, bonus, customTaxPercent);
                 
                 const slipHTML = renderPayslip({
-                    companyName: companyName,
-                    companyAddress: companyAddress,
-                    employeeName: employeeName,
-                    employeePosition: employeePosition,
-                    baseSalary: baseSalary,
-                    increasePercent: increasePercent,
-                    bonus: bonus,
-                    currency: currency,
-                    salaryCalc: salaryCalc,
-                    monthName: monthName
+                    companyName, companyAddress, employeeName, employeePosition,
+                    baseSalary, increasePercent, bonus, currency, salaryCalc,
+                    monthName, dayDate, yearValue, customTaxPercent,
+                    logoDataURL: uploadedLogoDataURL
                 });
                 
                 slipContentArea.innerHTML = slipHTML;
@@ -890,21 +823,13 @@
                         const element = document.getElementById('payslipToDownload');
                         if (!element) return;
                         try {
-                            const canvas = await html2canvas(element, {
-                                scale: 2.8,
-                                backgroundColor: '#ffffff',
-                                logging: false,
-                                useCORS: false
-                            });
+                            const canvas = await html2canvas(element, { scale: 2.8, backgroundColor: '#ffffff', logging: false, useCORS: true });
                             const link = document.createElement('a');
                             const safeName = employeeName.replace(/\s/g, '_');
-                            const fileName = `payslip_${safeName}_${monthName}_2026.png`;
-                            link.download = fileName;
+                            link.download = `payslip_${safeName}_${monthName}_${yearValue}.png`;
                             link.href = canvas.toDataURL('image/png');
                             link.click();
-                        } catch(err) {
-                            alert('Gagal generate gambar: ' + err);
-                        }
+                        } catch(err) { alert('Gagal download: ' + err); }
                     });
                 }
             }
@@ -912,18 +837,21 @@
             generateBtn.addEventListener('click', generateSlip);
             
             resetBtn.addEventListener('click', function() {
-                document.getElementById('company-name').value = 'CHOBANK';
-                document.getElementById('company-address').value = 'Jl. Sudirman No. 45, Jakarta Selatan';
-                document.getElementById('employee-name').value = 'Nama Lengkap';
-                document.getElementById('employee-position').value = 'Karyawan';
-                document.getElementById('base-salary').value = '5000000';
+                document.getElementById('company-name').value = '';
+                document.getElementById('company-address').value = '';
+                document.getElementById('employee-name').value = '';
+                document.getElementById('employee-position').value = '';
+                document.getElementById('base-salary').value = '';
                 document.getElementById('salary-increase').value = '0';
                 document.getElementById('bonus-extra').value = '0';
-                const currentMonth = new Date().getMonth();
-                monthSelect.value = monthOptions[currentMonth];
+                document.getElementById('custom-tax-percent').value = '0';
+                document.getElementById('day-date').value = '';
+                const now = new Date();
+                monthSelect.value = monthOptions[now.getMonth()];
+                document.getElementById('year-date').value = now.getFullYear();
                 const idrRadio = document.querySelector('input[name="currency"][value="IDR"]');
                 if (idrRadio) idrRadio.checked = true;
-                updatePositionLabel();
+                if (logoUpload) { logoUpload.value = ''; uploadedLogoDataURL = null; document.getElementById('logoPreview').innerHTML = ''; }
                 slipContentArea.style.display = 'none';
                 emptyMessageDiv.style.display = 'block';
                 emptyMessageDiv.innerHTML = 'Silakan isi data dan klik Generate Slip Gaji';
@@ -934,4 +862,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
