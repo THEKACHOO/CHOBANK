@@ -6,7 +6,7 @@
     <title>CHOBANK - Payment Proof Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -273,6 +273,34 @@
             max-width: 700px;
             width: 100%;
             border: 1px solid rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Watermark transparan menggunakan chobank1.png */
+        .watermark-bg-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+        }
+        .watermark-bg-preview img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .proof-content-relative {
+            position: relative;
+            z-index: 2;
+            background: transparent;
         }
 
         .proof-header {
@@ -448,6 +476,7 @@
             font-size: 0.7rem;
         }
 
+        /* Responsive lebih rapi */
         @media (min-width: 768px) {
             .action-buttons, .download-options {
                 flex-direction: row;
@@ -467,6 +496,9 @@
             .generator-container { padding: 24px 18px; }
             .proof-preview { padding: 20px; }
             .proof-title { font-size: 1.4rem; }
+            .payment-option { padding: 20px 15px; }
+            .detail-row { flex-direction: column; align-items: flex-start; }
+            .detail-value { text-align: left; width: 100%; }
         }
     </style>
 </head>
@@ -683,7 +715,12 @@
                     <h3 class="preview-title">Payment Proof Preview</h3>
                     
                     <div class="preview-container">
-                        <div class="proof-preview" id="proof-preview"></div>
+                        <div class="proof-preview" id="proof-preview">
+                            <div class="watermark-bg-preview">
+                                <img src="chobank1.png" alt="watermark" onerror="this.style.display='none'">
+                            </div>
+                            <div class="proof-content-relative" id="proof-content-relative"></div>
+                        </div>
                     </div>
                     
                     <div class="download-options">
@@ -734,7 +771,7 @@
             
             const formattedDate = formatDate(date);
             const referenceNumber = generateReferenceNumber();
-            const proofPreview = document.getElementById('proof-preview');
+            const proofContentRelative = document.getElementById('proof-content-relative');
             const isDomestic = currentPaymentType === 'domestic';
             
             let headerTitle, headerSubtitle, labels;
@@ -821,7 +858,7 @@
                     
                     <div class="detail-row">
                         <div class="detail-label">${labels.sender}</div>
-                        <div class="detail-value">${payerName}</div>
+                        <div class="detail-value">${escapeHtml(payerName)}</div>
                     </div>
                     
                     <div class="detail-row">
@@ -831,17 +868,17 @@
                     
                     <div class="detail-row">
                         <div class="detail-label">${labels.recipient}</div>
-                        <div class="detail-value">${receiverName}</div>
+                        <div class="detail-value">${escapeHtml(receiverName)}</div>
                     </div>
                     
                     <div class="detail-row">
                         <div class="detail-label">${labels.recipientBank}</div>
-                        <div class="detail-value">${recipientBank}</div>
+                        <div class="detail-value">${escapeHtml(recipientBank)}</div>
                     </div>
                     
                     <div class="detail-row">
                         <div class="detail-label">${labels.recipientAccount}</div>
-                        <div class="detail-value">${receiverAccount}</div>
+                        <div class="detail-value">${escapeHtml(receiverAccount)}</div>
                     </div>
                     
                     <div class="detail-row">
@@ -864,7 +901,7 @@
                 proofContent += `
                     <div class="detail-row">
                         <div class="detail-label">${labels.invoiceNumber}</div>
-                        <div class="detail-value">${invoiceNumber}</div>
+                        <div class="detail-value">${escapeHtml(invoiceNumber)}</div>
                     </div>
                 `;
             }
@@ -881,7 +918,7 @@
                 proofContent += `
                     <div class="highlight-box">
                         <div style="font-weight: 700; margin-bottom: 8px; color: #000;">${labels.notes}:</div>
-                        <div style="color: #444;">${notes}</div>
+                        <div style="color: #444;">${escapeHtml(notes)}</div>
                     </div>
                 `;
             }
@@ -892,7 +929,7 @@
                 </div>
             `;
             
-            proofPreview.innerHTML = proofContent;
+            proofContentRelative.innerHTML = proofContent;
             
             const previewSection = document.getElementById('preview-section');
             previewSection.classList.remove('hidden');
@@ -904,6 +941,16 @@
                     block: 'start'
                 });
             }, 300);
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
         }
         
         function formatTime(isDomestic) {
@@ -962,95 +1009,52 @@
             }
             
             const loading = document.getElementById('loading');
-            loading.style.display = 'block';
+            loading.classList.remove('hidden');
             
-            const tempMeasure = document.createElement('div');
-            tempMeasure.style.position = 'fixed';
-            tempMeasure.style.left = '-9999px';
-            tempMeasure.style.top = '-9999px';
-            tempMeasure.style.width = '620px';
-            tempMeasure.style.padding = '0';
-            tempMeasure.style.backgroundColor = '#ffffff';
+            // Clone untuk capture
+            const cloneContainer = document.createElement('div');
+            cloneContainer.style.position = 'fixed';
+            cloneContainer.style.left = '-9999px';
+            cloneContainer.style.top = '-9999px';
+            cloneContainer.style.width = '700px';
+            cloneContainer.style.backgroundColor = '#ffffff';
+            cloneContainer.style.padding = '32px';
+            cloneContainer.style.borderRadius = '28px';
+            cloneContainer.style.boxSizing = 'border-box';
             
-            const clonedContentForMeasure = proofElement.cloneNode(true);
-            clonedContentForMeasure.style.background = '#ffffff';
-            clonedContentForMeasure.style.border = 'none';
-            clonedContentForMeasure.style.boxShadow = 'none';
-            clonedContentForMeasure.style.padding = '0';
-            clonedContentForMeasure.style.width = '620px';
+            const clonedProof = proofElement.cloneNode(true);
+            clonedProof.style.margin = '0';
+            clonedProof.style.padding = '32px';
+            clonedProof.style.width = '100%';
+            clonedProof.style.maxWidth = 'none';
             
-            tempMeasure.appendChild(clonedContentForMeasure);
-            document.body.appendChild(tempMeasure);
+            cloneContainer.appendChild(clonedProof);
+            document.body.appendChild(cloneContainer);
             
             setTimeout(() => {
-                const contentHeight = tempMeasure.offsetHeight;
-                const additionalPadding = 120;
-                const finalHeight = contentHeight + additionalPadding;
-                document.body.removeChild(tempMeasure);
-                
-                const tempContainer = document.createElement('div');
-                tempContainer.style.position = 'fixed';
-                tempContainer.style.left = '-9999px';
-                tempContainer.style.top = '-9999px';
-                tempContainer.style.width = '700px';
-                tempContainer.style.height = `${finalHeight}px`;
-                tempContainer.style.padding = `${additionalPadding/2}px 40px`;
-                tempContainer.style.backgroundColor = '#ffffff';
-                tempContainer.style.boxSizing = 'border-box';
-                
-                const clonedContent = proofElement.cloneNode(true);
-                clonedContent.style.background = '#ffffff';
-                clonedContent.style.border = 'none';
-                clonedContent.style.boxShadow = 'none';
-                clonedContent.style.padding = '0';
-                clonedContent.style.maxWidth = '620px';
-                clonedContent.style.width = '100%';
-                
-                const watermark = document.createElement('div');
-                watermark.style.position = 'absolute';
-                watermark.style.top = '50%';
-                watermark.style.left = '50%';
-                watermark.style.transform = 'translate(-50%, -50%) rotate(-45deg)';
-                watermark.style.fontSize = '70px';
-                watermark.style.fontWeight = '900';
-                watermark.style.color = 'rgba(0,0,0,0.06)';
-                watermark.style.zIndex = '1';
-                watermark.style.pointerEvents = 'none';
-                watermark.style.whiteSpace = 'nowrap';
-                watermark.style.letterSpacing = '8px';
-                watermark.textContent = 'ROLEPLAY ONLY';
-                
-                tempContainer.appendChild(clonedContent);
-                tempContainer.appendChild(watermark);
-                document.body.appendChild(tempContainer);
-                
-                setTimeout(() => {
-                    html2canvas(tempContainer, {
-                        scale: 2,
-                        backgroundColor: '#ffffff',
-                        useCORS: true,
-                        width: 700,
-                        height: finalHeight,
-                        logging: false
-                    }).then(canvas => {
-                        const link = document.createElement('a');
-                        const timestamp = new Date().getTime();
-                        const typeName = currentPaymentType === 'domestic' ? 'domestic' : 
-                                         currentPaymentType === 'international' ? 'international' : 'invoice';
-                        link.download = `payment-proof-${typeName}-${timestamp}.png`;
-                        link.href = canvas.toDataURL('image/png', 1.0);
-                        link.click();
-                        document.body.removeChild(tempContainer);
-                        loading.style.display = 'none';
-                        alert(currentPaymentType === 'domestic' ? 'Bukti pembayaran berhasil didownload!' : 'Payment proof successfully downloaded!');
-                    }).catch(error => {
-                        console.error('Error:', error);
-                        document.body.removeChild(tempContainer);
-                        loading.style.display = 'none';
-                        alert(currentPaymentType === 'domestic' ? 'Terjadi kesalahan. Silakan coba lagi.' : 'Error creating image. Please try again.');
-                    });
-                }, 500);
-            }, 100);
+                html2canvas(cloneContainer, {
+                    scale: 2.8,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    const timestamp = new Date().getTime();
+                    const typeName = currentPaymentType === 'domestic' ? 'domestic' : 
+                                     currentPaymentType === 'international' ? 'international' : 'invoice';
+                    link.download = `payment-proof-${typeName}-${timestamp}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    document.body.removeChild(cloneContainer);
+                    loading.classList.add('hidden');
+                    alert(currentPaymentType === 'domestic' ? 'Bukti pembayaran berhasil didownload!' : 'Payment proof successfully downloaded!');
+                }).catch(error => {
+                    console.error('Error:', error);
+                    document.body.removeChild(cloneContainer);
+                    loading.classList.add('hidden');
+                    alert(currentPaymentType === 'domestic' ? 'Terjadi kesalahan. Silakan coba lagi.' : 'Error creating image. Please try again.');
+                });
+            }, 200);
         }
     </script>
 </body>
