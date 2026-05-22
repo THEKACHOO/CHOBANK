@@ -43,7 +43,6 @@
             z-index: 2;
         }
 
-        /* HEADER - desain bersih dari revisi */
         .site-header {
             text-align: center;
             margin-bottom: 32px;
@@ -73,7 +72,6 @@
             gap: 36px;
         }
 
-        /* FORM CONTAINER - glassmorphism */
         .form-container {
             background: rgba(255,255,255,0.72);
             backdrop-filter: blur(14px);
@@ -151,7 +149,6 @@
             resize: vertical;
         }
 
-        /* CARD OPTIONS */
         .card-options {
             display: flex;
             flex-direction: column;
@@ -323,7 +320,7 @@
             flex-direction: column;
         }
 
-        /* ========== DESAIN KARTU (DARI REVISI TERAKHIR) ========== */
+        /* DESAIN KARTU - NAMA PASTI MUNCUL */
         .card-preview-container {
             perspective: 1000px;
             margin-bottom: 30px;
@@ -379,7 +376,7 @@
         }
 
         .card-logo-text {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: 1px;
             font-family: 'Outfit', sans-serif;
@@ -460,36 +457,36 @@
             margin-top: 10px;
         }
 
-        .card-holder {
+        .card-holder-label {
             font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-family: 'Outfit', sans-serif;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.7);
         }
 
         .card-holder-name {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             margin-top: 4px;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             font-family: 'Roboto Mono', monospace;
             color: #ffffff;
         }
 
-        .card-expiry {
+        .card-expiry-label {
             font-size: 9px;
             text-align: right;
             letter-spacing: 1px;
             font-family: 'Outfit', sans-serif;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.7);
         }
 
         .card-expiry-date {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             margin-top: 4px;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             font-family: 'Roboto Mono', monospace;
             color: #ffffff;
         }
@@ -520,10 +517,10 @@
             100% { transform: translateX(100%); }
         }
 
-        /* Student card overrides */
-        .card-preview.student .card-holder,
-        .card-preview.student .card-expiry {
-            color: rgba(0,0,0,0.7);
+        /* Student Card Overrides */
+        .card-preview.student .card-holder-label,
+        .card-preview.student .card-expiry-label {
+            color: rgba(0,0,0,0.6);
         }
 
         .card-preview.student .card-holder-name,
@@ -533,18 +530,11 @@
 
         .card-preview.student .card-number {
             color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
 
         .card-preview.student .card-logo-text {
             color: #000000;
         }
-
-        .card-preview.student .card-type {
-            background: rgba(255,255,255,0.5);
-            color: #000000;
-        }
-        /* ========== END OF CARD STYLES ========== */
 
         .card-info-display {
             margin-top: 20px;
@@ -655,7 +645,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Success Modal */
         .success-modal {
             position: fixed;
             top: 0;
@@ -751,26 +740,11 @@
                     <div class="form-group">
                         <label>Pilih Jenis Kartu</label>
                         <div class="card-options">
-                            <div class="card-option" data-type="regular">
-                                <div class="card-icon regular"><i class="fas fa-credit-card"></i></div>
-                                <div class="card-info"><h3>Regular Card</h3><p>Kartu standar dengan limit transaksi</p><span class="limit-badge">Limit: Rp 100.000.000</span></div>
-                            </div>
-                            <div class="card-option" data-type="silver">
-                                <div class="card-icon silver"><i class="fas fa-credit-card"></i></div>
-                                <div class="card-info"><h3>Silver Card</h3><p>Kartu premium dengan limit lebih tinggi</p><span class="limit-badge">Limit: Rp 5.000.000.000</span></div>
-                            </div>
-                            <div class="card-option" data-type="gold">
-                                <div class="card-icon gold"><i class="fas fa-gem"></i></div>
-                                <div class="card-info"><h3>Gold Card (Black)</h3><p>Kartu eksklusif tanpa batas limit</p><span class="limit-badge">Unlimited</span></div>
-                            </div>
-                            <div class="card-option" data-type="business">
-                                <div class="card-icon business"><i class="fas fa-briefcase"></i></div>
-                                <div class="card-info"><h3>Business Card</h3><p>Kartu khusus bisnis dengan warna merah maroon</p><span class="limit-badge">COMPANY NAME</span></div>
-                            </div>
-                            <div class="card-option" data-type="student">
-                                <div class="card-icon student"><i class="fas fa-graduation-cap"></i></div>
-                                <div class="card-info"><h3>Student Card</h3><p>Kartu khusus pelajar - bisa input nomor sendiri</p><span class="limit-badge">CARDHOLDER NAME</span></div>
-                            </div>
+                            <div class="card-option" data-type="regular"><div class="card-icon regular"><i class="fas fa-credit-card"></i></div><div class="card-info"><h3>Regular Card</h3><p>Kartu standar dengan limit transaksi</p><span class="limit-badge">Limit: Rp 100.000.000</span></div></div>
+                            <div class="card-option" data-type="silver"><div class="card-icon silver"><i class="fas fa-credit-card"></i></div><div class="card-info"><h3>Silver Card</h3><p>Kartu premium dengan limit lebih tinggi</p><span class="limit-badge">Limit: Rp 5.000.000.000</span></div></div>
+                            <div class="card-option" data-type="gold"><div class="card-icon gold"><i class="fas fa-gem"></i></div><div class="card-info"><h3>Gold Card (Black)</h3><p>Kartu eksklusif tanpa batas limit</p><span class="limit-badge">Unlimited</span></div></div>
+                            <div class="card-option" data-type="business"><div class="card-icon business"><i class="fas fa-briefcase"></i></div><div class="card-info"><h3>Business Card</h3><p>Kartu khusus bisnis dengan warna merah maroon</p><span class="limit-badge">COMPANY NAME</span></div></div>
+                            <div class="card-option" data-type="student"><div class="card-icon student"><i class="fas fa-graduation-cap"></i></div><div class="card-info"><h3>Student Card</h3><p>Kartu khusus pelajar - bisa input nomor sendiri</p><span class="limit-badge">CARDHOLDER NAME</span></div></div>
                         </div>
                     </div>
                     
@@ -804,10 +778,12 @@
                                     <div class="card-number" id="card-number-display">•••• •••• •••• ••••</div>
                                 </div>
                                 <div class="card-details">
-                                    <div class="card-holder" id="card-holder-label">CARDHOLDER NAME
+                                    <div>
+                                        <div class="card-holder-label" id="card-holder-label">CARDHOLDER NAME</div>
                                         <div class="card-holder-name" id="card-holder-name">FULL NAME</div>
                                     </div>
-                                    <div class="card-expiry" id="card-expiry-label">VALID THRU
+                                    <div>
+                                        <div class="card-expiry-label">VALID THRU</div>
                                         <div class="card-expiry-date" id="card-expiry-date">MM/YY</div>
                                     </div>
                                 </div>
@@ -843,7 +819,6 @@
             </div>
         </main>
         
-        <!-- Success Modal untuk Business dan Student Card -->
         <div class="success-modal" id="success-modal">
             <div class="success-modal-content">
                 <button class="close-modal" id="close-success-modal">&times;</button>
@@ -868,11 +843,7 @@
     </div>
 
     <script>
-        // ==============================
-        // SISTEM TIDAK DIUBAH - SAMA PERSIS DENGAN HTML YANG ANDA KIRIM
-        // ==============================
         let selectedCardType = '';
-        let currentAccountNumber = '';
         
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.card-option').forEach(option => {
@@ -901,7 +872,6 @@
                 document.getElementById('card-form').reset();
                 document.querySelectorAll('.card-option').forEach(opt => opt.classList.remove('selected'));
                 selectedCardType = '';
-                currentAccountNumber = '';
                 document.getElementById('card-number-input-group').classList.add('hidden');
             });
             document.getElementById('close-success-modal').addEventListener('click', function() {
@@ -946,30 +916,32 @@
         }
         
         function updateCardPreview(name, cardNumber, expiryDate, type, address) {
-            const cardPreview = document.getElementById('card-preview');
-            const cardTypeLabel = document.getElementById('card-type-label');
-            const cardNumberDisplay = document.getElementById('card-number-display');
-            const cardHolderLabel = document.getElementById('card-holder-label');
-            const cardHolderName = document.getElementById('card-holder-name');
-            const cardExpiryDate = document.getElementById('card-expiry-date');
-            const cardLogoText = document.getElementById('card-logo-text');
-            
             document.getElementById('display-card-number').textContent = cardNumber;
             document.getElementById('display-holder-name').textContent = name;
             document.getElementById('display-expiry-date').textContent = expiryDate;
             document.getElementById('display-card-type').textContent = type.toUpperCase();
             document.getElementById('display-address').textContent = address;
             
+            const displayHolderLabel = document.getElementById('display-holder-label');
+            const cardHolderLabel = document.getElementById('card-holder-label');
+            
             if (type === 'business') {
-                document.getElementById('display-holder-label').textContent = 'Nama Perusahaan:';
+                displayHolderLabel.textContent = 'Nama Perusahaan:';
                 cardHolderLabel.textContent = 'COMPANY NAME';
             } else if (type === 'student') {
-                document.getElementById('display-holder-label').textContent = 'Nama Pelajar:';
+                displayHolderLabel.textContent = 'Nama Pelajar:';
                 cardHolderLabel.textContent = 'STUDENT NAME';
             } else {
-                document.getElementById('display-holder-label').textContent = 'Nama Pemegang:';
+                displayHolderLabel.textContent = 'Nama Pemegang:';
                 cardHolderLabel.textContent = 'CARDHOLDER NAME';
             }
+            
+            const cardPreview = document.getElementById('card-preview');
+            const cardTypeLabel = document.getElementById('card-type-label');
+            const cardNumberDisplay = document.getElementById('card-number-display');
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardExpiryDate = document.getElementById('card-expiry-date');
+            const cardLogoText = document.getElementById('card-logo-text');
             
             cardPreview.className = 'card-preview ' + type;
             cardLogoText.className = 'card-logo-text ' + type;
@@ -984,9 +956,8 @@
             
             cardNumberDisplay.textContent = cardNumber;
             cardNumberDisplay.className = 'card-number';
-            if (type === 'student') cardNumberDisplay.classList.add('student-card-number');
-            else cardNumberDisplay.classList.remove('student-card-number');
             
+            // NAMA PEMEGANG KARTU - INI YANG MEMBUAT NAMA MUNCUL
             cardHolderName.textContent = name.toUpperCase();
             cardExpiryDate.textContent = expiryDate;
         }
@@ -1026,7 +997,6 @@
                 cardNumber = generateRandomCardNumber();
             }
             
-            currentAccountNumber = cardNumber.replace(/\s/g, '');
             const expiryDate = generateExpiryDate();
             updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType, address);
             
@@ -1110,7 +1080,7 @@
                     link.click();
                     document.body.removeChild(tempContainer);
                     loading.style.display = 'none';
-                    alert('Kartu ATM berhasil diunduh! (Background transparan)');
+                    alert('Kartu ATM berhasil diunduh!');
                 }).catch(err => {
                     console.error(err);
                     document.body.removeChild(tempContainer);
