@@ -355,17 +355,18 @@
             }
         }
 
-        /* INVOICE PREVIEW - STYLE SURAT / LETTER */
+        /* INVOICE PREVIEW - LETTER STYLE (LEBAR, TIDAK MEMANJANG) */
         .invoice-preview {
             margin-top: 24px;
         }
         .invoice-card {
             background: white;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 32px 36px;
             box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
             border: 1px solid #e0e0e0;
-            max-width: 1000px;
+            max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             font-family: 'Outfit', sans-serif;
         }
@@ -384,12 +385,12 @@
             gap: 20px;
         }
         .invoice-brand h2 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
         .invoice-brand p {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #666;
             margin-top: 4px;
         }
@@ -398,21 +399,21 @@
         }
         .invoice-details p {
             margin: 5px 0;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         .invoice-details strong {
             font-weight: 700;
         }
         .client-info {
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 20px;
             background: #fafafa;
-            padding: 18px 22px;
+            padding: 16px 22px;
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-left: 4px solid #000;
         }
         .bank-info {
@@ -420,18 +421,18 @@
             background: #f5f5f5;
             padding: 14px 20px;
             border-radius: 10px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: 1px solid #eee;
         }
         .inv-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 24px 0;
-            font-size: 0.85rem;
+            margin: 20px 0;
+            font-size: 0.8rem;
         }
         .inv-table th {
             background: #f2f2f2;
-            padding: 12px 10px;
+            padding: 10px 10px;
             text-align: left;
             font-weight: 700;
             border-bottom: 1px solid #ddd;
@@ -453,21 +454,21 @@
         }
         .total-invoice {
             text-align: right;
-            margin-top: 24px;
+            margin-top: 20px;
             border-top: 2px solid #ddd;
-            padding-top: 20px;
-            font-size: 1rem;
+            padding-top: 18px;
+            font-size: 0.9rem;
         }
         .total-invoice p {
-            margin: 8px 0;
+            margin: 6px 0;
         }
         .total-invoice p strong {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         .footer-note {
-            margin-top: 32px;
-            padding-top: 16px;
+            margin-top: 28px;
+            padding-top: 14px;
             text-align: center;
             font-size: 9px;
             color: #888;
@@ -477,7 +478,7 @@
             background: #000;
             color: white;
             width: 100%;
-            max-width: 300px;
+            max-width: 280px;
             margin: 20px auto 0;
             display: block;
             padding: 12px 20px;
@@ -547,7 +548,7 @@
             padding: 4px 14px;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
         .status-unpaid {
             background: #fff3e0;
@@ -556,11 +557,6 @@
         .status-paid {
             background: #e0f5e0;
             color: #1e7a1e;
-        }
-        @media print {
-            .btn-download, .action-buttons, .setting-bar, .form-container, .social-links, footer, .btn-add-item, .action-btn {
-                display: none;
-            }
         }
     </style>
 </head>
@@ -860,7 +856,7 @@
                 <td style="text-align:center">${it.qty}</td>
                 <td style="text-align:right">${fmt(it.price)}</td>
                 <td style="text-align:right">${fmt(it.amount)}</td>
-            </td>`;
+            </tr>`;
         });
         
         let adminRowHtml = '';
@@ -904,7 +900,7 @@
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
                 <p>${isId ? 'Pajak' : 'Tax'} (${taxPercent}%): ${fmt(taxAmount)}</p>
                 ${adminRowHtml}
-                <p style="margin-top:12px; font-size:1.15rem;"><strong>${isId ? 'TOTAL' : 'TOTAL'}: ${fmt(total)}</strong></p>
+                <p style="margin-top:12px; font-size:1.1rem;"><strong>${isId ? 'TOTAL' : 'TOTAL'}: ${fmt(total)}</strong></p>
             </div>
             <div class="footer-note">
                 Featured by The Kachoo in Chobank
@@ -925,12 +921,27 @@
                 invoiceDisplayDiv.style.display = 'block';
                 emptyMsg.style.display = 'none';
                 loadingDiv.style.display = 'none';
+                
                 const downloadBtn = document.getElementById('downloadInvoicePngBtn');
                 if(downloadBtn) {
                     downloadBtn.addEventListener('click', async function() {
                         const element = document.getElementById('invoiceToDownload');
                         if(element) {
-                            const canvas = await html2canvas(element, { scale: 2.8, backgroundColor: '#ffffff', logging: false });
+                            const originalWidth = element.style.width;
+                            element.style.width = '800px';
+                            element.style.margin = '0 auto';
+                            
+                            const canvas = await html2canvas(element, {
+                                scale: 2.5,
+                                backgroundColor: '#ffffff',
+                                logging: false,
+                                useCORS: false,
+                                windowWidth: element.scrollWidth,
+                                windowHeight: element.scrollHeight
+                            });
+                            
+                            element.style.width = originalWidth;
+                            
                             const link = document.createElement('a');
                             const invNoRaw = document.getElementById('invoiceNumber').value || 'invoice';
                             link.download = `invoice_${invNoRaw.replace(/\s/g,'_')}.png`;
@@ -939,7 +950,10 @@
                         }
                     });
                 }
-            } catch(e) { loadingDiv.style.display = 'none'; alert('Error: '+e); }
+            } catch(e) { 
+                loadingDiv.style.display = 'none'; 
+                alert('Error: '+e); 
+            }
         }, 80);
     }
 
