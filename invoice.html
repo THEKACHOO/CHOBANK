@@ -220,6 +220,17 @@
             transform: translateY(-1px);
         }
 
+        /* Logo upload preview */
+        .logo-preview {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 8px;
+            background: #f5f5f5;
+        }
+
         .items-section {
             margin: 24px 0 20px;
         }
@@ -385,6 +396,16 @@
             margin-bottom: 28px;
             gap: 20px;
             position: relative;
+        }
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
         }
         .invoice-brand h2 {
             font-size: 1.6rem;
@@ -645,6 +666,15 @@
                     <input type="text" id="accountNumber" class="form-control" placeholder="Nomor Rekening" value="">
                 </div>
             </div>
+
+            <!-- Upload Logo Perusahaan (Optional) -->
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label id="lblCompanyLogo">Logo Perusahaan (Optional)</label>
+                    <input type="file" id="companyLogoInput" accept="image/*" class="form-control">
+                    <img id="companyLogoPreview" class="logo-preview" style="display:none;">
+                </div>
+            </div>
             
             <div class="items-section">
                 <div class="items-header">
@@ -709,6 +739,7 @@
 <script>
     let currentLang = 'id';
     let currentCurrency = 'IDR';
+    let companyLogoDataURL = ''; // Menyimpan data URL logo perusahaan
 
     const langIdBtn = document.getElementById('btnLangId');
     const langEnBtn = document.getElementById('btnLangEn');
@@ -722,6 +753,29 @@
     const invoiceDisplayDiv = document.getElementById('invoiceDisplay');
     const loadingDiv = document.getElementById('loading');
     const bankNameInput = document.getElementById('bankName');
+    const companyLogoInput = document.getElementById('companyLogoInput');
+    const companyLogoPreview = document.getElementById('companyLogoPreview');
+
+    // Preview logo perusahaan saat upload
+    companyLogoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                companyLogoDataURL = event.target.result;
+                companyLogoPreview.src = companyLogoDataURL;
+                companyLogoPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            companyLogoDataURL = '';
+            companyLogoPreview.style.display = 'none';
+        }
+        // Jika invoice sudah tampil, refresh preview
+        if (invoiceDisplayDiv.style.display === 'block') {
+            renderInvoicePreview();
+        }
+    });
 
     function formatCurrency(amount) {
         if (currentCurrency === 'IDR') {
@@ -814,6 +868,7 @@
         document.getElementById('lblPaymentStatus').innerText = isId ? 'Status Pembayaran' : 'Payment Status';
         document.getElementById('lblBankName').innerText = isId ? 'Nama Bank' : 'Bank Name';
         document.getElementById('lblAccountNumber').innerText = isId ? 'Nomor Rekening' : 'Account Number';
+        document.getElementById('lblCompanyLogo').innerText = isId ? 'Logo Perusahaan (Opsional)' : 'Company Logo (Optional)';
         document.getElementById('statusUnpaidOpt').innerText = isId ? 'Belum Dibayar' : 'Unpaid';
         document.getElementById('statusPaidOpt').innerText = isId ? 'Sudah Dibayar' : 'Paid';
         document.getElementById('itemsTitle').innerText = isId ? 'Detail Item / Layanan' : 'Item Details / Services';
@@ -880,21 +935,27 @@
         }
         
         // LANGSUNG PAKAI chobank1.png (tanpa kapital, file lokal)
-        const logoSrc = "chobank1.png";
+        const chobankLogoSrc = "chobank1.png";
+        
+        // Logo perusahaan (jika ada)
+        const companyLogoHtml = companyLogoDataURL ? `<img src="${companyLogoDataURL}" alt="Company Logo" class="company-logo">` : '';
         
         return `
         <div class="invoice-card" id="invoiceToDownload">
             <div class="invoice-header">
-                <div class="invoice-brand">
-                    <h2>${escapeHtml(company) || (isId ? 'NAMA PERUSAHAAN' : 'COMPANY NAME')}</h2>
-                    <p>${isId ? 'Invoice Digital' : 'Digital Invoice'}</p>
+                <div class="brand-container">
+                    ${companyLogoHtml}
+                    <div class="invoice-brand">
+                        <h2>${escapeHtml(company) || (isId ? 'NAMA PERUSAHAAN' : 'COMPANY NAME')}</h2>
+                        <p>${isId ? 'Invoice Digital' : 'Digital Invoice'}</p>
+                    </div>
                 </div>
                 <div class="invoice-details">
                     <div class="details-text">
                         <p><strong>${isId ? 'No. Invoice' : 'Invoice No'}:</strong> ${escapeHtml(invNo) || (isId ? 'INV-001' : 'INV-001')}</p>
                         <p><strong>${isId ? 'Tanggal Jatuh Tempo' : 'Due Date'}:</strong> ${escapeHtml(dueDateVal)}</p>
                     </div>
-                    <img src="${logoSrc}" alt="Chobank Logo" class="chobank-logo-small">
+                    <img src="${chobankLogoSrc}" alt="Chobank Logo" class="chobank-logo-small" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'%3E%3Ccircle cx=\\'50\\' cy=\\'50\\' r=\\'45\\' fill=\\'%23000000\\'/%3E%3Ctext x=\\'50\\' y=\\'70\\' font-size=\\'50\\' text-anchor=\\'middle\\' fill=\\'%23ffffff\\' font-family=\\'Arial, sans-serif\\' font-weight=\\'bold\\'%3EC%3C/text%3E%3C/svg%3E';">
                 </div>
             </div>
             <div class="client-info">
@@ -915,7 +976,7 @@
                         <th>${isId ? 'Jumlah' : 'Amount'}</th>
                     </tr>
                 </thead>
-                <tbody>${tableRowsHtml || `</table><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td></tr>`}</tbody>
+                <tbody>${tableRowsHtml || `<tr><td colspan="4" style="text-align:center;">${isId ? 'Tidak ada item' : 'No items'}</td></tr>`}</tbody>
             </table>
             <div class="total-invoice">
                 <p>${isId ? 'Subtotal' : 'Subtotal'}: ${fmt(subtotal)}</p>
@@ -988,6 +1049,12 @@
         document.getElementById('paymentStatus').value = 'unpaid';
         document.getElementById('bankName').value = '';
         document.getElementById('accountNumber').value = '';
+        // Reset logo perusahaan
+        companyLogoInput.value = '';
+        companyLogoDataURL = '';
+        companyLogoPreview.style.display = 'none';
+        companyLogoPreview.src = '';
+        
         tableBody.innerHTML = `
             <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga" value="" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
             <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga" value="" step="50000"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
