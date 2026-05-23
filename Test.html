@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK - Digital Banking for Roleplay</title>
-    <!-- Fonts & Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CHOBANK - Smart Cheque Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,554 +13,785 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: #111;
+            background: #ffffff;
+            color: #000000;
             line-height: 1.5;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
             position: relative;
         }
 
-        /* Background logic: mobile vs desktop (exactly from CHOBANK design) */
-        @media (max-width: 768px) {
-            body {
-                background-image: url('Chobank.jpg');
-                background-size: cover;
-                background-position: center top;
-            }
-        }
-        @media (min-width: 769px) {
-            body {
-                background-image: url('Chobank.jpg');
-                background-size: cover;
-                background-position: center center;
-            }
-        }
-
-        /* Overlay semi-transparan agar teks & tombol tetap kontras (dari CHOBANK) */
         body::before {
             content: '';
             position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 35%, rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 20px 48px;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px 28px 48px;
+            }
+        }
+
+        .site-header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 12px 0 8px;
+            background: transparent;
+        }
+
+        .header-chobank {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #000000;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 480px) {
+            .header-chobank {
+                font-size: 2.4rem;
+            }
+        }
+
+        .tagline-mini {
+            font-size: 0.8rem;
+            color: #4a4a4a;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .setting-bar {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.02);
+            padding: 10px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+        .setting-group span {
+            font-weight: 600;
+        }
+        .toggle-btn {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .toggle-btn.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+
+        .form-container {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(14px);
+            border-radius: 40px;
+            padding: 24px 20px;
+            width: 100%;
+            box-shadow: 0 15px 35px -12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 640px) {
+            .form-container {
+                padding: 32px 28px;
+            }
+        }
+
+        .form-container h2 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #000000;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .form-container h2:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #000;
+            margin: 10px auto 0;
+            border-radius: 4px;
+        }
+
+        .form-row-2 {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .form-row-2 .form-group {
+            flex: 1;
+            min-width: 160px;
+            margin-bottom: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #000000;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-control, select.form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid rgba(0,0,0,0.2);
+            border-radius: 32px;
+            background-color: #ffffff;
+            color: #111;
+            font-size: 14px;
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            appearance: none;
+        }
+        select.form-control {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .form-control:focus {
+            border-color: #000000;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+        }
+
+        .logo-preview {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 8px;
+            background: #f5f5f5;
+        }
+
+        .items-section {
+            margin: 24px 0 20px;
+        }
+        .items-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .items-header h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .btn-add-item {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Outfit';
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .btn-add-item:hover {
+            background: #2c2c2c;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #e2e2e2;
+            padding: 10px 8px;
+            text-align: left;
+            vertical-align: middle;
+            font-size: 0.8rem;
+        }
+        .invoice-table th {
+            background: #f8f8f8;
+            font-weight: 700;
+        }
+        .invoice-table input {
+            width: 100%;
+            padding: 8px 8px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-family: 'Outfit';
+            font-size: 0.8rem;
+            background: white;
+        }
+        .btn-remove-row {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #a00;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+        }
+        .total-summary {
+            text-align: right;
+            margin-top: 20px;
+            padding: 14px 18px;
+            background: #fafafa;
+            border-radius: 28px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .total-summary p {
+            margin: 5px 0;
+        }
+        .total-summary p strong {
+            font-weight: 800;
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 28px;
+            width: 100%;
+        }
+        .action-btn {
+            display: block;
+            padding: 12px 20px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 1.5px solid #000000;
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            background: transparent;
+        }
+        .btn-primary {
+            background: #000000;
+            color: #ffffff;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+        .btn-primary:hover {
+            background: #1c1c1c;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: rgba(0,0,0,0.02);
+            color: #000000;
+            border: 1.5px solid #111;
+        }
+        .btn-secondary:hover {
+            background: rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 640px) {
+            .action-buttons {
+                flex-direction: row;
+                gap: 16px;
+            }
+            .action-btn {
+                width: auto;
+                flex: 1;
+            }
+        }
+
+        /* CHEQUE LANDSCAPE CLASSIC DESIGN - putih dan hitam */
+        .cheque-preview {
+            margin-top: 24px;
+        }
+        .cheque-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            border: 1px solid #e5e7eb;
+            max-width: 980px;
+            width: 100%;
+            margin: 0 auto;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Watermark chobank1.png dengan opacity 1-2% (sangat pudar) */
+        .cheque-card::after {
+            content: "";
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.45);
-            z-index: -1;
+            background-image: url('chobank1.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 40% auto;
+            opacity: 0.018;
             pointer-events: none;
+            z-index: 0;
         }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 16px 24px 30px;
-            width: 100%;
-        }
-
-        /* ========== HEADER - HANYA LOGO CENTER (dari CHOBANK) ========== */
-        header {
-            background-color: rgba(255, 255, 255, 0.98);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            padding: 20px 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.98);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .header-content {
+        .cheque-header-classic {
             display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .logo-img {
-            height: 48px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-            transition: transform 0.2s ease;
-        }
-
-        .logo-container:hover .logo-img {
-            transform: scale(1.02);
-        }
-
-        /* ========== MAIN CONTENT (Banking Interface - seperti CHOBANK tapi dengan card grid) ========== */
-        .main-banking {
-            flex: 1;
-            padding: 140px 0 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        @media (max-width: 768px) {
-            .main-banking { padding: 120px 0 60px; }
-        }
-
-        /* Welcome Card / Header minimal */
-        .welcome-header {
-            text-align: center;
-            margin-bottom: 48px;
-            max-width: 700px;
-            width: 100%;
-        }
-        .banking-title {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            margin-bottom: 12px;
-        }
-        .banking-sub {
-            color: rgba(255,255,255,0.85);
-            font-size: 1.2rem;
-            font-weight: 500;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(8px);
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 60px;
-        }
-
-        /* Feature Cards Grid - HANYA 2 CARD (Digital ATM Card & Transaction) */
-        .menu-options {
-            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 32px;
-            margin: 20px 0 40px;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .menu-option {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(8px);
-            border: 2px solid #ffffff;
-            border-radius: 36px;
-            padding: 32px 28px 32px;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3);
-            background: linear-gradient(145deg, #ffffff, #fefefe);
-            flex: 1 1 300px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            gap: 20px;
             position: relative;
-        }
-
-        .menu-option:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: #000000;
-            box-shadow: 0 30px 45px -12px rgba(0,0,0,0.4);
-        }
-
-        .menu-icon {
-            font-size: 3.6rem;
-            margin-bottom: 20px;
-            color: #000;
-            background: linear-gradient(145deg, #0a0a0a, #2c2c2c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: 0.25s;
-        }
-
-        .menu-option:hover .menu-icon {
-            transform: scale(1.08) rotate(1deg);
-        }
-
-        .menu-option h2 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: #000;
-            line-height: 1.2;
-        }
-
-        .menu-option p {
-            color: #2c2c2c;
-            margin-bottom: 28px;
-            font-size: 0.95rem;
-            max-width: 280px;
-            opacity: 0.85;
-            font-weight: 500;
-        }
-
-        .action-btn {
-            background: #000000;
-            color: #fff;
-            padding: 14px 28px;
-            border-radius: 60px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1rem;
-            border: 2px solid #000;
-            width: 100%;
-            max-width: 220px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
             z-index: 2;
         }
-
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0%;
-            height: 300%;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(25deg);
-            transition: width 0.6s ease;
-            z-index: -1;
-        }
-
-        .action-btn:hover::before {
-            width: 200%;
-        }
-
-        .action-btn:hover {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
-            transform: translateY(-4px);
-            box-shadow: 0 16px 24px -6px rgba(0,0,0,0.3);
-        }
-
-        /* home icon (opsional, mirip index asli) */
-        .home-icon-container {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0 20px;
-        }
-
-        .home-icon {
+        .cheque-bank-info {
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 58px;
-            height: 58px;
-            background: rgba(255,255,255,0.95);
-            color: #000;
-            border: 3px solid #000;
-            border-radius: 40px;
-            font-size: 26px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 6px 0 #000;
-            text-decoration: none;
-            backdrop-filter: blur(4px);
+            gap: 14px;
         }
-
-        .home-icon:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 0 #000;
-            background: #ffffff;
+        .bank-logo-small {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
         }
-
-        /* Footer - gaya dari CHOBANK (clean, dark) */
-        footer {
-            background: #000000;
-            color: #FFFFFF;
-            padding: 60px 0 40px;
-            margin-top: auto;
+        .bank-title h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
-        @media (max-width: 768px) { footer { padding: 50px 0 30px; } }
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 48px;
-            margin-bottom: 50px;
+        .bank-title p {
+            font-size: 0.7rem;
+            color: #444;
         }
-        .footer-section h3 {
-            font-size: 18px;
+        .cheque-number-area {
+            text-align: right;
+            background: #f8f8f8;
+            padding: 6px 14px;
+            border-radius: 30px;
+        }
+        .cheque-number-area span {
+            font-family: 'Roboto Mono', monospace;
             font-weight: 700;
-            margin-bottom: 24px;
-            position: relative;
-            display: inline-block;
         }
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 32px;
-            height: 2px;
-            background: #FFFFFF;
-        }
-        .footer-links { list-style: none; }
-        .footer-links li { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 15px; transition: 0.2s; }
-        .footer-links a:hover { color: white; transform: translateX(4px); display: inline-block; }
-        .social-links { display: flex; gap: 16px; margin-top: 24px; }
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: white;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .social-link:hover { background: white; color: black; transform: translateY(-4px); }
-        .x-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 18px; }
-        .copyright { text-align: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 14px; }
-        
-        .warning-box {
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 28px;
-            padding: 16px 22px;
+        .payee-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 24px;
             margin-bottom: 28px;
+            background: #fef9e6;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border-left: 6px solid #000;
+            position: relative;
+            z-index: 2;
+        }
+        .pay-to {
+            flex: 2;
+        }
+        .pay-to label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #555;
+            letter-spacing: 1px;
+        }
+        .pay-to .payee-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-bottom: 2px dotted #aaa;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .amount-box {
+            flex: 1;
+            text-align: right;
+        }
+        .amount-box label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .amount-figure {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
+        }
+        .amount-in-words {
+            margin: 16px 0 20px;
+            padding: 12px 18px;
+            background: #f3f3f3;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-style: italic;
+            border: 1px solid #e0e0e0;
+            position: relative;
+            z-index: 2;
+        }
+        .bank-details-strip {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: #fafafa;
+            padding: 12px 18px;
+            border-radius: 16px;
+            margin: 16px 0;
+            font-size: 0.75rem;
+            border: 1px solid #ececec;
+            position: relative;
+            z-index: 2;
+        }
+        .memo-line {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px dashed #ccc;
+            padding-top: 18px;
+            margin-top: 12px;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 2;
+        }
+        .cheque-footer {
+            margin-top: 24px;
+            padding-top: 12px;
+            text-align: center;
+            font-size: 8px;
+            color: #aaa;
+            border-top: 1px solid #ececec;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        .btn-download {
+            background: #000;
+            color: white;
+            width: 100%;
+            max-width: 280px;
+            margin: 20px auto 0;
+            display: block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Outfit';
             text-align: center;
         }
-        .warning-box strong {
-            color: #ffd966;
-            font-size: 0.95rem;
-            display: block;
-            margin-bottom: 8px;
+        .empty-message {
+            text-align: center;
+            background: #f6f6f6;
+            border-radius: 36px;
+            padding: 48px 20px;
+            color: #888;
+            font-size: 0.9rem;
         }
-        .warning-box p {
-            color: #ccc;
-            font-size: 0.85rem;
+        .status-stamp {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
         }
-
-        /* Animations fade in */
-        @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .social-links {
+            text-align: center;
+            margin: 32px 0 20px;
+            font-size: 0.8rem;
+            line-height: 1.8;
         }
-        .fade-in {
-            animation: fadeSlideUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1) forwards;
-            opacity: 0;
+        .social-links a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dotted #000;
         }
-
-        @media (max-width: 680px) {
-            .menu-options { gap: 24px; }
-            .menu-option { max-width: 100%; }
-            .banking-title { font-size: 2.4rem; }
+        footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            color: #4a4a4a;
         }
-
-        /* Splash screen (logo + CHOBANK) from original index */
-        .splash-screen {
-            position: fixed;
-            inset: 0;
-            background: #ffffff;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-        }
-        .splash-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            animation: splashFloat 2.2s infinite alternate ease-in-out;
-        }
-        .splash-logo {
-            max-width: 140px;
-            width: 30vw;
-            height: auto;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2));
-        }
-        .splash-title {
-            font-size: clamp(3rem, 15vw, 6rem);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            background: linear-gradient(145deg, #000, #1e1e1e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 4px 8px 20px rgba(0,0,0,0.1);
-            line-height: 1;
-        }
-        @keyframes splashFloat {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-12px); }
-        }
-        .splash-screen.fade-out {
-            opacity: 0;
-        }
-        .splash-screen.hidden {
+        .loading {
+            text-align: center;
+            padding: 20px;
             display: none;
+        }
+        .spinner {
+            border: 3px solid #eee;
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-
-    <!-- SPLASH SCREEN: Logo CHOBANK1.png + CHOBANK title (dari index) -->
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-content">
-            <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="this.onerror=null; this.style.display='none'; let fallback=document.createElement('i'); fallback.className='fas fa-university'; fallback.style.fontSize='5rem'; fallback.style.color='#000'; this.parentNode.prepend(fallback);">
-            <div class="splash-title">CHOBANK</div>
-        </div>
+<div class="container">
+    <div class="site-header">
+        <div class="header-chobank">CHOBANK</div>
+        <div class="tagline-mini">Classic Cheque Writer • Landscape</div>
     </div>
 
-    <!-- MAIN CONTENT: Desain seperti CHOBANK (background full, header fixed logo), tapi isi tombol seperti index (hanya Digital ATM Card & Payment Proof/Transaction) -->
-    <div id="mainContainer" style="opacity: 0; transition: opacity 0.8s ease; width:100%; display:flex; flex-direction:column; min-height:100vh;">
-        <header>
-            <div class="container header-content">
-                <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <img src="logochobank.png" alt="CHOBANK Logo" class="logo-img" onerror="this.src='https://placehold.co/120x40?text=CHOBANK'">
-                </div>
-            </div>
-        </header>
-
-        <main class="main-banking">
-            <div class="welcome-header fade-in" style="animation-delay: 0.1s;">
-                <h1 class="banking-title">CHOBANK</h1>
-                <p class="banking-sub">Digital Banking for Roleplay</p>
-            </div>
-
-            <!-- HANYA 2 CARD: Digital ATM Card & Payment Proof (Transaction) -->
-            <div class="menu-options">
-                <!-- 1. Digital ATM Card (link ke card.html) -->
-                <div class="menu-option fade-in" style="animation-delay: 0.2s;">
-                    <div class="menu-icon"><i class="fas fa-credit-card"></i></div>
-                    <h2>Digital ATM Card</h2>
-                    <p>Create CHOBANK digital cards: Regular, Silver, Gold. Unique numbers & premium design.</p>
-                    <a href="card.html" class="action-btn"><i class="fas fa-credit-card"></i> Create Card</a>
-                </div>
-
-                <!-- 2. Payment Proof / Transaction (link ke transaction.html, sesuai index asli) -->
-                <div class="menu-option fade-in" style="animation-delay: 0.3s;">
-                    <div class="menu-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h2>Transaction</h2>
-                    <p>Generate domestic/international payment proofs with realistic details.</p>
-                    <a href="transaction.html" class="action-btn"><i class="fas fa-exchange-alt"></i> Make Transaction</a>
-                </div>
-            </div>
-
-            <!-- Home icon (tetap seperti index) -->
-            <div class="home-icon-container fade-in" style="animation-delay: 0.4s;">
-                <a href="https://thekachoo.github.io/Home/index.html" class="home-icon" title="home">
-                    <i class="fas fa-home"></i>
-                </a>
-            </div>
-        </main>
-
-        <!-- Footer gaya CHOBANK dengan fictional notice seperti index -->
-        <footer>
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h3>CHOBANK</h3>
-                        <p style="color:rgba(255,255,255,0.7); margin-top:16px;">Digital banking solution by KACHOO, seamless transactions for all platforms.</p>
-                        <div class="social-links">
-                            <a href="mailto:ohkachoo@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
-                            <a href="https://twitter.com/thekachoo" target="_blank" class="social-link"><span class="x-logo">𝕏</span></a>
-                        </div>
-                    </div>
-                    <div class="footer-section">
-                        <h3>Contact</h3>
-                        <ul class="footer-links">
-                            <li><span class="x-logo" style="background:white; color:black; border-radius:3px; padding:2px 6px; margin-right:6px;">𝕏</span><a href="https://twitter.com/TheKachoo" target="_blank">@TheKachoo</a></li>
-                            <li><i class="fas fa-envelope"></i><a href="mailto:ohkachoo@gmail.com">ohkachoo@gmail.com</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h3>Address</h3>
-                        <ul class="footer-links">
-                            <li style="color:rgba(255,255,255,0.7);"><i class="fas fa-map-marker-alt"></i> Jenderal Sudirman Avenue, Lots 61–62, South Jakarta 12930, Indonesia</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="warning-box">
-                    <strong>⚠ FICTIONAL NOTICE</strong>
-                    <p>CHOBANK is a roleplay platform. No real money or assets are used. All transactions, cards, and proofs are fictional.</p>
-                </div>
-                <div class="copyright">&copy; 2026 CHOBANK | KACHOO. All rights reserved.</div>
-            </div>
-        </footer>
+    <div class="setting-bar">
+        <div class="setting-group"><span>Bahasa:</span><button id="btnLangId" class="toggle-btn active">Indonesia</button><button id="btnLangEn" class="toggle-btn">English</button></div>
+        <div class="setting-group"><span>Mata Uang:</span><button id="btnCurrIdr" class="toggle-btn active">IDR (Rp)</button><button id="btnCurrUsd" class="toggle-btn">USD ($)</button></div>
     </div>
 
-    <script>
-        (function() {
-            // === SPLASH SCREEN LOGIC (seperti index: muncul, lalu fade) ===
-            const splash = document.getElementById('splashScreen');
-            const mainContainer = document.getElementById('mainContainer');
+    <section class="form-container">
+        <h2 id="formTitle">Cetak Cek / Cheque Generator</h2>
+        <form id="chequeForm">
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblCompany">Nama Pemberi / Akun</label><input type="text" id="companyName" class="form-control" placeholder="Nama Perusahaan / Pemberi" value=""></div>
+                <div class="form-group"><label id="lblClient">Nama Penerima (Payee)</label><input type="text" id="clientName" class="form-control" placeholder="Nama Penerima" value=""></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblEmail">Email Penerima</label><input type="email" id="clientEmail" class="form-control" placeholder="email@contoh.com" value=""></div>
+                <div class="form-group"><label id="lblAddress">Alamat (Opsional)</label><input type="text" id="clientAddress" class="form-control" placeholder="Jl. Contoh No.123, Jakarta" value=""></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblInvoiceNo">Nomor Cek / Cheque No.</label><input type="text" id="invoiceNumber" class="form-control" placeholder="CHQ-001" value=""></div>
+                <div class="form-group"><label id="lblDueDate">Tanggal Cek</label><input type="date" id="dueDate" class="form-control"></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblPaymentStatus">Status Cek</label><select id="paymentStatus" class="form-control"><option value="unpaid" id="statusUnpaidOpt">Belum Dicairkan</option><option value="paid" id="statusPaidOpt">Sudah Cair</option></select></div>
+                <div class="form-group"><label id="lblBankName">Nama Bank Penerbit</label><input type="text" id="bankName" class="form-control" placeholder="CHOBANK, BCA, BRI" value=""></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblAccountNumber">No. Rekening / Ref</label><input type="text" id="accountNumber" class="form-control" placeholder="123-456-7890" value=""></div>
+                <div class="form-group"><label id="lblCompanyLogo">Logo (Opsional)</label><input type="file" id="companyLogoInput" accept="image/*" class="form-control"><img id="companyLogoPreview" class="logo-preview" style="display:none;"></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label id="lblMemo">Memo / Catatan</label><input type="text" id="memoText" class="form-control" placeholder="Keterangan transaksi" value=""></div>
+                <div class="form-group"></div>
+            </div>
+            
+            <div class="items-section">
+                <div class="items-header"><h3 id="itemsTitle">Rincian Nilai Cek</h3><button type="button" id="addItemBtn" class="btn-add-item"><span id="addBtnText">+ Tambah Baris</span></button></div>
+                <div style="overflow-x:auto;">
+                    <table class="invoice-table" id="itemsTable">
+                        <thead>
+                            <tr><th id="thDesc">Deskripsi</th><th id="thQty" style="width:80px">Qty</th><th id="thPrice">Nominal Satuan</th><th id="thAction" style="width:50px">Aksi</th></tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi item" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga satuan" value=""></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
+                            <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi item" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga satuan" value=""></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="total-summary" id="totalSummaryBox">
+                    <p id="subtotalLabel">Subtotal: Rp0</p>
+                    <p id="adminLabel">Admin Chobank (1%): Rp0</p>
+                    <p id="totalLabel"><strong>Total Nilai Cek: Rp0</strong></p>
+                </div>
+            </div>
+            <div class="action-buttons"><button type="button" id="generateChequeBtn" class="action-btn btn-primary"><span id="genBtnText">Generate Cheque / Cek</span></button><button type="reset" id="resetFormBtn" class="action-btn btn-secondary"><span id="resetBtnText">Reset Form</span></button></div>
+        </form>
+    </section>
 
-            // fallback jika gambar splash error
-            const splashLogo = document.getElementById('splashLogo');
-            if(splashLogo) {
-                splashLogo.onerror = function() {
-                    this.style.display = 'none';
-                    const fallbackIcon = document.createElement('i');
-                    fallbackIcon.className = 'fas fa-university';
-                    fallbackIcon.style.fontSize = '5rem';
-                    fallbackIcon.style.color = '#000';
-                    fallbackIcon.style.marginBottom = '1rem';
-                    const splashContent = document.querySelector('.splash-content');
-                    if(splashContent) splashContent.prepend(fallbackIcon);
-                };
-            }
+    <div class="cheque-preview" id="chequePreviewArea"><div id="emptyPreviewMsg" class="empty-message">Isi data dan klik Generate untuk melihat cek landscape klasik</div><div id="chequeDisplay" style="display:none;"></div></div>
+    <div class="loading" id="loading"><div class="spinner"></div><p>Memproses cek...</p></div>
+    <div class="social-links"><div>Official Account : <a href="https://x.com/thekachoo" target="_blank">@thekachoo</a></div><div>Contact Person : <a href="https://x.com/tuaipuji" target="_blank">@tuaipuji</a></div><div>Email : <a href="mailto:ohkachoo@gmail.com">ohkachoo@gmail.com</a></div></div>
+    <footer><p>© 2026 CHOBANK, Cheque Generator Digital | For Roleplay Purpose Only</p></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+    let currentLang = 'id', currentCurrency = 'IDR', companyLogoDataURL = '';
+    const langId = document.getElementById('btnLangId'), langEn = document.getElementById('btnLangEn'), currIdr = document.getElementById('btnCurrIdr'), currUsd = document.getElementById('btnCurrUsd');
+    const addItem = document.getElementById('addItemBtn'), tableBody = document.getElementById('tableBody');
+    const generateBtn = document.getElementById('generateChequeBtn'), resetBtn = document.getElementById('resetFormBtn');
+    const emptyMsg = document.getElementById('emptyPreviewMsg'), chequeDisplay = document.getElementById('chequeDisplay'), loadingDiv = document.getElementById('loading');
+    const bankNameInput = document.getElementById('bankName'), companyLogoInput = document.getElementById('companyLogoInput'), logoPreview = document.getElementById('companyLogoPreview');
+    const memoInput = document.getElementById('memoText'), clientAddressInput = document.getElementById('clientAddress');
 
-            // Tampilkan splash selama 1.6 detik lalu fade out (sama persis index)
-            setTimeout(() => {
-                splash.classList.add('fade-out');
-                setTimeout(() => {
-                    splash.classList.add('hidden');
-                    if(mainContainer) mainContainer.style.opacity = '1';
-                }, 1200);
-            }, 1600);
+    companyLogoInput.addEventListener('change', e => { if(e.target.files[0]) { const reader = new FileReader(); reader.onload = ev => { companyLogoDataURL = ev.target.result; logoPreview.src = companyLogoDataURL; logoPreview.style.display = 'block'; }; reader.readAsDataURL(e.target.files[0]); } else { companyLogoDataURL = ''; logoPreview.style.display = 'none'; } if(chequeDisplay.style.display === 'block') renderCheque(); });
 
-            // Header scroll shadow (dari chobank)
-            window.addEventListener('scroll', () => {
-                const header = document.querySelector('header');
-                if(window.scrollY > 100) header.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.08)';
-                else header.style.boxShadow = 'none';
-            });
-            window.dispatchEvent(new Event('scroll'));
+    function formatCurrency(amount) { return currentCurrency === 'IDR' ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount) : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount); }
+    function isChobankBank() { return (bankNameInput?.value?.toLowerCase().trim() || '') === 'chobank'; }
+    function numberToWords(num) { if(num === 0) return 'Zero'; const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']; const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']; const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']; function convert(n) { if(n === 0) return ''; if(n < 10) return units[n]; if(n < 20) return teens[n-10]; if(n < 100) return tens[Math.floor(n/10)] + (n%10 !== 0 ? ' ' + units[n%10] : ''); if(n < 1000) return units[Math.floor(n/100)] + ' Hundred' + (n%100 !== 0 ? ' ' + convert(n%100) : ''); if(n < 1000000) return convert(Math.floor(n/1000)) + ' Thousand' + (n%1000 !== 0 ? ' ' + convert(n%1000) : ''); return convert(Math.floor(n/1000000)) + ' Million' + (n%1000000 !== 0 ? ' ' + convert(n%1000000) : ''); } return convert(Math.floor(num)); }
 
-            // Sedikit efek mouse parallax pada grid latar belakang (opsional, dari index)
-            document.addEventListener('mousemove', function(e) {
-                const x = e.clientX / window.innerWidth - 0.5;
-                const y = e.clientY / window.innerHeight - 0.5;
-                // efek subtle pada body overlay (tidak mengganggu)
-                if(document.body) {
-                    document.body.style.backgroundPosition = `${50 + x * 2}% ${50 + y * 2}%`;
-                }
-            });
-        })();
-    </script>
+    function getTotalAmount() {
+        let subtotal = 0; document.querySelectorAll('#tableBody .item-row').forEach(row => { const qty = parseFloat(row.querySelector('.item-qty')?.value)||0, price = parseFloat(row.querySelector('.item-price')?.value)||0; subtotal += qty*price; });
+        const admin = !isChobankBank() ? subtotal * 0.01 : 0; 
+        return subtotal + admin;
+    }
+
+    function recalcTotals() {
+        let subtotal = 0; document.querySelectorAll('#tableBody .item-row').forEach(row => { const qty = parseFloat(row.querySelector('.item-qty')?.value)||0, price = parseFloat(row.querySelector('.item-price')?.value)||0; subtotal += qty*price; });
+        const useAdmin = !isChobankBank(), adminFee = useAdmin ? subtotal * 0.01 : 0, total = subtotal + adminFee;
+        const isId = currentLang === 'id'; 
+        document.getElementById('subtotalLabel').innerHTML = `${isId ? 'Subtotal' : 'Subtotal'}: ${formatCurrency(subtotal)}`;
+        if(useAdmin) { document.getElementById('adminLabel').innerHTML = `${isId ? 'Admin Chobank (1%)' : 'Admin Fee (1%)'}: ${formatCurrency(adminFee)}`; document.getElementById('adminLabel').style.display = 'block'; } 
+        else document.getElementById('adminLabel').style.display = 'none';
+        document.getElementById('totalLabel').innerHTML = `<strong>${isId ? 'Total Nilai Cek' : 'Cheque Amount'}: ${formatCurrency(total)}</strong>`;
+    }
+
+    function attachRowEvents() { document.querySelectorAll('#tableBody .item-row').forEach(row => { const qty = row.querySelector('.item-qty'), price = row.querySelector('.item-price'), rm = row.querySelector('.btn-remove-row'); if(qty) qty.addEventListener('input',()=>recalcTotals()); if(price) price.addEventListener('input',()=>recalcTotals()); if(rm) rm.onclick = () => { if(document.querySelectorAll('#tableBody .item-row').length>1) row.remove(); recalcTotals(); }; }); recalcTotals(); }
+    addItem.addEventListener('click',()=>{ const nr = document.createElement('tr'); nr.className='item-row'; nr.innerHTML=`<td><input type="text" class="item-desc" placeholder="Deskripsi"></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Nominal"></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td>`; tableBody.appendChild(nr); attachRowEvents(); recalcTotals(); });
+    bankNameInput?.addEventListener('input', recalcTotals);
+
+    function updateUITexts() {
+        const isId = currentLang==='id';
+        document.getElementById('formTitle').innerText = isId ? 'Cetak Cek / Cheque Generator' : 'Cheque Generator'; 
+        document.getElementById('lblCompany').innerText = isId ? 'Nama Pemberi / Akun' : 'Drawer / Account'; 
+        document.getElementById('lblClient').innerText = isId ? 'Nama Penerima (Payee)' : 'Payee Name'; 
+        document.getElementById('lblEmail').innerText = isId ? 'Email Penerima' : 'Payee Email';
+        document.getElementById('lblAddress').innerText = isId ? 'Alamat (Opsional)' : 'Address (Optional)';
+        document.getElementById('lblInvoiceNo').innerText = isId ? 'Nomor Cek' : 'Cheque No.'; 
+        document.getElementById('lblDueDate').innerText = isId ? 'Tanggal Cek' : 'Cheque Date'; 
+        document.getElementById('lblPaymentStatus').innerText = isId ? 'Status Cek' : 'Cheque Status'; 
+        document.getElementById('lblBankName').innerText = isId ? 'Nama Bank Penerbit' : 'Bank Name'; 
+        document.getElementById('lblAccountNumber').innerText = isId ? 'No. Rekening / Ref' : 'Account/Ref'; 
+        document.getElementById('lblCompanyLogo').innerText = isId ? 'Logo (Opsional)' : 'Logo'; 
+        document.getElementById('lblMemo').innerText = isId ? 'Memo / Catatan' : 'Memo'; 
+        document.getElementById('statusUnpaidOpt').innerText = isId ? 'Belum Dicairkan' : 'Uncleared'; 
+        document.getElementById('statusPaidOpt').innerText = isId ? 'Sudah Cair' : 'Cleared'; 
+        document.getElementById('itemsTitle').innerText = isId ? 'Rincian Nilai Cek' : 'Cheque Breakdown'; 
+        document.getElementById('addBtnText').innerText = isId ? '+ Tambah Baris' : '+ Add Row'; 
+        document.getElementById('thDesc').innerText = isId ? 'Deskripsi' : 'Description'; 
+        document.getElementById('thQty').innerText = 'Qty'; 
+        document.getElementById('thPrice').innerText = isId ? 'Nominal Satuan' : 'Unit Amount'; 
+        document.getElementById('thAction').innerText = isId ? 'Aksi' : 'Action'; 
+        document.getElementById('genBtnText').innerText = isId ? 'Generate Cheque / Cek' : 'Generate Cheque'; 
+        document.getElementById('resetBtnText').innerText = isId ? 'Reset Form' : 'Reset Form'; 
+        recalcTotals();
+    }
+
+    function escapeHtml(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+
+    function generateChequeHTML() {
+        const company = document.getElementById('companyName').value.trim();
+        const payee = document.getElementById('clientName').value.trim() || (currentLang==='id' ? '-' : '-');
+        const email = document.getElementById('clientEmail').value.trim();
+        const address = document.getElementById('clientAddress').value.trim();
+        const chequeNo = document.getElementById('invoiceNumber').value.trim() || (currentLang==='id' ? 'CHK-001' : 'CHK-001');
+        let dateVal = document.getElementById('dueDate').value;
+        if(!dateVal) dateVal = new Date().toISOString().split('T')[0];
+        const status = document.getElementById('paymentStatus').value;
+        const bank = document.getElementById('bankName').value.trim() || (currentLang==='id' ? 'CHOBANK' : 'CHOBANK');
+        const accRef = document.getElementById('accountNumber').value.trim() || '-';
+        const memo = document.getElementById('memoText').value.trim() || (currentLang==='id' ? '-' : '-');
+        const totalAmount = getTotalAmount();
+        const isId = currentLang==='id';
+        const fmt = (v)=>formatCurrency(v);
+        const isPaid = status === 'paid';
+        const statusText = isId ? (isPaid ? 'SUDAH CAIR' : 'BELUM CAIR') : (isPaid ? 'CLEARED' : 'UNCLEARED');
+        const statusClass = isPaid ? '#d4edda' : '#fff3cd';
+        const words = numberToWords(Math.floor(totalAmount)) + (currentCurrency==='IDR' ? ' Rupiah' : ' Dollars');
+        const logoHtml = companyLogoDataURL ? `<img src="${companyLogoDataURL}" class="bank-logo-small" style="width:48px;height:48px;">` : '';
+        const companyDisplay = company ? escapeHtml(company) : (isId ? 'CHOBANK' : 'CHOBANK');
+        const addressHtml = (address && address.trim() !== '') ? `<div style="font-size:0.7rem; margin-top:2px; color:#555;">${escapeHtml(address)}</div>` : '';
+        const emailHtml = (email && email.trim() !== '') ? `<div style="font-size:0.7rem;">${escapeHtml(email)}</div>` : '';
+        
+        return `<div class="cheque-card" id="chequeToDownload"><div class="cheque-header-classic"><div class="cheque-bank-info">${logoHtml}<div class="bank-title"><h1>${companyDisplay}</h1><p></p></div></div><div class="cheque-number-area"><span>${isId ? 'No. Cek' : 'Cheque No'}: ${escapeHtml(chequeNo)}</span></div></div>
+        <div class="payee-row"><div class="pay-to"><label>${isId ? 'BAYAR KEPADA' : 'PAY TO THE ORDER OF'}</label><div class="payee-name">${escapeHtml(payee)}</div>${emailHtml}${addressHtml}</div><div class="amount-box"><label>${isId ? 'NOMINAL' : 'AMOUNT'}</label><div class="amount-figure">${fmt(totalAmount)}</div></div></div>
+        <div class="amount-in-words">${isId ? 'Terbilang' : 'Amount in words'}: ${words}</div><div class="bank-details-strip"><span><strong>${isId ? 'Bank' : 'Bank'}:</strong> ${escapeHtml(bank)}</span><span><strong>${isId ? 'Rekening' : 'Account'}:</strong> ${escapeHtml(accRef)}</span><span><strong>${isId ? 'Tanggal' : 'Date'}:</strong> ${escapeHtml(dateVal)}</span></div>
+        <div class="memo-line"><span><strong>Memo:</strong> ${escapeHtml(memo)}</span><span class="status-stamp" style="background:${statusClass};font-weight:700;">${statusText}</span></div>
+        <div class="cheque-footer"><div>CHOBANK</div><div>For Roleplay Purpose Only, Featured by The Kachoo</div></div></div><button id="downloadChequeBtn" class="btn-download">${isId ? 'Unduh Cek (PNG)' : 'Download Cheque (PNG)'}</button>`;
+    }
+
+    async function renderCheque() {
+        loadingDiv.style.display = 'block'; emptyMsg.style.display = 'none'; chequeDisplay.style.display = 'none';
+        setTimeout(async () => { try { const html = generateChequeHTML(); chequeDisplay.innerHTML = html; chequeDisplay.style.display = 'block'; emptyMsg.style.display = 'none'; loadingDiv.style.display = 'none'; const dwn = document.getElementById('downloadChequeBtn'); if(dwn) dwn.addEventListener('click', async () => { const el = document.getElementById('chequeToDownload'); if(el) { const orig = el.style.width; el.style.width = '880px'; const canvas = await html2canvas(el, { scale: 2.3, backgroundColor: '#ffffff', useCORS: true }); el.style.width = orig; const link = document.createElement('a'); link.download = `cheque_${(document.getElementById('invoiceNumber').value||'chobank')}.png`; link.href = canvas.toDataURL('image/png'); link.click(); } }); } catch(e) { loadingDiv.style.display = 'none'; alert(e); } }, 80);
+    }
+
+    function resetAll() {
+        document.getElementById('companyName').value = '';
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientEmail').value = '';
+        document.getElementById('clientAddress').value = '';
+        document.getElementById('invoiceNumber').value = '';
+        document.getElementById('dueDate').value = '';
+        document.getElementById('paymentStatus').value = 'unpaid';
+        document.getElementById('bankName').value = '';
+        document.getElementById('accountNumber').value = '';
+        document.getElementById('memoText').value = '';
+        companyLogoInput.value = ''; companyLogoDataURL = ''; logoPreview.style.display = 'none'; logoPreview.src = '';
+        tableBody.innerHTML = `<tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga satuan" value=""></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>
+        <tr class="item-row"><td><input type="text" class="item-desc" placeholder="Deskripsi" value=""></td><td><input type="number" class="item-qty" value="1" step="1" min="1"></td><td><input type="number" class="item-price" placeholder="Harga satuan" value=""></td><td style="text-align:center"><button type="button" class="btn-remove-row">✕</button></td></tr>`;
+        attachRowEvents(); recalcTotals();
+        if(chequeDisplay.style.display === 'block') renderCheque();
+        else { emptyMsg.style.display = 'block'; chequeDisplay.style.display = 'none'; }
+    }
+
+    function setLanguage(lang) { currentLang = lang; langId.classList.toggle('active', lang==='id'); langEn.classList.toggle('active', lang==='en'); updateUITexts(); if(chequeDisplay.style.display === 'block') renderCheque(); }
+    function setCurrency(curr) { currentCurrency = curr; currIdr.classList.toggle('active', curr==='IDR'); currUsd.classList.toggle('active', curr==='USD'); recalcTotals(); if(chequeDisplay.style.display === 'block') renderCheque(); }
+    langId.addEventListener('click',()=>setLanguage('id')); langEn.addEventListener('click',()=>setLanguage('en')); currIdr.addEventListener('click',()=>setCurrency('IDR')); currUsd.addEventListener('click',()=>setCurrency('USD'));
+    generateBtn.addEventListener('click', renderCheque); resetBtn.addEventListener('click', resetAll);
+    function init() { 
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dueDate').value = today;
+        attachRowEvents(); updateUITexts(); recalcTotals(); 
+    }
+    init();
+</script>
 </body>
-</html>
+    </html>
