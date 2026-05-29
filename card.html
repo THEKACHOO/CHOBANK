@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK | Digital ATM Card</title>
+    <title>CHOBANK | Digital Credit Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -712,12 +712,12 @@
     <div class="site-header">
         <img src="chobank1.png" alt="CHOBANK" class="header-logo" id="topLogo" onerror="this.style.display='none';">
         <div class="header-chobank">CHOBANK</div>
-        <div class="tagline-mini">Digital ATM Card · Roleplay Only</div>
+        <div class="tagline-mini">Digital Credit Card · Roleplay Only</div>
     </div>
 
     <main class="main-content">
         <section class="form-container fade-in">
-            <h2>ATM Card Application Form</h2>
+            <h2>Credit Card Application Form</h2>
             <form id="card-form">
                 <div class="form-group">
                     <label for="full-name">Full Name of Cardholder</label>
@@ -733,19 +733,19 @@
                         <div class="card-option" data-type="regular"><div class="card-icon regular"><i class="fas fa-credit-card"></i></div><div class="card-info"><h3>Regular Card</h3><p>Standard card with transaction limit</p><span class="limit-badge">Limit: IDR 100,000,000</span></div></div>
                         <div class="card-option" data-type="silver"><div class="card-icon silver"><i class="fas fa-credit-card"></i></div><div class="card-info"><h3>Silver Card</h3><p>Premium card with higher limit</p><span class="limit-badge">Limit: IDR 5,000,000,000</span></div></div>
                         <div class="card-option" data-type="gold"><div class="card-icon gold"><i class="fas fa-gem"></i></div><div class="card-info"><h3>Gold Card (Black)</h3><p>Exclusive unlimited card</p><span class="limit-badge">Unlimited</span></div></div>
-                        <div class="card-option" data-type="business"><div class="card-icon business"><i class="fas fa-briefcase"></i></div><div class="card-info"><h3>Business Card</h3><p>Only for company</p><span class="limit-badge">Limit: IDR 1,000,000,000</span></div></div>
+                        <div class="card-option" data-type="business"><div class="card-icon business"><i class="fas fa-briefcase"></i></div><div class="card-info"><h3>Business Card</h3><p>Only for company</p><span class="limit-badge">Limit: IDR 50,000,000,000</span></div></div>
                         <div class="card-option" data-type="student"><div class="card-icon student"><i class="fas fa-graduation-cap"></i></div><div class="card-info"><h3>Student Card</h3><p>Special card for students</p><span class="limit-badge">For Students Only</span></div></div>
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate ATM Card</button>
+                    <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate Credit Card</button>
                     <button type="reset" class="action-btn btn-secondary">Reset Form</button>
                 </div>
             </form>
         </section>
 
         <div class="preview-section hidden" id="preview-section">
-            <h3 class="preview-title">CHOBANK ATM Card Preview</h3>
+            <h3 class="preview-title">CHOBANK Credit Card Preview</h3>
             <div class="preview-container">
                 <div class="card-preview-container">
                     <div class="card-preview" id="card-preview">
@@ -780,7 +780,7 @@
                         <p><strong>Card Type:</strong> <span id="display-card-type">REGULAR</span></p>
                     </div>
                 </div>
-                <div class="download-options"><button type="button" id="download-card-btn" class="download-btn">Download ATM Card</button></div>
+                <div class="download-options"><button type="button" id="download-card-btn" class="download-btn">Download Credit Card</button></div>
                 <div class="action-buttons"><button type="button" id="new-card-btn" class="action-btn btn-secondary">Create New Card</button></div>
             </div>
         </div>
@@ -789,7 +789,7 @@
 
     <div class="back-to-top"><a href="index.html" class="back-button" id="back-button"><i class="fas fa-arrow-left"></i></a></div>
     <footer>
-        <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
+        <p>© 2026 CHOBANK Digital Credit Card Generator. All cards are fictional and for roleplay purposes only.</p>
         <p>This page does not perform actual financial transactions.</p>
         <p>Each card number is unique and will never be repeated.</p>
     </footer>
