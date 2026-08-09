@@ -270,12 +270,12 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        /* WATERMARK LOGO DI SLIP CARD - PALING DEPAN, TIDAK MIRING, SANGAT PUDAR, KECIL */
+        /* WATERMARK LOGO DI SLIP CARD - PALING DEPAN, TIDAK MIRING, SANGAT PUDAR */
         .slip-card .watermark-logo {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(1.2);
+            transform: translate(-50%, -50%) scale(1.5);
             opacity: 0.025;
             pointer-events: none;
             z-index: 9999;
@@ -931,19 +931,18 @@
             cloneCard.style.position = 'fixed';
             cloneCard.style.left = '-9999px';
             cloneCard.style.top = '-9999px';
-            cloneCard.style.width = '600px';
-            cloneCard.style.maxWidth = '600px';
-            cloneCard.style.padding = '32px 36px';
-            cloneCard.style.borderRadius = '16px';
+            cloneCard.style.width = '400px';
+            cloneCard.style.maxWidth = '400px';
+            cloneCard.style.padding = '28px 24px';
+            cloneCard.style.borderRadius = '12px';
             cloneCard.style.boxSizing = 'border-box';
             cloneCard.style.background = 'white';
-            cloneCard.style.border = '2px solid #e0e0e0';
             cloneCard.style.fontFamily = "'Outfit', sans-serif";
             
             const style = document.createElement('style');
             style.textContent = `
-                .watermark-logo { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) scale(1.2) !important; opacity: 0.025 !important; pointer-events: none !important; z-index: 9999 !important; }
-                .watermark-logo img { width: 160px !important; height: auto !important; display: block !important; }
+                .watermark-logo { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) scale(1.5) !important; opacity: 0.025 !important; pointer-events: none !important; z-index: 9999 !important; }
+                .watermark-logo img { width: 180px !important; height: auto !important; display: block !important; }
                 .slip-header { text-align: center !important; margin-bottom: 24px !important; padding-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
                 .check-circle { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 56px !important; height: 56px !important; background: #000000 !important; border-radius: 50% !important; color: #ffffff !important; font-size: 1.8rem !important; margin-bottom: 8px !important; }
                 .tx-status { font-size: 1.2rem !important; font-weight: 700 !important; color: #000000 !important; }
@@ -973,9 +972,7 @@
                         scale: 2.5,
                         backgroundColor: '#ffffff',
                         useCORS: true,
-                        logging: false,
-                        width: 600,
-                        height: cloneCard.scrollHeight
+                        logging: false
                     });
                     
                     const link = document.createElement('a');
@@ -995,4 +992,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
