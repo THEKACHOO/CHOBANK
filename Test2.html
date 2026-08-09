@@ -270,7 +270,7 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        /* WATERMARK - pake flex center kayak transaction.html */
+        /* WATERMARK - DI ATAS SEMUA (z-index tinggi) */
         .watermark-bg {
             position: absolute;
             top: 0;
@@ -281,7 +281,7 @@
             align-items: center;
             justify-content: center;
             pointer-events: none;
-            z-index: 0;
+            z-index: 99999;
             opacity: 0.025;
         }
         .watermark-bg img {
@@ -573,7 +573,7 @@
 <body>
     <div class="container">
         <div class="site-header">
-            <div class="header-chobank-text">CHOBANK V3</div>
+            <div class="header-chobank-text">CHOBANK</div>
         </div>
 
         <div class="payment-options">
@@ -748,7 +748,7 @@
                     <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
                     <div class="preview-container">
                         <div class="slip-card" id="proof-preview">
-                            <!-- WATERMARK - pake flex center -->
+                            <!-- WATERMARK - z-index tinggi, di atas semua konten -->
                             <div class="watermark-bg">
                                 <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
                             </div>
@@ -947,7 +947,7 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                /* WATERMARK - pake flex center kayak transaction.html */
+                /* WATERMARK - z-index tinggi di atas semua konten */
                 .watermark-bg {
                     position: absolute !important;
                     top: 0 !important;
@@ -958,7 +958,7 @@
                     align-items: center !important;
                     justify-content: center !important;
                     pointer-events: none !important;
-                    z-index: 0 !important;
+                    z-index: 99999 !important;
                     opacity: 0.025 !important;
                 }
                 .watermark-bg img {
