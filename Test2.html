@@ -270,21 +270,24 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        /* WATERMARK LOGO DI SLIP CARD - PREVIEW (card 600px) */
-        .slip-card .watermark-logo {
+        /* WATERMARK - pake flex center kayak transaction.html */
+        .watermark-bg {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1.5);
-            opacity: 0.025;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 0;
+            opacity: 0.025;
         }
-
-        .slip-card .watermark-logo img {
-            width: 180px;
+        .watermark-bg img {
+            width: 45%;
             height: auto;
-            display: block;
+            object-fit: contain;
         }
 
         .slip-header {
@@ -561,8 +564,8 @@
                 font-size: 1.1rem;
             }
 
-            .slip-card .watermark-logo img {
-                width: 120px !important;
+            .watermark-bg img {
+                width: 60% !important;
             }
         }
     </style>
@@ -570,7 +573,7 @@
 <body>
     <div class="container">
         <div class="site-header">
-            <div class="header-chobank-text">CHOBANK V2</div>
+            <div class="header-chobank-text">CHOBANK V3</div>
         </div>
 
         <div class="payment-options">
@@ -745,8 +748,8 @@
                     <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
                     <div class="preview-container">
                         <div class="slip-card" id="proof-preview">
-                            <!-- WATERMARK LOGO -->
-                            <div class="watermark-logo">
+                            <!-- WATERMARK - pake flex center -->
+                            <div class="watermark-bg">
                                 <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
                             </div>
                             
@@ -944,20 +947,24 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                /* WATERMARK DI DOWNLOAD - ngikut canvas (1000px) */
-                .watermark-logo { 
-                    position: absolute !important; 
-                    top: 50% !important; 
-                    left: 50% !important; 
-                    transform: translate(-50%, -50%) scale(1.0) !important; 
-                    opacity: 0.025 !important; 
-                    pointer-events: none !important; 
-                    z-index: 9999 !important; 
+                /* WATERMARK - pake flex center kayak transaction.html */
+                .watermark-bg {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    pointer-events: none !important;
+                    z-index: 0 !important;
+                    opacity: 0.025 !important;
                 }
-                .watermark-logo img { 
-                    width: 300px !important; 
-                    height: auto !important; 
-                    display: block !important; 
+                .watermark-bg img {
+                    width: 45% !important;
+                    height: auto !important;
+                    object-fit: contain !important;
                 }
                 .slip-header { text-align: center !important; margin-bottom: 24px !important; padding-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
                 .check-circle { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 56px !important; height: 56px !important; background: #000000 !important; border-radius: 50% !important; color: #ffffff !important; font-size: 1.8rem !important; margin-bottom: 8px !important; }
