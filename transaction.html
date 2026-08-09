@@ -15,161 +15,200 @@
         }
 
         body {
-            background: #ffffff;
+            background: #f5f5f5;
             font-family: 'Outfit', sans-serif;
             padding: 24px 16px 48px;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .site-header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .header-chobank-text {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #000000;
         }
 
         .payment-options {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
         }
 
         .payment-option {
             background: white;
-            border-radius: 24px;
-            padding: 18px 16px;
+            border-radius: 16px;
+            padding: 24px 20px;
             text-align: center;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 2px solid rgba(0,0,0,0.08);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             cursor: pointer;
             transition: all 0.25s ease;
         }
 
         .payment-option:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0,0,0,0.2);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            border-color: #000000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
         .payment-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 12px;
             color: #000000;
         }
 
         .payment-option h2 {
             font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .payment-option p {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #666;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .select-btn {
             background: #000000;
             color: white;
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             border: none;
             cursor: pointer;
             width: 100%;
-            max-width: 160px;
+            max-width: 180px;
+            transition: all 0.2s ease;
+        }
+
+        .select-btn:hover {
+            background: #333;
+            transform: scale(1.02);
         }
 
         .generator-container {
             background: white;
-            border-radius: 28px;
-            padding: 22px 18px;
+            border-radius: 20px;
+            padding: 32px 28px;
             border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
         }
 
         .generator-container h2 {
-            font-size: 1.3rem;
+            font-size: 1.6rem;
             font-weight: 700;
             text-align: center;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
         }
 
         .generator-container > p {
             text-align: center;
             color: #666;
-            margin-bottom: 18px;
-            font-size: 0.8rem;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
         }
 
         .hidden {
             display: none;
         }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            color: #333;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid rgba(0,0,0,0.12);
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 12px 16px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            font-size: 0.9rem;
             font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            background: white;
         }
 
         .form-control:focus {
             outline: none;
             border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
         }
 
         textarea.form-control {
-            min-height: 65px;
+            min-height: 80px;
             resize: vertical;
         }
 
         .auto-bank-info {
-            background: #f5f5f5;
-            border-radius: 14px;
-            padding: 10px 14px;
-            margin-bottom: 16px;
-            font-size: 0.75rem;
-            border-left: 3px solid #000000;
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            font-size: 0.85rem;
+            border-left: 4px solid #000000;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auto-bank-info i {
+            margin-right: 8px;
         }
 
         .action-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 18px;
+            gap: 12px;
+            margin-top: 24px;
+            position: relative;
+            z-index: 1;
         }
 
         .action-btn {
-            padding: 10px 20px;
-            border-radius: 40px;
+            padding: 14px 32px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             cursor: pointer;
             border: none;
             flex: 1;
+            transition: all 0.2s ease;
         }
 
         .btn-primary {
@@ -177,43 +216,61 @@
             color: white;
         }
 
+        .btn-primary:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
         .btn-secondary {
             background: #f0f0f0;
             color: #000000;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e5;
+            transform: translateY(-2px);
         }
 
         .preview-section {
-            margin-top: 28px;
+            margin-top: 32px;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 32px;
+            position: relative;
         }
 
         .preview-title {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 20px;
         }
 
         .preview-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        .payslip-card {
+        .slip-card {
             background: white;
-            color: black;
-            padding: 20px 16px;
-            border: 1px solid rgba(0,0,0,0.15);
-            box-shadow: 0 10px 20px -8px rgba(0,0,0,0.15);
+            border-radius: 16px;
+            padding: 32px 36px;
             width: 100%;
-            max-width: 360px;
-            font-family: 'Outfit', sans-serif;
-            border-radius: 20px;
+            max-width: 600px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
+        .slip-card:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+
+        /* WATERMARK - DI ATAS SEMUA (z-index tinggi) */
         .watermark-bg {
             position: absolute;
             top: 0;
@@ -224,120 +281,234 @@
             align-items: center;
             justify-content: center;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.03;
+            z-index: 99999;
+            opacity: 0.025;
         }
         .watermark-bg img {
-            max-width: 85%;
-            max-height: 85%;
+            width: 45%;
+            height: auto;
             object-fit: contain;
         }
 
-        .slip-content-relative {
-            position: relative;
-            z-index: 2;
-        }
-
-        .proof-header {
+        .slip-header {
             text-align: center;
-            border-bottom: 2px solid #000000;
-            padding-bottom: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            position: relative;
+            z-index: 1;
         }
 
-        .proof-title {
-            font-size: 14px;
-            font-weight: 800;
-            color: #000;
+        .slip-header .check-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: #000000;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
         }
 
-        .proof-subtitle {
-            font-size: 8px;
+        .slip-header .tx-status {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .slip-header .tx-thankyou {
+            font-size: 0.7rem;
+            color: #888;
             font-weight: 400;
-            color: #6b6b6b;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        .proof-details {
-            margin: 12px 0 10px;
+        .slip-details {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0 12px;
+            border: 1px solid #eee;
+            position: relative;
+            z-index: 1;
         }
 
-        .detail-row {
+        .slip-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 10px;
-            border-bottom: 1px dotted #e0e0e0;
-            padding-bottom: 6px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
         }
 
-        .detail-label {
-            font-weight: 700;
-            color: #333;
+        .slip-row:last-child {
+            border-bottom: none;
         }
 
-        .detail-value {
+        .slip-row .slip-label {
+            color: #666;
+            font-weight: 400;
+        }
+
+        .slip-row .slip-value {
+            color: #000000;
             font-weight: 500;
             text-align: right;
-            color: #111;
+            word-break: break-word;
+            max-width: 60%;
         }
 
-        .detail-value.amount {
-            font-size: 11px;
+        .slip-row .slip-value.amount {
+            font-size: 1.3rem;
             font-weight: 800;
+            color: #000000;
         }
 
-        .status-badge {
+        .slip-row .slip-value .status-badge {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 4px 16px;
             background: #000000;
-            color: white;
-            border-radius: 30px;
-            font-size: 0.55rem;
+            color: #ffffff;
+            border-radius: 20px;
+            font-size: 0.65rem;
             font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .highlight-box {
+        .slip-note {
             background: #f8f8f8;
             border-radius: 10px;
-            padding: 8px;
-            margin: 12px 0;
+            padding: 12px 16px;
+            margin: 10px 0 6px;
+            font-size: 0.85rem;
+            color: #333;
+            border-left: 4px solid #000000;
+            position: relative;
+            z-index: 1;
         }
 
-        .proof-footer {
-            margin-top: 14px;
+        .slip-note strong {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .slip-footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slip-footer .ref {
+            font-size: 0.7rem;
+            color: #666;
+            letter-spacing: 0.3px;
+        }
+
+        .slip-footer .ref span {
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .slip-footer .bank-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slip-credit {
             text-align: center;
-            font-size: 6.5px;
-            color: #999;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 8px;
+            font-size: 0.5rem;
+            color: #aaa;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
         }
 
         .download-btn {
             background: #000000;
             color: white;
-            padding: 12px 20px;
-            border-radius: 60px;
+            padding: 16px 32px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             width: 100%;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        .time-format-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+
+        .time-format-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 400;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .currency-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: 'Outfit', sans-serif;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .currency-select:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
         }
 
         .loading {
             text-align: center;
-            padding: 30px;
+            padding: 40px;
         }
 
         .spinner {
-            border: 3px solid #f0f0f0;
-            border-top: 3px solid #000000;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #000000;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
 
         @keyframes spin {
@@ -346,21 +517,56 @@
         }
 
         .fade-in {
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .new-proof-btn-wrapper {
+            margin-top: 12px;
         }
 
         footer {
             text-align: center;
-            margin-top: 35px;
-            padding-top: 16px;
-            border-top: 1px solid #eee;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
             color: #999;
-            font-size: 0.6rem;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .generator-container {
+                padding: 20px 16px;
+            }
+
+            .slip-card {
+                padding: 20px 16px;
+            }
+
+            .slip-row {
+                font-size: 0.8rem;
+                padding: 8px 0;
+            }
+
+            .slip-row .slip-value.amount {
+                font-size: 1.1rem;
+            }
+
+            .watermark-bg img {
+                width: 60% !important;
+            }
         }
     </style>
 </head>
@@ -389,7 +595,7 @@
                 <div class="payment-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 <h2>Invoice Payment</h2>
                 <p>Pembayaran invoice</p>
-                <button class="select-btn" data-type="invoice">Pilih</button>
+                <button class="select-btn" data-type="invoice">Select</button>
             </div>
         </div>
 
@@ -397,7 +603,7 @@
 
         <div class="loading hidden" id="loading">
             <div class="spinner"></div>
-            <p>Membuat gambar slip...</p>
+            <p style="font-size: 1rem; color: #666;">Membuat gambar receipt...</p>
         </div>
 
         <footer>
@@ -418,13 +624,17 @@
         
         function loadPaymentForm(type) {
             const generator = document.getElementById('generator');
-            let title, subtitle, currency, showInvoiceField, formLabels;
+            let title, subtitle, currency, showInvoiceField, showCurrencySelect, formLabels;
+            let isDomestic = type === 'domestic';
+            let isInternational = type === 'international';
+            let isInvoice = type === 'invoice';
             
-            if (type === 'domestic') {
+            if (isDomestic) {
                 title = 'Pembayaran Dalam Negeri';
                 subtitle = 'Transfer ke bank lokal';
                 currency = 'IDR';
                 showInvoiceField = false;
+                showCurrencySelect = false;
                 formLabels = {
                     payerName: 'Nama Pengirim', receiverName: 'Nama Penerima',
                     receiverAccount: 'No. Rekening', recipientBank: 'Bank Penerima',
@@ -436,11 +646,12 @@
                     placeholderAmount: 'Jumlah pembayaran',
                     placeholderNotes: 'Catatan tambahan'
                 };
-            } else if (type === 'international') {
+            } else if (isInternational) {
                 title = 'International Payment';
                 subtitle = 'International Bank Transfer';
                 currency = 'USD';
                 showInvoiceField = false;
+                showCurrencySelect = true;
                 formLabels = {
                     payerName: 'Sender Name', receiverName: 'Recipient Name',
                     receiverAccount: 'Account Number', recipientBank: 'Recipient Bank',
@@ -457,54 +668,108 @@
                 subtitle = 'Pembayaran Invoice';
                 currency = 'IDR';
                 showInvoiceField = true;
+                showCurrencySelect = false;
                 formLabels = {
-                    payerName: 'Nama Pengirim', receiverName: 'Nama Penerima',
-                    receiverAccount: 'No. Rekening', recipientBank: 'Bank Penerima',
-                    amount: 'Jumlah', date: 'Tanggal', notes: 'Catatan',
-                    placeholderPayerName: 'Nama pengirim',
-                    placeholderReceiverName: 'Nama penerima',
-                    placeholderReceiverAccount: 'Nomor rekening',
-                    placeholderRecipientBank: 'Nama bank penerima',
-                    placeholderAmount: 'Jumlah pembayaran',
-                    placeholderNotes: 'Catatan tambahan'
+                    payerName: 'Sender Name', receiverName: 'Recipient Name',
+                    receiverAccount: 'Account Number', recipientBank: 'Recipient Bank',
+                    amount: 'Amount', date: 'Date', notes: 'Notes',
+                    placeholderPayerName: 'Full sender name',
+                    placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Account number',
+                    placeholderRecipientBank: 'Recipient bank name',
+                    placeholderAmount: 'Payment amount',
+                    placeholderNotes: 'Additional notes'
                 };
             }
             
             const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const currentTime = `${currentHour}:${currentMinute}`;
             
             let formHTML = `
                 <h2>${title}</h2>
                 <p>${subtitle}</p>
                 <div class="auto-bank-info">
-                    <i class="fas fa-building"></i> Bank Pengirim: CHOBANK
+                    <i class="fas fa-building"></i> ${isDomestic ? 'Bank Pengirim' : 'Sender Bank'}: CHOBANK
                 </div>
                 <form id="payment-form">
-                    <div class="form-group"><label>${formLabels.payerName}</label><input type="text" id="payer-name" class="form-control" placeholder="${formLabels.placeholderPayerName}" required></div>
-                    <div class="form-group"><label>${formLabels.receiverName}</label><input type="text" id="receiver-name" class="form-control" placeholder="${formLabels.placeholderReceiverName}" required></div>
-                    <div class="form-group"><label>${formLabels.receiverAccount}</label><input type="text" id="receiver-account" class="form-control" placeholder="${formLabels.placeholderReceiverAccount}" required></div>
-                    <div class="form-group"><label>${formLabels.recipientBank}</label><input type="text" id="recipient-bank" class="form-control" placeholder="${formLabels.placeholderRecipientBank}" required></div>
-                    <div class="form-group"><label>${formLabels.amount}</label><input type="number" id="amount" class="form-control" placeholder="${formLabels.placeholderAmount}" min="1000" required></div>
-                    <div class="form-group"><label>${formLabels.date}</label><input type="date" id="date" class="form-control" value="${today}" required></div>
-                    ${showInvoiceField ? `<div class="form-group"><label>No. Invoice</label><input type="text" id="invoice-number" class="form-control" placeholder="Nomor invoice"></div>` : ''}
-                    <div class="form-group"><label>${formLabels.notes}</label><textarea id="notes" class="form-control" rows="2" placeholder="${formLabels.placeholderNotes}"></textarea></div>
+                    <div class="form-grid">
+                        <div class="form-group"><label>${formLabels.payerName}</label><input type="text" id="payer-name" class="form-control" placeholder="${formLabels.placeholderPayerName}" required></div>
+                        <div class="form-group"><label>${formLabels.receiverName}</label><input type="text" id="receiver-name" class="form-control" placeholder="${formLabels.placeholderReceiverName}" required></div>
+                        <div class="form-group"><label>${formLabels.receiverAccount}</label><input type="text" id="receiver-account" class="form-control" placeholder="${formLabels.placeholderReceiverAccount}" required></div>
+                        <div class="form-group"><label>${formLabels.recipientBank}</label><input type="text" id="recipient-bank" class="form-control" placeholder="${formLabels.placeholderRecipientBank}" required></div>
+                        <div class="form-group">
+                            <label>${formLabels.amount}</label>
+                            <input type="number" id="amount" class="form-control" placeholder="${formLabels.placeholderAmount}" min="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>${formLabels.date}</label>
+                            <input type="date" id="date" class="form-control" value="${today}" required>
+                        </div>
+                        ${showCurrencySelect ? `
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <select id="currency-select" class="currency-select">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="CHF">CHF - Swiss Franc</option>
+                                <option value="CNY">CNY - Chinese Yuan</option>
+                                <option value="SGD">SGD - Singapore Dollar</option>
+                                <option value="MYR">MYR - Malaysian Ringgit</option>
+                            </select>
+                        </div>
+                        ` : ''}
+                        ${showInvoiceField ? `<div class="form-group"><label>Invoice Number</label><input type="text" id="invoice-number" class="form-control" placeholder="Invoice number"></div>` : ''}
+                        <div class="form-group full-width">
+                            <label>${isDomestic ? 'Waktu' : 'Time'}</label>
+                            <input type="time" id="time-input" class="form-control" value="${currentTime}" required>
+                            <div class="time-format-group">
+                                <label><input type="radio" name="time-format" value="24" checked> ${isDomestic ? '24 Jam' : '24 Hour'}</label>
+                                <label><input type="radio" name="time-format" value="12"> ${isDomestic ? '12 Jam (AM/PM)' : '12 Hour (AM/PM)'}</label>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>${formLabels.notes}</label>
+                            <textarea id="notes" class="form-control" rows="2" placeholder="${formLabels.placeholderNotes}"></textarea>
+                        </div>
+                    </div>
                     <div class="action-buttons">
-                        <button type="button" id="generate-btn" class="action-btn btn-primary">Buat Slip</button>
-                        <button type="reset" class="action-btn btn-secondary">Reset</button>
+                        <button type="button" id="generate-btn" class="action-btn btn-primary">${isDomestic ? 'Buat Slip' : 'Generate Slip'}</button>
+                        <button type="reset" class="action-btn btn-secondary">${isDomestic ? 'Reset' : 'Reset'}</button>
                     </div>
                 </form>
                 <div class="preview-section hidden" id="preview-section">
-                    <h3 class="preview-title">Preview Slip</h3>
+                    <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
                     <div class="preview-container">
-                        <div class="payslip-card" id="proof-preview">
+                        <div class="slip-card" id="proof-preview">
+                            <!-- WATERMARK - z-index tinggi, di atas semua konten -->
                             <div class="watermark-bg">
-                                <img src="chobank1.png" alt="watermark" onerror="this.style.display='none'">
+                                <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
                             </div>
-                            <div class="slip-content-relative" id="proof-content-relative"></div>
+                            
+                            <div class="slip-header">
+                                <div class="check-circle"><i class="fas fa-check"></i></div>
+                                <div class="tx-status" id="preview-status">${isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete'}</div>
+                                <div class="tx-thankyou" id="preview-thankyou">${isDomestic ? 'Terima kasih! Pembayaran Anda berhasil diproses' : 'Thank you! Your payment was successfully processed'}</div>
+                            </div>
+                            <div class="slip-details" id="slip-details"></div>
+                            <div id="slip-note-container"></div>
+                            <div class="slip-footer">
+                                <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
+                                <span class="bank-label">CHOBANK</span>
+                            </div>
+                            <div class="slip-credit">${isDomestic ? 'Hanya untuk tujuan roleplay, dipersembahkan oleh The Kachoo' : 'For roleplay purpose only, featured by The Kachoo'}</div>
                         </div>
                     </div>
-                    <button type="button" id="download-btn" class="download-btn">UNDUH SLIP PNG</button>
-                    <div class="action-buttons" style="margin-top: 12px;">
-                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary">Buat Baru</button>
+                    <button type="button" id="download-btn" class="download-btn">${isDomestic ? 'UNDUH PNG' : 'DOWNLOAD PNG'}</button>
+                    <div class="new-proof-btn-wrapper">
+                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">${isDomestic ? 'Buat Baru' : 'Create New'}</button>
                     </div>
                 </div>
             `;
@@ -520,12 +785,13 @@
                     document.getElementById('preview-section').classList.add('hidden');
                     document.getElementById('payment-form').reset();
                     document.getElementById('date').value = today;
+                    document.getElementById('time-input').value = currentTime;
                 });
             }, 100);
         }
         
         function generateProof() {
-            const required = ['payer-name', 'receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date'];
+            const required = ['payer-name', 'receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date', 'time-input'];
             for (let id of required) {
                 const field = document.getElementById(id);
                 if (!field.value.trim()) {
@@ -534,64 +800,123 @@
                 }
             }
             
-            const data = {
-                payerName: document.getElementById('payer-name').value,
-                receiverName: document.getElementById('receiver-name').value,
-                receiverAccount: document.getElementById('receiver-account').value,
-                recipientBank: document.getElementById('recipient-bank').value,
-                amount: document.getElementById('amount').value,
-                date: document.getElementById('date').value,
-                currency: currentPaymentType === 'domestic' ? 'IDR' : (currentPaymentType === 'international' ? 'USD' : 'IDR'),
-                invoiceNumber: document.getElementById('invoice-number')?.value || '',
-                notes: document.getElementById('notes').value
-            };
-            
-            const formattedDate = new Date(data.date).toLocaleDateString(currentPaymentType === 'domestic' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-            const referenceNumber = 'REF' + Math.floor(Math.random()*900+100) + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const now = new Date();
-            const timeStr = currentPaymentType === 'domestic' ? now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }) : now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true });
-            
             const isDomestic = currentPaymentType === 'domestic';
-            const headerTitle = isDomestic ? 'BUKTI PEMBAYARAN' : (currentPaymentType === 'international' ? 'PAYMENT CONFIRMATION' : 'INVOICE PAYMENT');
-            const headerSubtitle = isDomestic ? 'Transfer Dalam Negeri' : (currentPaymentType === 'international' ? 'International Transfer' : 'Pembayaran Invoice');
+            const isInvoice = currentPaymentType === 'invoice';
             
-            const formatAmount = (curr, amt) => {
-                const num = parseFloat(amt);
-                if (curr === 'IDR') return `Rp ${num.toLocaleString('id-ID')}`;
-                return `$ ${num.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+            const timeFormat = document.querySelector('input[name="time-format"]:checked').value;
+            const timeInput = document.getElementById('time-input').value;
+            const [hours, minutes] = timeInput.split(':').map(Number);
+            
+            let formattedTime;
+            if (timeFormat === '12') {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const hour12 = hours % 12 || 12;
+                formattedTime = `${hour12}:${String(minutes).padStart(2, '0')} ${ampm}`;
+            } else {
+                formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            }
+            
+            const selectedCurrency = document.getElementById('currency-select')?.value || 'IDR';
+            
+            const data = {
+                payerName: document.getElementById('payer-name').value.trim(),
+                receiverName: document.getElementById('receiver-name').value.trim(),
+                receiverAccount: document.getElementById('receiver-account').value.trim(),
+                recipientBank: document.getElementById('recipient-bank').value.trim(),
+                amount: document.getElementById('amount').value.trim(),
+                date: document.getElementById('date').value,
+                currency: currentPaymentType === 'international' ? selectedCurrency : (currentPaymentType === 'domestic' ? 'IDR' : 'IDR'),
+                invoiceNumber: document.getElementById('invoice-number')?.value.trim() || '',
+                notes: document.getElementById('notes').value.trim(),
+                time: formattedTime,
+                timeFormat: timeFormat
             };
             
-            let html = `
-                <div class="proof-header">
-                    <div class="proof-title">${headerTitle}</div>
-                    <div class="proof-subtitle">${headerSubtitle}</div>
+            const dateObj = new Date(data.date);
+            const formattedDate = dateObj.toLocaleDateString(isDomestic ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            
+            const ref = 'CHB' + Math.floor(Math.random()*9000+1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+            
+            const amountNum = parseFloat(data.amount);
+            let formattedAmount;
+            const currencySymbols = {
+                'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥', 
+                'AUD': 'A$', 'CAD': 'C$', 'CHF': 'Fr', 'CNY': '¥',
+                'SGD': 'S$', 'MYR': 'RM', 'IDR': 'Rp '
+            };
+            
+            const symbol = currencySymbols[data.currency] || '$';
+            
+            if (data.currency === 'IDR') {
+                formattedAmount = 'Rp ' + (isNaN(amountNum) ? data.amount : amountNum.toLocaleString('id-ID'));
+            } else if (data.currency === 'JPY' || data.currency === 'CNY') {
+                formattedAmount = symbol + (isNaN(amountNum) ? data.amount : Math.round(amountNum).toLocaleString());
+            } else {
+                formattedAmount = symbol + (isNaN(amountNum) ? data.amount : amountNum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+            }
+            
+            const statusText = 'BERHASIL';
+            const headerStatus = isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete';
+            
+            document.getElementById('preview-status').textContent = headerStatus;
+            document.getElementById('preview-ref').textContent = ref;
+            
+            let detailsHTML = `
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Jumlah' : 'Amount'}</span>
+                    <span class="slip-value amount">${formattedAmount}</span>
                 </div>
-                <div class="proof-details">
-                    <div class="detail-row"><span class="detail-label">No. Referensi</span><span class="detail-value">${referenceNumber}</span></div>
-                    <div class="detail-row"><span class="detail-label">Tanggal</span><span class="detail-value">${formattedDate}</span></div>
-                    <div class="detail-row"><span class="detail-label">Waktu</span><span class="detail-value">${timeStr}</span></div>
-                    <div class="detail-row"><span class="detail-label">Pengirim</span><span class="detail-value">${escapeHtml(data.payerName)}</span></div>
-                    <div class="detail-row"><span class="detail-label">Bank Pengirim</span><span class="detail-value">CHOBANK</span></div>
-                    <div class="detail-row"><span class="detail-label">Penerima</span><span class="detail-value">${escapeHtml(data.receiverName)}</span></div>
-                    <div class="detail-row"><span class="detail-label">Bank Penerima</span><span class="detail-value">${escapeHtml(data.recipientBank)}</span></div>
-                    <div class="detail-row"><span class="detail-label">No. Rekening</span><span class="detail-value">${escapeHtml(data.receiverAccount)}</span></div>
-                    <div class="detail-row"><span class="detail-label">Jumlah</span><span class="detail-value amount">${formatAmount(data.currency, data.amount)}</span></div>
-                    <div class="detail-row"><span class="detail-label">Jenis Transaksi</span><span class="detail-value">${isDomestic ? 'Transfer Dalam Negeri' : (currentPaymentType === 'international' ? 'International Transfer' : 'Invoice Payment')}</span></div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Pengirim' : 'From'}</span>
+                    <span class="slip-value">${escapeHtml(data.payerName)}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Penerima' : 'To'}</span>
+                    <span class="slip-value">${escapeHtml(data.receiverName)}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Bank Penerima' : 'Recipient Bank'}</span>
+                    <span class="slip-value">${escapeHtml(data.recipientBank)}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'No. Rekening' : 'Account'}</span>
+                    <span class="slip-value">${escapeHtml(data.receiverAccount)}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Tanggal' : 'Date'}</span>
+                    <span class="slip-value">${formattedDate}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Waktu' : 'Time'}</span>
+                    <span class="slip-value">${data.time}</span>
+                </div>
             `;
             
             if (data.invoiceNumber) {
-                html += `<div class="detail-row"><span class="detail-label">No. Invoice</span><span class="detail-value">${escapeHtml(data.invoiceNumber)}</span></div>`;
+                detailsHTML += `<div class="slip-row"><span class="slip-label">Invoice Number</span><span class="slip-value">${escapeHtml(data.invoiceNumber)}</span></div>`;
             }
             
-            html += `<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="status-badge">${isDomestic ? 'BERHASIL' : 'COMPLETED'}</span></span></div></div>`;
+            detailsHTML += `
+                <div class="slip-row">
+                    <span class="slip-label">${isDomestic ? 'Status' : 'Status'}</span>
+                    <span class="slip-value"><span class="status-badge">${statusText}</span></span>
+                </div>
+            `;
             
+            document.getElementById('slip-details').innerHTML = detailsHTML;
+            
+            const noteContainer = document.getElementById('slip-note-container');
             if (data.notes) {
-                html += `<div class="highlight-box"><div style="font-weight:700;margin-bottom:4px;font-size:9px;">${isDomestic ? 'Catatan' : 'Notes'}</div><div style="font-size:9px;">${escapeHtml(data.notes)}</div></div>`;
+                noteContainer.innerHTML = `
+                    <div class="slip-note">
+                        <strong>${isDomestic ? 'Catatan' : 'Notes'}</strong>
+                        ${escapeHtml(data.notes)}
+                    </div>
+                `;
+            } else {
+                noteContainer.innerHTML = '';
             }
             
-            html += `<div class="proof-footer">For Roleplay Purpose Only, Featured by The Kachoo in Chobank</div>`;
-            
-            document.getElementById('proof-content-relative').innerHTML = html;
             document.getElementById('preview-section').classList.remove('hidden');
             document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -603,7 +928,7 @@
         
         async function downloadProof() {
             const card = document.getElementById('proof-preview');
-            if (!card) { alert('Buat slip dulu'); return; }
+            if (!card) { alert('Buat transaksi dulu'); return; }
             
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
@@ -617,22 +942,48 @@
             cloneCard.style.padding = '28px 24px';
             cloneCard.style.borderRadius = '12px';
             cloneCard.style.boxSizing = 'border-box';
+            cloneCard.style.background = 'white';
             cloneCard.style.fontFamily = "'Outfit', sans-serif";
             
             const style = document.createElement('style');
             style.textContent = `
-                .proof-header { border-bottom: 2px solid #000000 !important; padding-bottom: 14px !important; margin-bottom: 18px !important; }
-                .proof-title { font-size: 18px !important; font-weight: 800 !important; }
-                .proof-subtitle { font-size: 10px !important; margin-top: 4px !important; color: #666 !important; }
-                .detail-row { display: flex !important; justify-content: space-between !important; margin-bottom: 12px !important; font-size: 12px !important; border-bottom: 1px dotted #ddd !important; padding-bottom: 8px !important; }
-                .detail-label { font-weight: 700 !important; color: #222 !important; }
-                .detail-value { font-weight: 500 !important; text-align: right !important; color: #111 !important; }
-                .detail-value.amount { font-size: 14px !important; font-weight: 800 !important; }
-                .status-badge { padding: 3px 10px !important; font-size: 9px !important; }
-                .highlight-box { padding: 10px !important; margin: 14px 0 !important; }
-                .highlight-box div { font-size: 11px !important; }
-                .proof-footer { margin-top: 16px !important; font-size: 8px !important; padding-top: 10px !important; }
-                .watermark-bg img { max-width: 70% !important; }
+                /* WATERMARK - z-index tinggi di atas semua konten */
+                .watermark-bg {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    pointer-events: none !important;
+                    z-index: 99999 !important;
+                    opacity: 0.025 !important;
+                }
+                .watermark-bg img {
+                    width: 45% !important;
+                    height: auto !important;
+                    object-fit: contain !important;
+                }
+                .slip-header { text-align: center !important; margin-bottom: 24px !important; padding-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
+                .check-circle { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 56px !important; height: 56px !important; background: #000000 !important; border-radius: 50% !important; color: #ffffff !important; font-size: 1.8rem !important; margin-bottom: 8px !important; }
+                .tx-status { font-size: 1.2rem !important; font-weight: 700 !important; color: #000000 !important; }
+                .tx-thankyou { font-size: 0.7rem !important; color: #888 !important; font-weight: 400 !important; margin-top: 2px !important; }
+                .slip-details { background: #fafafa !important; border-radius: 12px !important; padding: 20px 24px !important; margin: 16px 0 12px !important; border: 1px solid #eee !important; position: relative !important; z-index: 1 !important; }
+                .slip-row { display: flex !important; justify-content: space-between !important; padding: 10px 0 !important; border-bottom: 1px solid #eee !important; font-size: 0.9rem !important; }
+                .slip-row:last-child { border-bottom: none !important; }
+                .slip-label { color: #666 !important; font-weight: 400 !important; }
+                .slip-value { color: #000000 !important; font-weight: 500 !important; text-align: right !important; max-width: 60% !important; }
+                .slip-value.amount { font-size: 1.3rem !important; font-weight: 800 !important; color: #000000 !important; }
+                .status-badge { display: inline-block !important; padding: 4px 16px !important; background: #000000 !important; color: #ffffff !important; border-radius: 20px !important; font-size: 0.65rem !important; font-weight: 600 !important; }
+                .slip-note { background: #f8f8f8 !important; border-radius: 10px !important; padding: 12px 16px !important; margin: 10px 0 6px !important; font-size: 0.85rem !important; color: #333 !important; border-left: 4px solid #000000 !important; position: relative !important; z-index: 1 !important; }
+                .slip-note strong { display: block !important; font-size: 0.7rem !important; color: #666 !important; margin-bottom: 4px !important; }
+                .slip-footer { margin-top: 16px !important; padding-top: 16px !important; border-top: 2px solid #f0f0f0 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; position: relative !important; z-index: 1 !important; }
+                .ref { font-size: 0.7rem !important; color: #666 !important; }
+                .ref span { font-weight: 600 !important; color: #000000 !important; }
+                .bank-label { font-size: 0.7rem !important; font-weight: 700 !important; color: #000000 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; }
+                .slip-credit { text-align: center !important; font-size: 0.5rem !important; color: #aaa !important; margin-top: 12px !important; padding-top: 10px !important; border-top: 1px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
             `;
             cloneCard.appendChild(style);
             
@@ -664,4 +1015,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
