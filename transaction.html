@@ -15,7 +15,7 @@
         }
 
         body {
-            background: #f5f5f5;
+            background: #ffffff;
             font-family: 'Outfit', sans-serif;
             padding: 24px 16px 48px;
         }
@@ -45,12 +45,12 @@
         }
 
         .payment-option {
-            background: white;
+            background: #ffffff;
             border-radius: 16px;
             padding: 24px 20px;
             text-align: center;
-            border: 2px solid rgba(0,0,0,0.08);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             cursor: pointer;
             transition: all 0.25s ease;
         }
@@ -81,7 +81,7 @@
 
         .select-btn {
             background: #000000;
-            color: white;
+            color: #ffffff;
             padding: 10px 24px;
             border-radius: 40px;
             font-weight: 600;
@@ -94,16 +94,16 @@
         }
 
         .select-btn:hover {
-            background: #333;
+            background: #333333;
             transform: scale(1.02);
         }
 
         .generator-container {
-            background: white;
+            background: #ffffff;
             border-radius: 20px;
             padding: 32px 28px;
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             position: relative;
             overflow: hidden;
         }
@@ -157,12 +157,12 @@
         .form-control {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid rgba(0,0,0,0.1);
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 0.9rem;
             font-family: 'Outfit', sans-serif;
             transition: all 0.2s ease;
-            background: white;
+            background: #ffffff;
         }
 
         .form-control:focus {
@@ -177,7 +177,7 @@
         }
 
         .auto-bank-info {
-            background: #f8f8f8;
+            background: #f5f5f5;
             border-radius: 12px;
             padding: 14px 18px;
             margin-bottom: 24px;
@@ -213,11 +213,11 @@
 
         .btn-primary {
             background: #000000;
-            color: white;
+            color: #ffffff;
         }
 
         .btn-primary:hover {
-            background: #333;
+            background: #333333;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
@@ -254,23 +254,22 @@
         }
 
         .slip-card {
-            background: white;
+            background: #ffffff;
             border-radius: 16px;
             padding: 32px 36px;
             width: 100%;
             max-width: 600px;
             border: 2px solid #e0e0e0;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
         .slip-card:hover {
-            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
-        /* WATERMARK - DI ATAS SEMUA (z-index tinggi) */
         .watermark-bg {
             position: absolute;
             top: 0;
@@ -284,6 +283,7 @@
             z-index: 99999;
             opacity: 0.025;
         }
+
         .watermark-bg img {
             width: 45%;
             height: auto;
@@ -443,7 +443,7 @@
 
         .download-btn {
             background: #000000;
-            color: white;
+            color: #ffffff;
             padding: 16px 32px;
             border-radius: 12px;
             font-weight: 600;
@@ -458,7 +458,7 @@
         }
 
         .download-btn:hover {
-            background: #333;
+            background: #333333;
             transform: translateY(-2px);
             box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
@@ -482,11 +482,11 @@
         .currency-select {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid rgba(0,0,0,0.1);
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 0.9rem;
             font-family: 'Outfit', sans-serif;
-            background: white;
+            background: #ffffff;
             transition: all 0.2s ease;
         }
 
@@ -580,21 +580,21 @@
             <div class="payment-option" id="domestic-btn">
                 <div class="payment-icon"><i class="fas fa-landmark"></i></div>
                 <h2>Domestic Payment</h2>
-                <p>Transfer bank lokal Rupiah</p>
+                <p>Transfer dalam negeri</p>
                 <button class="select-btn" data-type="domestic">Pilih</button>
             </div>
             
             <div class="payment-option" id="international-btn">
                 <div class="payment-icon"><i class="fas fa-globe-americas"></i></div>
                 <h2>International Payment</h2>
-                <p>Transfer bank internasional</p>
+                <p>International Transactions</p>
                 <button class="select-btn" data-type="international">Select</button>
             </div>
             
             <div class="payment-option" id="invoice-btn">
                 <div class="payment-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 <h2>Invoice Payment</h2>
-                <p>Pembayaran invoice</p>
+                <p>For Invoice Payment Only</p>
                 <button class="select-btn" data-type="invoice">Select</button>
             </div>
         </div>
@@ -748,14 +748,13 @@
                     <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
                     <div class="preview-container">
                         <div class="slip-card" id="proof-preview">
-                            <!-- WATERMARK - z-index tinggi, di atas semua konten -->
                             <div class="watermark-bg">
                                 <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
                             </div>
                             
                             <div class="slip-header">
                                 <div class="check-circle"><i class="fas fa-check"></i></div>
-                                <div class="tx-status" id="preview-status">${isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete'}</div>
+                                <div class="tx-status" id="preview-status">${isDomestic ? 'Payment Success' : 'Payment Complete'}</div>
                                 <div class="tx-thankyou" id="preview-thankyou">${isDomestic ? 'Terima kasih! Pembayaran Anda berhasil diproses' : 'Thank you! Your payment was successfully processed'}</div>
                             </div>
                             <div class="slip-details" id="slip-details"></div>
@@ -764,10 +763,10 @@
                                 <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
                                 <span class="bank-label">CHOBANK</span>
                             </div>
-                            <div class="slip-credit">${isDomestic ? 'Hanya untuk tujuan roleplay, dipersembahkan oleh The Kachoo' : 'For roleplay purpose only, featured by The Kachoo'}</div>
+                            <div class="slip-credit">${isDomestic ? 'Hanya untuk tujuan roleplay, Fitur dibuat oleh The Kachoo' : 'For roleplay purpose only, featured by The Kachoo'}</div>
                         </div>
                     </div>
-                    <button type="button" id="download-btn" class="download-btn">${isDomestic ? 'UNDUH PNG' : 'DOWNLOAD PNG'}</button>
+                    <button type="button" id="download-btn" class="download-btn">${isDomestic ? 'Cetak Slip' : 'Print Slip'}</button>
                     <div class="new-proof-btn-wrapper">
                         <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">${isDomestic ? 'Buat Baru' : 'Create New'}</button>
                     </div>
@@ -855,8 +854,8 @@
                 formattedAmount = symbol + (isNaN(amountNum) ? data.amount : amountNum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }
             
-            const statusText = 'BERHASIL';
-            const headerStatus = isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete';
+            const statusText = 'SUCCESS';
+            const headerStatus = isDomestic ? 'Payment Success' : 'Payment Complete';
             
             document.getElementById('preview-status').textContent = headerStatus;
             document.getElementById('preview-ref').textContent = ref;
@@ -947,7 +946,6 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                /* WATERMARK - z-index tinggi di atas semua konten */
                 .watermark-bg {
                     position: absolute !important;
                     top: 0 !important;
