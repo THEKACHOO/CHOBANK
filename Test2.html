@@ -941,8 +941,21 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                .watermark-logo { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) scale(1.5) !important; opacity: 0.025 !important; pointer-events: none !important; z-index: 9999 !important; }
-                .watermark-logo img { width: 180px !important; height: auto !important; display: block !important; }
+                /* WATERMARK DI DOWNLOAD - PROPORSIONAL DENGAN CARD 400px */
+                .watermark-logo { 
+                    position: absolute !important; 
+                    top: 50% !important; 
+                    left: 50% !important; 
+                    transform: translate(-50%, -50%) scale(1) !important; 
+                    opacity: 0.025 !important; 
+                    pointer-events: none !important; 
+                    z-index: 9999 !important; 
+                }
+                .watermark-logo img { 
+                    width: 120px !important; 
+                    height: auto !important; 
+                    display: block !important; 
+                }
                 .slip-header { text-align: center !important; margin-bottom: 24px !important; padding-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
                 .check-circle { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 56px !important; height: 56px !important; background: #000000 !important; border-radius: 50% !important; color: #ffffff !important; font-size: 1.8rem !important; margin-bottom: 8px !important; }
                 .tx-status { font-size: 1.2rem !important; font-weight: 700 !important; color: #000000 !important; }
