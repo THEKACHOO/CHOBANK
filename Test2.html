@@ -270,7 +270,7 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
 
-        /* WATERMARK LOGO DI SLIP CARD - PALING DEPAN, TIDAK MIRING, SANGAT PUDAR */
+        /* WATERMARK LOGO DI SLIP CARD - PREVIEW (card 600px) */
         .slip-card .watermark-logo {
             position: absolute;
             top: 50%;
@@ -592,7 +592,7 @@
                 <div class="payment-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 <h2>Invoice Payment</h2>
                 <p>Pembayaran invoice</p>
-                <button class="select-btn" data-type="invoice">Pilih</button>
+                <button class="select-btn" data-type="invoice">Select</button>
             </div>
         </div>
 
@@ -622,8 +622,11 @@
         function loadPaymentForm(type) {
             const generator = document.getElementById('generator');
             let title, subtitle, currency, showInvoiceField, showCurrencySelect, formLabels;
+            let isDomestic = type === 'domestic';
+            let isInternational = type === 'international';
+            let isInvoice = type === 'invoice';
             
-            if (type === 'domestic') {
+            if (isDomestic) {
                 title = 'Pembayaran Dalam Negeri';
                 subtitle = 'Transfer ke bank lokal';
                 currency = 'IDR';
@@ -640,7 +643,7 @@
                     placeholderAmount: 'Jumlah pembayaran',
                     placeholderNotes: 'Catatan tambahan'
                 };
-            } else if (type === 'international') {
+            } else if (isInternational) {
                 title = 'International Payment';
                 subtitle = 'International Bank Transfer';
                 currency = 'USD';
@@ -664,15 +667,15 @@
                 showInvoiceField = true;
                 showCurrencySelect = false;
                 formLabels = {
-                    payerName: 'Nama Pengirim', receiverName: 'Nama Penerima',
-                    receiverAccount: 'No. Rekening', recipientBank: 'Bank Penerima',
-                    amount: 'Jumlah', date: 'Tanggal', notes: 'Catatan',
-                    placeholderPayerName: 'Nama pengirim',
-                    placeholderReceiverName: 'Nama penerima',
-                    placeholderReceiverAccount: 'Nomor rekening',
-                    placeholderRecipientBank: 'Nama bank penerima',
-                    placeholderAmount: 'Jumlah pembayaran',
-                    placeholderNotes: 'Catatan tambahan'
+                    payerName: 'Sender Name', receiverName: 'Recipient Name',
+                    receiverAccount: 'Account Number', recipientBank: 'Recipient Bank',
+                    amount: 'Amount', date: 'Date', notes: 'Notes',
+                    placeholderPayerName: 'Full sender name',
+                    placeholderReceiverName: 'Full recipient name',
+                    placeholderReceiverAccount: 'Account number',
+                    placeholderRecipientBank: 'Recipient bank name',
+                    placeholderAmount: 'Payment amount',
+                    placeholderNotes: 'Additional notes'
                 };
             }
             
@@ -719,13 +722,13 @@
                             </select>
                         </div>
                         ` : ''}
-                        ${showInvoiceField ? `<div class="form-group"><label>No. Invoice</label><input type="text" id="invoice-number" class="form-control" placeholder="Nomor invoice"></div>` : ''}
+                        ${showInvoiceField ? `<div class="form-group"><label>Invoice Number</label><input type="text" id="invoice-number" class="form-control" placeholder="Invoice number"></div>` : ''}
                         <div class="form-group full-width">
-                            <label>Waktu / Time</label>
+                            <label>${isDomestic ? 'Waktu' : 'Time'}</label>
                             <input type="time" id="time-input" class="form-control" value="${currentTime}" required>
                             <div class="time-format-group">
-                                <label><input type="radio" name="time-format" value="24" checked> 24 Jam</label>
-                                <label><input type="radio" name="time-format" value="12"> 12 Jam (AM/PM)</label>
+                                <label><input type="radio" name="time-format" value="24" checked> ${isDomestic ? '24 Jam' : '24 Hour'}</label>
+                                <label><input type="radio" name="time-format" value="12"> ${isDomestic ? '12 Jam (AM/PM)' : '12 Hour (AM/PM)'}</label>
                             </div>
                         </div>
                         <div class="form-group full-width">
@@ -734,23 +737,23 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <button type="button" id="generate-btn" class="action-btn btn-primary">Buat Slip</button>
-                        <button type="reset" class="action-btn btn-secondary">Reset</button>
+                        <button type="button" id="generate-btn" class="action-btn btn-primary">${isDomestic ? 'Buat Slip' : 'Generate Slip'}</button>
+                        <button type="reset" class="action-btn btn-secondary">${isDomestic ? 'Reset' : 'Reset'}</button>
                     </div>
                 </form>
                 <div class="preview-section hidden" id="preview-section">
-                    <h3 class="preview-title">Preview Slip Pembayaran</h3>
+                    <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
                     <div class="preview-container">
                         <div class="slip-card" id="proof-preview">
-                            <!-- WATERMARK LOGO DI SLIP CARD (HANYA DI PREVIEW & DOWNLOAD) -->
+                            <!-- WATERMARK LOGO -->
                             <div class="watermark-logo">
                                 <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
                             </div>
                             
                             <div class="slip-header">
                                 <div class="check-circle"><i class="fas fa-check"></i></div>
-                                <div class="tx-status" id="preview-status">Pembayaran Berhasil</div>
-                                <div class="tx-thankyou" id="preview-thankyou">Thank you! Your payment was successfully processed</div>
+                                <div class="tx-status" id="preview-status">${isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete'}</div>
+                                <div class="tx-thankyou" id="preview-thankyou">${isDomestic ? 'Terima kasih! Pembayaran Anda berhasil diproses' : 'Thank you! Your payment was successfully processed'}</div>
                             </div>
                             <div class="slip-details" id="slip-details"></div>
                             <div id="slip-note-container"></div>
@@ -758,12 +761,12 @@
                                 <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
                                 <span class="bank-label">CHOBANK</span>
                             </div>
-                            <div class="slip-credit">For roleplay purpose only, featured by The Kachoo</div>
+                            <div class="slip-credit">${isDomestic ? 'Hanya untuk tujuan roleplay, dipersembahkan oleh The Kachoo' : 'For roleplay purpose only, featured by The Kachoo'}</div>
                         </div>
                     </div>
-                    <button type="button" id="download-btn" class="download-btn">UNDUH PNG</button>
+                    <button type="button" id="download-btn" class="download-btn">${isDomestic ? 'UNDUH PNG' : 'DOWNLOAD PNG'}</button>
                     <div class="new-proof-btn-wrapper">
-                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">Buat Baru</button>
+                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">${isDomestic ? 'Buat Baru' : 'Create New'}</button>
                     </div>
                 </div>
             `;
@@ -794,6 +797,9 @@
                 }
             }
             
+            const isDomestic = currentPaymentType === 'domestic';
+            const isInvoice = currentPaymentType === 'invoice';
+            
             const timeFormat = document.querySelector('input[name="time-format"]:checked').value;
             const timeInput = document.getElementById('time-input').value;
             const [hours, minutes] = timeInput.split(':').map(Number);
@@ -823,11 +829,8 @@
                 timeFormat: timeFormat
             };
             
-            const isDomestic = currentPaymentType === 'domestic';
-            const isInvoice = currentPaymentType === 'invoice';
-            
             const dateObj = new Date(data.date);
-            const formattedDate = dateObj.toLocaleDateString(isDomestic || isInvoice ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            const formattedDate = dateObj.toLocaleDateString(isDomestic ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
             
             const ref = 'CHB' + Math.floor(Math.random()*9000+1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
             
@@ -849,50 +852,50 @@
                 formattedAmount = symbol + (isNaN(amountNum) ? data.amount : amountNum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }
             
-            const statusText = isDomestic || isInvoice ? 'BERHASIL' : 'COMPLETED';
-            const headerStatus = isDomestic ? 'Pembayaran Berhasil' : (isInvoice ? 'Pembayaran Berhasil' : 'Payment Complete');
+            const statusText = 'BERHASIL';
+            const headerStatus = isDomestic ? 'Pembayaran Berhasil' : 'Payment Complete';
             
             document.getElementById('preview-status').textContent = headerStatus;
             document.getElementById('preview-ref').textContent = ref;
             
             let detailsHTML = `
                 <div class="slip-row">
-                    <span class="slip-label">Jumlah</span>
+                    <span class="slip-label">${isDomestic ? 'Jumlah' : 'Amount'}</span>
                     <span class="slip-value amount">${formattedAmount}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'Pengirim' : 'From'}</span>
+                    <span class="slip-label">${isDomestic ? 'Pengirim' : 'From'}</span>
                     <span class="slip-value">${escapeHtml(data.payerName)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'Penerima' : 'To'}</span>
+                    <span class="slip-label">${isDomestic ? 'Penerima' : 'To'}</span>
                     <span class="slip-value">${escapeHtml(data.receiverName)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'Bank Penerima' : 'Recipient Bank'}</span>
+                    <span class="slip-label">${isDomestic ? 'Bank Penerima' : 'Recipient Bank'}</span>
                     <span class="slip-value">${escapeHtml(data.recipientBank)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'No. Rekening' : 'Account'}</span>
+                    <span class="slip-label">${isDomestic ? 'No. Rekening' : 'Account'}</span>
                     <span class="slip-value">${escapeHtml(data.receiverAccount)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'Tanggal' : 'Date'}</span>
+                    <span class="slip-label">${isDomestic ? 'Tanggal' : 'Date'}</span>
                     <span class="slip-value">${formattedDate}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic || isInvoice ? 'Waktu' : 'Time'}</span>
+                    <span class="slip-label">${isDomestic ? 'Waktu' : 'Time'}</span>
                     <span class="slip-value">${data.time}</span>
                 </div>
             `;
             
             if (data.invoiceNumber) {
-                detailsHTML += `<div class="slip-row"><span class="slip-label">No. Invoice</span><span class="slip-value">${escapeHtml(data.invoiceNumber)}</span></div>`;
+                detailsHTML += `<div class="slip-row"><span class="slip-label">Invoice Number</span><span class="slip-value">${escapeHtml(data.invoiceNumber)}</span></div>`;
             }
             
             detailsHTML += `
                 <div class="slip-row">
-                    <span class="slip-label">Status</span>
+                    <span class="slip-label">${isDomestic ? 'Status' : 'Status'}</span>
                     <span class="slip-value"><span class="status-badge">${statusText}</span></span>
                 </div>
             `;
@@ -903,7 +906,7 @@
             if (data.notes) {
                 noteContainer.innerHTML = `
                     <div class="slip-note">
-                        <strong>${isDomestic || isInvoice ? 'Catatan' : 'Notes'}</strong>
+                        <strong>${isDomestic ? 'Catatan' : 'Notes'}</strong>
                         ${escapeHtml(data.notes)}
                     </div>
                 `;
@@ -941,12 +944,12 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                /* WATERMARK DI DOWNLOAD - PROPORSIONAL DENGAN CARD 400px */
+                /* WATERMARK DI DOWNLOAD - card 400px, proporsional dengan preview */
                 .watermark-logo { 
                     position: absolute !important; 
                     top: 50% !important; 
                     left: 50% !important; 
-                    transform: translate(-50%, -50%) scale(1) !important; 
+                    transform: translate(-50%, -50%) scale(1.0) !important; 
                     opacity: 0.025 !important; 
                     pointer-events: none !important; 
                     z-index: 9999 !important; 
@@ -1005,4 +1008,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
