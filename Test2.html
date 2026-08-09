@@ -570,7 +570,7 @@
 <body>
     <div class="container">
         <div class="site-header">
-            <div class="header-chobank-text">CHOBANK</div>
+            <div class="header-chobank-text">CHOBANK V2</div>
         </div>
 
         <div class="payment-options">
@@ -689,7 +689,7 @@
                 <h2>${title}</h2>
                 <p>${subtitle}</p>
                 <div class="auto-bank-info">
-                    <i class="fas fa-building"></i> Bank Pengirim: CHOBANK
+                    <i class="fas fa-building"></i> ${isDomestic ? 'Bank Pengirim' : 'Sender Bank'}: CHOBANK
                 </div>
                 <form id="payment-form">
                     <div class="form-grid">
@@ -944,7 +944,7 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                /* WATERMARK DI DOWNLOAD - card 400px, proporsional dengan preview */
+                /* WATERMARK DI DOWNLOAD - ngikut canvas (1000px) */
                 .watermark-logo { 
                     position: absolute !important; 
                     top: 50% !important; 
@@ -955,7 +955,7 @@
                     z-index: 9999 !important; 
                 }
                 .watermark-logo img { 
-                    width: 120px !important; 
+                    width: 300px !important; 
                     height: auto !important; 
                     display: block !important; 
                 }
