@@ -6,7 +6,8 @@
     <title>CHOBANK - Digital ATM Card Generator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
+    </script>
     <style>
         * {
             margin: 0;
@@ -29,7 +30,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: radial-gradient(circle at 20% 35%, rgba(0,0,0,0.02) 1px, transparent 1px);
+            background-image: radial-gradient(circle at 20% 35%, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
             background-size: 28px 28px;
             pointer-events: none;
             z-index: 0;
@@ -73,20 +74,20 @@
         }
 
         .form-container {
-            background: rgba(255,255,255,0.72);
+            background: rgba(255, 255, 255, 0.72);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border-radius: 48px;
             padding: 32px 28px;
             width: 100%;
-            box-shadow: 0 15px 35px -12px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
         }
 
         .form-container:hover {
-            background: rgba(255,255,255,0.82);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12);
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
         }
 
         .form-container h2 {
@@ -128,7 +129,7 @@
         .form-control {
             width: 100%;
             padding: 14px 18px;
-            border: 1.5px solid rgba(0,0,0,0.2);
+            border: 1.5px solid rgba(0, 0, 0, 0.2);
             border-radius: 32px;
             background-color: #ffffff;
             color: #111;
@@ -140,7 +141,7 @@
 
         .form-control:focus {
             border-color: #000000;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
             transform: translateY(-1px);
         }
 
@@ -157,12 +158,12 @@
         }
 
         .card-option {
-            background: rgba(255,255,255,0.9);
-            border: 1.5px solid rgba(0,0,0,0.15);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(0, 0, 0, 0.15);
             border-radius: 28px;
             padding: 20px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             align-items: center;
             gap: 18px;
@@ -172,13 +173,13 @@
             transform: translateY(-4px);
             border-color: #000;
             background: #ffffff;
-            box-shadow: 0 15px 25px -12px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 25px -12px rgba(0, 0, 0, 0.15);
         }
 
         .card-option.selected {
             border: 2px solid #000000;
             background: #ffffff;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
         }
 
         .card-icon {
@@ -190,14 +191,24 @@
             justify-content: center;
             font-size: 24px;
             color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .card-icon.regular { background: linear-gradient(135deg, #1e3c72, #2a5298); }
-        .card-icon.silver { background: linear-gradient(135deg, #606c88, #3f4c6b); }
-        .card-icon.gold { background: linear-gradient(135deg, #000000, #D4AF37, #000000); }
-        .card-icon.business { background: linear-gradient(135deg, #70000E, #990014, #70000E); }
-        .card-icon.student { background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93); }
+        .card-icon.regular {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+        .card-icon.silver {
+            background: linear-gradient(135deg, #606c88, #3f4c6b);
+        }
+        .card-icon.gold {
+            background: linear-gradient(135deg, #000000, #D4AF37, #000000);
+        }
+        .card-icon.business {
+            background: linear-gradient(135deg, #70000E, #990014, #70000E);
+        }
+        .card-icon.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
 
         .card-info {
             flex: 1;
@@ -230,15 +241,15 @@
         .card-number-input-group {
             margin-top: 15px;
             padding: 15px;
-            background: rgba(0,0,0,0.02);
+            background: rgba(0, 0, 0, 0.02);
             border-radius: 28px;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .card-number-input {
             width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid rgba(0,0,0,0.2);
+            border: 1.5px solid rgba(0, 0, 0, 0.2);
             border-radius: 32px;
             font-size: 15px;
             font-family: 'Roboto Mono', monospace;
@@ -277,23 +288,23 @@
         .btn-primary {
             background: #000000;
             color: #ffffff;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary:hover {
             background: #1c1c1c;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px -6px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.2);
         }
 
         .btn-secondary {
-            background: rgba(0,0,0,0.02);
+            background: rgba(0, 0, 0, 0.02);
             color: #000000;
             border: 1.5px solid #111;
         }
 
         .btn-secondary:hover {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
             transform: translateY(-2px);
         }
 
@@ -344,11 +355,21 @@
             transform: rotateY(15deg) rotateX(5deg);
         }
 
-        .card-preview.regular { background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f); }
-        .card-preview.silver { background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50); }
-        .card-preview.gold { background: linear-gradient(135deg, #000000, #1a1a1a, #000000); }
-        .card-preview.business { background: linear-gradient(135deg, #4d0008, #70000E, #4d0008); }
-        .card-preview.student { background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93); }
+        .card-preview.regular {
+            background: linear-gradient(135deg, #0f1c3f, #1a2b4d, #0f1c3f);
+        }
+        .card-preview.silver {
+            background: linear-gradient(135deg, #2c3e50, #4a5f7a, #2c3e50);
+        }
+        .card-preview.gold {
+            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
+        }
+        .card-preview.business {
+            background: linear-gradient(135deg, #4d0008, #70000E, #4d0008);
+        }
+        .card-preview.student {
+            background: linear-gradient(135deg, #EFBA93, #D9A575, #EFBA93);
+        }
 
         .card-glow {
             position: absolute;
@@ -356,7 +377,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 60%);
+            background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
             z-index: 1;
         }
 
@@ -388,7 +409,7 @@
         .card-logo-text.gold,
         .card-logo-text.business {
             color: white;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .card-logo-text.student {
@@ -401,16 +422,27 @@
             color: white;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0, 0, 0, 0.4);
             padding: 3px 8px;
             border-radius: 20px;
             font-family: 'Outfit', monospace;
         }
 
-        .card-type.silver { background: rgba(100,100,100,0.5); }
-        .card-type.gold { background: rgba(0,0,0,0.6); color: #D4AF37; }
-        .card-type.business { background: rgba(0,0,0,0.5); color: #ffffff; }
-        .card-type.student { background: rgba(255,255,255,0.5); color: #000000; }
+        .card-type.silver {
+            background: rgba(100, 100, 100, 0.5);
+        }
+        .card-type.gold {
+            background: rgba(0, 0, 0, 0.6);
+            color: #D4AF37;
+        }
+        .card-type.business {
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+        }
+        .card-type.student {
+            background: rgba(255, 255, 255, 0.5);
+            color: #000000;
+        }
 
         .card-middle-section {
             margin-top: 12px;
@@ -426,7 +458,7 @@
             background: linear-gradient(135deg, #d4af37, #f7ef8a, #d4af37);
             border-radius: 6px;
             position: relative;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .card-chip::before {
@@ -447,7 +479,7 @@
             margin: 8px 0;
             font-family: 'Roboto Mono', monospace;
             color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .card-details {
@@ -462,7 +494,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-family: 'Outfit', sans-serif;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .card-holder-name {
@@ -479,7 +511,7 @@
             text-align: right;
             letter-spacing: 1px;
             font-family: 'Outfit', sans-serif;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .card-expiry-date {
@@ -497,7 +529,7 @@
             right: 20px;
             width: 45px;
             height: 35px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.08));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
             border-radius: 5px;
             overflow: hidden;
             z-index: 3;
@@ -508,19 +540,23 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
             animation: hologram 3s infinite linear;
         }
 
         @keyframes hologram {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         /* Student Card Overrides */
         .card-preview.student .card-holder-label,
         .card-preview.student .card-expiry-label {
-            color: rgba(0,0,0,0.6);
+            color: rgba(0, 0, 0, 0.6);
         }
 
         .card-preview.student .card-holder-name,
@@ -528,8 +564,10 @@
             color: #000000;
         }
 
+        /* ===== INI PERUBAHANNYA: warna nomor student card jadi HITAM ===== */
         .card-preview.student .card-number {
-            color: #ffffff;
+            color: #000000;
+            text-shadow: none;
         }
 
         .card-preview.student .card-logo-text {
@@ -544,10 +582,10 @@
         }
 
         .card-info-box {
-            background: rgba(0,0,0,0.02);
+            background: rgba(0, 0, 0, 0.02);
             padding: 18px;
             border-radius: 28px;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             font-family: 'Outfit', sans-serif;
         }
 
@@ -601,7 +639,7 @@
             text-align: center;
             margin-top: 48px;
             padding-top: 28px;
-            border-top: 1px solid rgba(0,0,0,0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
             font-family: 'Outfit', sans-serif;
         }
 
@@ -628,8 +666,12 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .hidden {
@@ -641,8 +683,14 @@
         }
 
         @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .success-modal {
@@ -651,7 +699,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.75);
+            background-color: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
@@ -700,18 +748,43 @@
         }
 
         @media (min-width: 768px) {
-            .container { padding: 28px 36px 48px; }
-            .card-options { flex-direction: row; flex-wrap: wrap; }
-            .card-option { flex: 1 1 calc(50% - 16px); min-width: 220px; }
-            .action-buttons { flex-direction: row; gap: 18px; }
-            .action-btn { width: auto; flex: 1; }
+            .container {
+                padding: 28px 36px 48px;
+            }
+            .card-options {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .card-option {
+                flex: 1 1 calc(50% - 16px);
+                min-width: 220px;
+            }
+            .action-buttons {
+                flex-direction: row;
+                gap: 18px;
+            }
+            .action-btn {
+                width: auto;
+                flex: 1;
+            }
         }
 
         @media (max-width: 480px) {
-            .header-chobank { font-size: 1.8rem; }
-            .form-container { padding: 24px 20px; }
-            .card-preview { width: 340px; height: 215px; padding: 18px; }
-            .card-number { font-size: 18px; letter-spacing: 2px; }
+            .header-chobank {
+                font-size: 1.8rem;
+            }
+            .form-container {
+                padding: 24px 20px;
+            }
+            .card-preview {
+                width: 340px;
+                height: 215px;
+                padding: 18px;
+            }
+            .card-number {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
@@ -725,18 +798,18 @@
         <main class="main-content">
             <section class="form-container fade-in">
                 <h2>Formulir Pembuatan Kartu ATM</h2>
-                
+
                 <form id="card-form">
                     <div class="form-group">
                         <label for="full-name">Nama Lengkap / Nama Perusahaan</label>
                         <input type="text" id="full-name" class="form-control" placeholder="Masukkan nama lengkap atau nama perusahaan" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="address">Alamat Lengkap</label>
                         <textarea id="address" class="form-control" rows="3" placeholder="Masukkan alamat lengkap" required></textarea>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Pilih Jenis Kartu</label>
                         <div class="card-options">
@@ -747,23 +820,23 @@
                             <div class="card-option" data-type="student"><div class="card-icon student"><i class="fas fa-graduation-cap"></i></div><div class="card-info"><h3>Student Card</h3><p>Kartu khusus pelajar - bisa input nomor sendiri</p><span class="limit-badge">CARDHOLDER NAME</span></div></div>
                         </div>
                     </div>
-                    
+
                     <div class="card-number-input-group hidden" id="card-number-input-group">
                         <label for="custom-card-number">Nomor Kartu / Rekening (Opsional)</label>
                         <input type="text" id="custom-card-number" class="card-number-input" placeholder="Contoh: 1234 5678 9012 3456" maxlength="19">
                         <p class="info-note">Kosongkan untuk nomor acak. Bisa menggunakan nomor yang sama berkali-kali.</p>
                     </div>
-                    
+
                     <div class="action-buttons">
                         <button type="button" id="generate-card-btn" class="action-btn btn-primary">Generate Kartu ATM</button>
                         <button type="reset" class="action-btn btn-secondary">Reset Form</button>
                     </div>
                 </form>
             </section>
-            
+
             <div class="preview-section hidden" id="preview-section">
                 <h3 class="preview-title">Preview Kartu ATM CHOBANK</h3>
-                
+
                 <div class="preview-container">
                     <div class="card-preview-container">
                         <div class="card-preview" id="card-preview">
@@ -791,7 +864,7 @@
                             <div class="card-hologram"></div>
                         </div>
                     </div>
-                    
+
                     <div class="card-info-display">
                         <div class="card-info-box">
                             <h4>Detail Kartu</h4>
@@ -802,23 +875,23 @@
                             <p><strong>Alamat:</strong> <span id="display-address">-</span></p>
                         </div>
                     </div>
-                    
+
                     <div class="download-options">
                         <button type="button" id="download-card-btn" class="download-btn">Download Kartu ATM</button>
                     </div>
-                    
+
                     <div class="action-buttons">
                         <button type="button" id="new-card-btn" class="action-btn btn-secondary">Buat Kartu Baru</button>
                     </div>
                 </div>
             </div>
-            
+
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p>Sedang membuat kartu...</p>
             </div>
         </main>
-        
+
         <div class="success-modal" id="success-modal">
             <div class="success-modal-content">
                 <button class="close-modal" id="close-success-modal">&times;</button>
@@ -834,7 +907,7 @@
                 </div>
             </div>
         </div>
-        
+
         <footer>
             <p>© 2026 CHOBANK Digital ATM Card Generator. All cards are fictional and for roleplay purposes only.</p>
             <p>This page does not perform actual financial transactions.</p>
@@ -844,7 +917,7 @@
 
     <script>
         let selectedCardType = '';
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.card-option').forEach(option => {
                 option.addEventListener('click', function() {
@@ -852,7 +925,7 @@
                     this.classList.add('selected');
                     selectedCardType = this.getAttribute('data-type');
                     document.getElementById('card-number-input-group').classList.remove('hidden');
-                    
+
                     const label = document.querySelector('#card-number-input-group label');
                     const input = document.getElementById('custom-card-number');
                     if (selectedCardType === 'student') {
@@ -864,7 +937,7 @@
                     }
                 });
             });
-            
+
             document.getElementById('generate-card-btn').addEventListener('click', generateCard);
             document.getElementById('download-card-btn').addEventListener('click', downloadCard);
             document.getElementById('new-card-btn').addEventListener('click', function() {
@@ -878,7 +951,7 @@
                 document.getElementById('success-modal').classList.remove('active');
                 document.body.style.overflow = 'auto';
             });
-            
+
             document.getElementById('custom-card-number').addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 let formatted = '';
@@ -889,7 +962,7 @@
                 e.target.value = formatted.substring(0, 19);
             });
         });
-        
+
         function formatCardNumber(number) {
             let formatted = '';
             for (let i = 0; i < number.length; i++) {
@@ -898,7 +971,7 @@
             }
             return formatted;
         }
-        
+
         function generateRandomCardNumber() {
             let number = '';
             for (let i = 0; i < 4; i++) {
@@ -907,24 +980,24 @@
             }
             return number;
         }
-        
+
         function generateExpiryDate() {
             const now = new Date();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const year = String(now.getFullYear() + 5).slice(-2);
             return `${month}/${year}`;
         }
-        
+
         function updateCardPreview(name, cardNumber, expiryDate, type, address) {
             document.getElementById('display-card-number').textContent = cardNumber;
             document.getElementById('display-holder-name').textContent = name;
             document.getElementById('display-expiry-date').textContent = expiryDate;
             document.getElementById('display-card-type').textContent = type.toUpperCase();
             document.getElementById('display-address').textContent = address;
-            
+
             const displayHolderLabel = document.getElementById('display-holder-label');
             const cardHolderLabel = document.getElementById('card-holder-label');
-            
+
             if (type === 'business') {
                 displayHolderLabel.textContent = 'Nama Perusahaan:';
                 cardHolderLabel.textContent = 'COMPANY NAME';
@@ -935,37 +1008,37 @@
                 displayHolderLabel.textContent = 'Nama Pemegang:';
                 cardHolderLabel.textContent = 'CARDHOLDER NAME';
             }
-            
+
             const cardPreview = document.getElementById('card-preview');
             const cardTypeLabel = document.getElementById('card-type-label');
             const cardNumberDisplay = document.getElementById('card-number-display');
             const cardHolderName = document.getElementById('card-holder-name');
             const cardExpiryDate = document.getElementById('card-expiry-date');
             const cardLogoText = document.getElementById('card-logo-text');
-            
+
             cardPreview.className = 'card-preview ' + type;
             cardLogoText.className = 'card-logo-text ' + type;
             cardLogoText.textContent = 'CHOBANK';
-            
+
             cardTypeLabel.textContent = type.toUpperCase();
             cardTypeLabel.className = 'card-type';
             if (type === 'silver') cardTypeLabel.classList.add('silver');
             else if (type === 'gold') cardTypeLabel.classList.add('gold');
             else if (type === 'business') cardTypeLabel.classList.add('business');
             else if (type === 'student') cardTypeLabel.classList.add('student');
-            
+
             cardNumberDisplay.textContent = cardNumber;
             cardNumberDisplay.className = 'card-number';
-            
+
             // NAMA PEMEGANG KARTU - INI YANG MEMBUAT NAMA MUNCUL
             cardHolderName.textContent = name.toUpperCase();
             cardExpiryDate.textContent = expiryDate;
         }
-        
+
         function generateCard() {
             const fullName = document.getElementById('full-name').value.trim();
             const address = document.getElementById('address').value.trim();
-            
+
             if (!fullName || !address) {
                 alert('Harap isi nama lengkap dan alamat!');
                 return;
@@ -974,10 +1047,10 @@
                 alert('Harap pilih jenis kartu!');
                 return;
             }
-            
+
             let cardNumber;
             const customCardNumber = document.getElementById('custom-card-number').value.trim();
-            
+
             if (customCardNumber) {
                 const cleanedNumber = customCardNumber.replace(/\s/g, '');
                 if (selectedCardType === 'student') {
@@ -996,16 +1069,16 @@
             } else {
                 cardNumber = generateRandomCardNumber();
             }
-            
+
             const expiryDate = generateExpiryDate();
             updateCardPreview(fullName, cardNumber, expiryDate, selectedCardType, address);
-            
+
             document.getElementById('preview-section').classList.remove('hidden');
             document.getElementById('preview-section').classList.add('fade-in');
             setTimeout(() => {
                 document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 300);
-            
+
             if (selectedCardType === 'business' || selectedCardType === 'student') {
                 const modalTitle = document.getElementById('modal-title');
                 const modalMessage = document.getElementById('modal-message');
@@ -1013,34 +1086,36 @@
                 if (selectedCardType === 'business') {
                     modalTitle.textContent = 'Business Card Berhasil Dibuat!';
                     modalMessage.textContent = 'Kartu Business Anda telah berhasil dibuat.';
-                    modalContactInfo.innerHTML = `<p><strong>Untuk kartu Business:</strong></p><p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.</p><p><i class="fas fa-phone"></i> 1500-123 (Ext. Business)</p><p><i class="fas fa-envelope"></i> business@chobank.id</p>`;
+                    modalContactInfo.innerHTML =
+                        `<p><strong>Untuk kartu Business:</strong></p><p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.</p><p><i class="fas fa-phone"></i> 1500-123 (Ext. Business)</p><p><i class="fas fa-envelope"></i> business@chobank.id</p>`;
                 } else if (selectedCardType === 'student') {
                     modalTitle.textContent = 'Student Card Berhasil Dibuat!';
                     modalMessage.textContent = 'Kartu Student Anda telah berhasil dibuat.';
-                    modalContactInfo.innerHTML = `<p><strong>Untuk kartu Student:</strong></p><p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.</p><p><i class="fas fa-phone"></i> 1500-123 (Ext. Student)</p><p><i class="fas fa-envelope"></i> student@chobank.id</p>`;
+                    modalContactInfo.innerHTML =
+                        `<p><strong>Untuk kartu Student:</strong></p><p>Kartu fisik dapat diambil di kantor cabang CHOBANK terdekat.</p><p><i class="fas fa-phone"></i> 1500-123 (Ext. Student)</p><p><i class="fas fa-envelope"></i> student@chobank.id</p>`;
                 }
                 document.getElementById('success-modal').classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
         }
-        
+
         function downloadCard() {
             const cardPreview = document.getElementById('card-preview');
             if (!cardPreview) {
                 alert('Harap buat kartu terlebih dahulu!');
                 return;
             }
-            
+
             const loading = document.getElementById('loading');
             loading.style.display = 'block';
-            
+
             const tempContainer = document.createElement('div');
             tempContainer.style.position = 'fixed';
             tempContainer.style.left = '-9999px';
             tempContainer.style.top = '-9999px';
             tempContainer.style.width = '420px';
             tempContainer.style.height = '270px';
-            
+
             const clonedCard = cardPreview.cloneNode(true);
             clonedCard.style.transform = 'none';
             clonedCard.style.width = '420px';
@@ -1048,10 +1123,10 @@
             clonedCard.style.borderRadius = '20px';
             clonedCard.style.padding = '22px';
             clonedCard.style.boxShadow = 'none';
-            
+
             tempContainer.appendChild(clonedCard);
             document.body.appendChild(tempContainer);
-            
+
             const watermark = document.createElement('div');
             watermark.style.position = 'absolute';
             watermark.style.bottom = '10px';
@@ -1063,7 +1138,7 @@
             if (selectedCardType === 'student') watermark.style.color = 'rgba(0,0,0,0.5)';
             else watermark.style.color = 'rgba(255,255,255,0.5)';
             clonedCard.appendChild(watermark);
-            
+
             setTimeout(() => {
                 html2canvas(clonedCard, {
                     scale: 2.5,
