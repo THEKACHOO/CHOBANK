@@ -13,6 +13,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             background: #ffffff;
             color: #000000;
@@ -23,10 +24,12 @@
             justify-content: center;
             padding: 20px;
         }
+
         .container {
             max-width: 440px;
             width: 100%;
         }
+
         .header-chobank-text {
             font-family: 'Outfit', sans-serif;
             font-size: 3.2rem;
@@ -36,6 +39,7 @@
             text-align: center;
             margin-bottom: 32px;
         }
+
         .glass-card {
             background: rgba(255,255,255,0.75);
             backdrop-filter: blur(14px);
@@ -45,6 +49,7 @@
             border: 1px solid rgba(0,0,0,0.08);
             box-shadow: 0 10px 25px -10px rgba(0,0,0,0.05);
         }
+
         .tab-switcher {
             display: flex;
             background: #f0f0f0;
@@ -52,6 +57,7 @@
             padding: 4px;
             margin-bottom: 28px;
         }
+
         .tab-btn {
             flex: 1;
             padding: 12px;
@@ -65,39 +71,48 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .tab-btn.active {
             background: #000000;
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
+
         .tab-btn:hover:not(.active) {
             color: #000;
         }
+
         .form-container {
             display: none;
         }
+
         .form-container.active {
             display: block;
             animation: fadeIn 0.3s ease;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .form-container h2 {
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 4px;
         }
+
         .form-container .subtitle {
             color: #666;
             font-size: 0.85rem;
             margin-bottom: 22px;
             font-weight: 400;
         }
+
         .form-group {
             margin-bottom: 16px;
         }
+
         .form-group label {
             display: block;
             font-weight: 600;
@@ -105,6 +120,7 @@
             margin-bottom: 6px;
             color: #333;
         }
+
         .form-group input {
             width: 100%;
             padding: 14px 16px;
@@ -115,14 +131,17 @@
             transition: all 0.2s ease;
             background: #ffffff;
         }
+
         .form-group input:focus {
             outline: none;
             border-color: #000000;
             box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
         }
+
         .form-group input[type="password"] {
             letter-spacing: 2px;
         }
+
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -137,16 +156,19 @@
             transition: all 0.25s ease;
             margin-top: 4px;
         }
+
         .btn-primary:hover {
             background: #1e1e1e;
             transform: translateY(-2px);
             box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
         }
+
         .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
+
         .message-box {
             padding: 12px 16px;
             border-radius: 12px;
@@ -154,35 +176,42 @@
             margin-bottom: 16px;
             display: none;
         }
+
         .message-box.error {
             display: block;
             background: #fee2e2;
             color: #dc2626;
         }
+
         .message-box.success {
             display: block;
             background: #dcfce7;
             color: #16a34a;
         }
+
         .back-home {
             text-align: center;
             margin-top: 16px;
         }
+
         .back-home a {
             color: #666;
             text-decoration: none;
             font-size: 0.85rem;
             transition: color 0.2s;
         }
+
         .back-home a:hover {
             color: #000;
         }
+
         .requirements {
             font-size: 0.7rem;
             color: #888;
             margin-top: 4px;
             line-height: 1.5;
         }
+
         .login-options {
             display: flex;
             gap: 8px;
@@ -191,6 +220,7 @@
             border-radius: 12px;
             padding: 4px;
         }
+
         .login-option-btn {
             flex: 1;
             padding: 10px;
@@ -204,34 +234,42 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .login-option-btn.active {
             background: #000000;
             color: #ffffff;
         }
+
         .login-option-btn:hover:not(.active) {
             color: #000;
         }
+
         .forgot-password {
             text-align: center;
             margin-top: 14px;
         }
+
         .forgot-password a {
             color: #888;
             text-decoration: none;
             font-size: 0.8rem;
             transition: color 0.2s;
         }
+
         .forgot-password a:hover {
             color: #000;
             text-decoration: underline;
         }
+
         .login-field {
             display: none;
         }
+
         .login-field.active {
             display: block;
             animation: fadeIn 0.3s ease;
         }
+
         @media (max-width: 480px) {
             .container {
                 padding: 0 8px;
@@ -356,7 +394,7 @@
             
             console.log('=== CHOBANK AUTH SYSTEM STARTED ===');
 
-            // ===== GANTI DENGAN URL DAN KEY SUPABASE KAMU! =====
+            // ===== SUPABASE CONFIG =====
             const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
 
@@ -489,6 +527,11 @@
                         spinner.style.display = 'none';
                         return;
                     }
+                    
+                    // SAVE TO LOCALSTORAGE
+                    localStorage.setItem('chobank_user_id', userData.id);
+                    localStorage.setItem('chobank_username', userData.username);
+                    
                     window.showMessage('Login successful! Redirecting...', 'success');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
@@ -555,7 +598,8 @@
                             full_name: fullName,
                             username: username, 
                             password: password,
-                            pin: pin
+                            pin: pin,
+                            balance: 0
                         }]);
                     if (insertError) {
                         console.error('Insert error:', insertError);
