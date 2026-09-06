@@ -98,8 +98,8 @@
         </div>
 
         <section class="generator-container">
-            <h2>Send Money</h2>
-            <p>Transfer to CHOBANK user</p>
+            <h2>Transaction System</h2>
+            <p>International Transfer</p>
 
             <div id="messageBox" class="message-box"></div>
 
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Search by (choose one)</label>
+                    <label>Insert Account Number or Username</label>
                     <div class="search-options">
                         <button id="searchAccount">Account Number</button>
                         <button id="searchUsername">Username</button>
@@ -145,8 +145,8 @@
                     <div class="form-group">
                         <label>Currency</label>
                         <select id="currency-select" class="currency-select">
-                            <option value="USD">USD</option><option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option><option value="JPY">JPY</option>
+                            <option value="USD">USD</option><option value="IDR">IDR</option><option value="GBP">GBP</option>
+                            <option value="EUR">EUR</option><option value="JPY">JPY</option>
                             <option value="AUD">AUD</option><option value="CAD">CAD</option>
                             <option value="CHF">CHF</option><option value="CNY">CNY</option>
                             <option value="SGD">SGD</option><option value="MYR">MYR</option>
@@ -176,7 +176,7 @@
             </form>
 
             <div class="preview-section hidden" id="preview-section">
-                <h3 class="preview-title">Payment Slip Preview</h3>
+                <h3 class="preview-title">Slip Preview</h3>
                 <div class="preview-container">
                     <div class="slip-card" id="proof-preview">
                         <div class="watermark-bg">
@@ -190,7 +190,7 @@
                         <div class="slip-details" id="slip-details"></div>
                         <div id="slip-note-container"></div>
                         <div class="slip-footer">
-                            <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
+                            <span class="ref">Ref: <span id="preview-ref">CHO-XXXX</span></span>
                             <span class="bank-label">CHOBANK</span>
                         </div>
                         <div class="slip-credit">For roleplay purpose only</div>
@@ -341,7 +341,7 @@
                 if (result.data.id === parseInt(userId)) {
                     info.style.display = 'block';
                     nameDisplay.textContent = result.data.full_name || result.data.username;
-                    statusDisplay.innerHTML = '<span class="not-found">⚠️ Cannot send to yourself</span>';
+                    statusDisplay.innerHTML = '<span class="not-found">Cannot send to yourself</span>';
                     foundReceiver = null;
                     return;
                 }
@@ -349,7 +349,6 @@
                 foundReceiver = result.data;
                 info.style.display = 'block';
                 nameDisplay.textContent = result.data.full_name || result.data.username;
-                statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found</span>';
 
             } catch(err) {
                 console.error(err);
