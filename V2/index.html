@@ -142,6 +142,11 @@
             letter-spacing: 2px;
         }
 
+        .form-group input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -157,7 +162,7 @@
             margin-top: 4px;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: #1e1e1e;
             transform: translateY(-2px);
             box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
@@ -306,6 +311,101 @@
             color: #000;
         }
 
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px;
+            max-width: 380px;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .modal .sub {
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: #000000;
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: #16a34a;
+        }
+
+        .step-label {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .step-label span {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .forgot-step {
+            display: none;
+        }
+
+        .forgot-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .password-hint {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 0 8px;
@@ -320,6 +420,9 @@
             .tab-btn {
                 font-size: 0.85rem;
                 padding: 10px;
+            }
+            .modal {
+                padding: 24px 16px;
             }
         }
     </style>
@@ -349,7 +452,7 @@
 
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password" required maxlength="12">
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
                 </div>
 
                 <button class="btn-primary" id="loginBtn" onclick="window.handleLogin()">
@@ -413,32 +516,92 @@
     </div>
 
     <!-- FORGOT PASSWORD MODAL -->
-    <div class="modal-overlay" id="forgotModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(8px); z-index:1000; align-items:center; justify-content:center; padding:20px;">
-        <div class="modal" style="background:#ffffff; border-radius:28px; padding:32px 24px; max-width:380px; width:100%; animation:fadeIn 0.3s ease;">
-            <h3 style="font-size:1.3rem; font-weight:700; margin-bottom:8px; text-align:center;">Forgot Password</h3>
-            <p class="sub" style="color:#666; font-size:0.85rem; text-align:center; margin-bottom:20px;">Enter your username to view card number & PIN</p>
-            <div id="forgotMessage" class="message-box" style="display:none;"></div>
-            <div class="form-group">
-                <label for="forgotUsername">Username</label>
-                <input type="text" id="forgotUsername" placeholder="Enter your username" required>
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal">
+            <h3>Forgot Password</h3>
+            <p class="sub">Verify your identity to reset your password</p>
+
+            <div id="forgotMessage" class="message-box"></div>
+
+            <!-- STEP 1: Enter Card Number & PIN -->
+            <div class="forgot-step active" id="step1">
+                <div class="step-indicator">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-label">Step <span>1</span> of 3 · Verify Identity</div>
+
+                <div class="form-group">
+                    <label for="forgotCardNumber">Card Number</label>
+                    <input type="text" id="forgotCardNumberInput" placeholder="Enter your 16-digit card number" required maxlength="16" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">16 digits only (0-9)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="forgotPinInput">PIN</label>
+                    <input type="password" id="forgotPinInput" placeholder="Enter your 4-digit PIN" required maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">4 digits only (0-9)</div>
+                </div>
+
+                <button class="btn-primary" onclick="window.verifyCardAndPin()">
+                    <span id="verifyText">Verify</span>
+                    <span id="verifySpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
             </div>
-            <button class="btn-primary" onclick="window.handleForgotPassword()">
-                <span id="forgotText">Find Account</span>
-                <span id="forgotSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
-            </button>
-            <div id="forgotResult" style="display:none; margin-top:16px;">
+
+            <!-- STEP 2: Show Username -->
+            <div class="forgot-step" id="step2">
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-label">Step <span>2</span> of 3 · Confirm Account</div>
+
                 <div class="info-box">
                     <div class="row">
-                        <span class="label">Card Number</span>
-                        <span class="value" id="forgotCardNumber">-</span>
-                    </div>
-                    <div class="row">
-                        <span class="label">PIN</span>
-                        <span class="value" id="forgotPin">-</span>
+                        <span class="label">Username</span>
+                        <span class="value" id="foundUsername">-</span>
                     </div>
                 </div>
+
+                <p style="font-size:0.8rem; color:#666; text-align:center; margin-bottom:16px;">
+                    Is this your username? Click Next to reset your password.
+                </p>
+
+                <button class="btn-primary" onclick="window.goToStep3()">Next →</button>
+                <button class="btn-secondary" onclick="window.goToStep1()">← Back</button>
             </div>
-            <button class="btn-secondary" onclick="window.closeForgot()">Close</button>
+
+            <!-- STEP 3: Reset Password -->
+            <div class="forgot-step" id="step3">
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                </div>
+                <div class="step-label">Step <span>3</span> of 3 · Reset Password</div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password (4-12 characters)</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password" required minlength="4" maxlength="12">
+                    <div class="password-hint">4-12 characters (letters & numbers only, NO symbols)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                </div>
+
+                <button class="btn-primary" onclick="window.resetPassword()">
+                    <span id="resetText">Reset Password</span>
+                    <span id="resetSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+                <button class="btn-secondary" onclick="window.goToStep2()">← Back</button>
+            </div>
+
+            <button class="btn-secondary" onclick="window.closeForgot()" style="margin-top:12px;">Close</button>
         </div>
     </div>
 
@@ -453,6 +616,40 @@
 
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log('Supabase client created');
+
+            let verifiedUserId = null;
+            let verifiedUsername = null;
+
+            // RULES
+            const RESERVED_USERNAMES = ['thekachoo', 'kafka', 'gathur', 'kazine', 'kafkapages', 'kaboom', 'chodate', 'chonnect', 'chosong'];
+            const SPECIAL_USERS = {
+                'kachoo': { password: 'CHO', badge: 'OFFICIAL', unlimited: true },
+                'chobank': { password: 'CHO', badge: 'OFFICIAL', unlimited: true },
+                'jackdaw': { badge: 'OWNER', canEdit: true },
+                'admin': { password: 'CHO', badge: 'ADMIN', canEdit: false }
+            };
+
+            function isReservedUsername(username) {
+                return RESERVED_USERNAMES.includes(username.toLowerCase());
+            }
+
+            function getSpecialUser(username) {
+                const lower = username.toLowerCase();
+                if (lower === 'kachoo' || lower === 'chobank') {
+                    return SPECIAL_USERS[lower];
+                }
+                if (lower === 'jackdaw') {
+                    return SPECIAL_USERS['jackdaw'];
+                }
+                if (lower === 'admin') {
+                    return SPECIAL_USERS['admin'];
+                }
+                return null;
+            }
+
+            function validatePassword(password) {
+                return /^[a-zA-Z0-9]{4,12}$/.test(password);
+            }
 
             window.switchTab = function(tab) {
                 console.log('🔄 Switching to:', tab);
@@ -492,21 +689,180 @@
                 msg.style.display = 'block';
             };
 
-            function validateUsername(username) {
-                return /^[a-zA-Z0-9]{5,12}$/.test(username);
+            function clearForgotMessage() {
+                const msg = document.getElementById('forgotMessage');
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+                msg.textContent = '';
             }
 
-            function validatePassword(password) {
-                return /^[a-zA-Z0-9]{4,12}$/.test(password);
-            }
+            window.showForgotPassword = function() {
+                document.getElementById('forgotModal').classList.add('active');
+                verifiedUserId = null;
+                verifiedUsername = null;
+                window.goToStep1();
+                document.getElementById('forgotCardNumberInput').value = '';
+                document.getElementById('forgotPinInput').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                clearForgotMessage();
+            };
 
-            function validatePin(pin) {
-                return /^[0-9]{4}$/.test(pin);
-            }
+            window.closeForgot = function() {
+                document.getElementById('forgotModal').classList.remove('active');
+            };
 
-            function validateCardNumber(cardNumber) {
-                return /^[0-9]{16}$/.test(cardNumber);
-            }
+            window.goToStep1 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step1').classList.add('active');
+                clearForgotMessage();
+            };
+
+            window.goToStep2 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step2').classList.add('active');
+                clearForgotMessage();
+            };
+
+            window.goToStep3 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step3').classList.add('active');
+                clearForgotMessage();
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+            };
+
+            window.verifyCardAndPin = async function() {
+                const cardNumber = document.getElementById('forgotCardNumberInput').value.trim();
+                const pin = document.getElementById('forgotPinInput').value.trim();
+                const btn = document.querySelector('#step1 .btn-primary');
+                const text = document.getElementById('verifyText');
+                const spinner = document.getElementById('verifySpinner');
+
+                clearForgotMessage();
+
+                if (!cardNumber || cardNumber.length !== 16) {
+                    window.showForgotMessage('Please enter a valid 16-digit card number.', 'error');
+                    return;
+                }
+
+                if (!pin || pin.length !== 4) {
+                    window.showForgotMessage('Please enter a valid 4-digit PIN.', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Verifying...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('id, username, card_number, pin')
+                        .eq('card_number', cardNumber)
+                        .single();
+
+                    if (error || !userData) {
+                        window.showForgotMessage('Card number not found.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Verify';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    if (userData.pin !== pin) {
+                        window.showForgotMessage('Invalid PIN. Please try again.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Verify';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    verifiedUserId = userData.id;
+                    verifiedUsername = userData.username;
+                    document.getElementById('foundUsername').textContent = userData.username;
+
+                    window.goToStep2();
+                    window.showForgotMessage('Identity verified! Please confirm your username.', 'success');
+
+                } catch (err) {
+                    window.showForgotMessage('An error occurred. Please try again.', 'error');
+                    console.error('Verification error:', err);
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Verify';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.resetPassword = async function() {
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+                const btn = document.querySelector('#step3 .btn-primary');
+                const text = document.getElementById('resetText');
+                const spinner = document.getElementById('resetSpinner');
+
+                clearForgotMessage();
+
+                if (!newPassword || !confirmPassword) {
+                    window.showForgotMessage('Please fill in all fields.', 'error');
+                    return;
+                }
+
+                // Check if new password meets requirements
+                const special = getSpecialUser(verifiedUsername);
+                let isPasswordValid = false;
+                if (special && special.password) {
+                    isPasswordValid = (newPassword.toUpperCase() === special.password && newPassword.length >= 2);
+                } else {
+                    isPasswordValid = validatePassword(newPassword);
+                }
+
+                if (!isPasswordValid) {
+                    if (special && special.password) {
+                        window.showForgotMessage('Invalid password for this username.', 'error');
+                    } else {
+                        window.showForgotMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
+                    }
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    window.showForgotMessage('Passwords do not match.', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Resetting...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .update({ password: newPassword })
+                        .eq('id', verifiedUserId);
+
+                    if (error) {
+                        window.showForgotMessage('Failed to reset password. Please try again.', 'error');
+                        console.error('Reset error:', error);
+                    } else {
+                        window.showForgotMessage('Password reset successfully! You can now login.', 'success');
+                        setTimeout(() => {
+                            window.closeForgot();
+                            document.getElementById('loginUsername').value = verifiedUsername;
+                            document.getElementById('loginPassword').value = '';
+                            window.switchTab('login');
+                        }, 1500);
+                    }
+                } catch (err) {
+                    window.showForgotMessage('An error occurred. Please try again.', 'error');
+                    console.error('Reset error:', err);
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Reset Password';
+                    spinner.style.display = 'none';
+                }
+            };
 
             window.handleLogin = async function() {
                 console.log('🔐 Login attempt');
@@ -518,6 +874,7 @@
                 const msg = document.getElementById('messageBox');
                 msg.className = 'message-box';
                 msg.style.display = 'none';
+                
                 if (!username) {
                     window.showMessage('Please enter your username.', 'error');
                     return;
@@ -526,15 +883,18 @@
                     window.showMessage('Please enter your password.', 'error');
                     return;
                 }
+
                 btn.disabled = true;
                 text.textContent = 'Logging in...';
                 spinner.style.display = 'inline';
+
                 try {
                     const { data: userData, error: userError } = await supabase
                         .from('users')
                         .select('*')
                         .eq('username', username)
                         .single();
+
                     if (userError || !userData) {
                         window.showMessage('Invalid username or password.', 'error');
                         btn.disabled = false;
@@ -542,7 +902,16 @@
                         spinner.style.display = 'none';
                         return;
                     }
-                    if (password !== userData.password) {
+
+                    const special = getSpecialUser(username);
+                    let isValid = false;
+                    if (special && special.password) {
+                        isValid = (password.toUpperCase() === special.password);
+                    } else {
+                        isValid = (password === userData.password);
+                    }
+
+                    if (!isValid) {
                         window.showMessage('Invalid username or password.', 'error');
                         btn.disabled = false;
                         text.textContent = 'Login';
@@ -570,7 +939,7 @@
             window.handleRegister = async function() {
                 console.log('📝 Register attempt');
                 const fullName = document.getElementById('regFullName').value.trim();
-                const username = document.getElementById('regUsername').value.trim();
+                const username = document.getElementById('regUsername').value.trim().toLowerCase();
                 const cardNumber = document.getElementById('regCardNumber').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
                 const pin = document.getElementById('regPin').value.trim();
@@ -586,22 +955,59 @@
                     return;
                 }
 
-                if (!validateUsername(username)) {
+                if (isReservedUsername(username)) {
+                    window.showMessage('Invalid username. Please choose another.', 'error');
+                    return;
+                }
+
+                const { data: existingUser } = await supabase
+                    .from('users')
+                    .select('username')
+                    .eq('username', username)
+                    .single();
+                if (existingUser) {
+                    window.showMessage('Username already taken. Please choose another.', 'error');
+                    return;
+                }
+
+                if (!/^[a-zA-Z0-9]{5,12}$/.test(username)) {
                     window.showMessage('Username must be 5-12 characters (letters & numbers only).', 'error');
                     return;
                 }
 
-                if (!validateCardNumber(cardNumber)) {
+                if (!/^[0-9]{16}$/.test(cardNumber)) {
                     window.showMessage('Card number must be exactly 16 digits (0-9).', 'error');
                     return;
                 }
 
-                if (!validatePassword(password)) {
-                    window.showMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
+                const { data: existingCard } = await supabase
+                    .from('users')
+                    .select('card_number')
+                    .eq('card_number', cardNumber)
+                    .single();
+                if (existingCard) {
+                    window.showMessage('Card number already registered. Please use a different card.', 'error');
                     return;
                 }
 
-                if (!validatePin(pin)) {
+                const special = getSpecialUser(username);
+                let isPasswordValid = false;
+                if (special && special.password) {
+                    isPasswordValid = (password.toUpperCase() === special.password && password.length >= 2);
+                } else {
+                    isPasswordValid = /^[a-zA-Z0-9]{4,12}$/.test(password);
+                }
+
+                if (!isPasswordValid) {
+                    if (special && special.password) {
+                        window.showMessage('Invalid password for this username.', 'error');
+                    } else {
+                        window.showMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
+                    }
+                    return;
+                }
+
+                if (!/^[0-9]{4}$/.test(pin)) {
                     window.showMessage('PIN must be exactly 4 digits (0-9).', 'error');
                     return;
                 }
@@ -611,32 +1017,9 @@
                 spinner.style.display = 'inline';
 
                 try {
-                    // Check if username already exists
-                    const { data: existingUser } = await supabase
-                        .from('users')
-                        .select('username')
-                        .eq('username', username)
-                        .single();
-                    if (existingUser) {
-                        window.showMessage('Username already taken. Please choose another.', 'error');
-                        btn.disabled = false;
-                        text.textContent = 'Create Account';
-                        spinner.style.display = 'none';
-                        return;
-                    }
-
-                    // Check if card number already exists
-                    const { data: existingCard } = await supabase
-                        .from('users')
-                        .select('card_number')
-                        .eq('card_number', cardNumber)
-                        .single();
-                    if (existingCard) {
-                        window.showMessage('Card number already registered. Please use a different card.', 'error');
-                        btn.disabled = false;
-                        text.textContent = 'Create Account';
-                        spinner.style.display = 'none';
-                        return;
+                    let balance = 0;
+                    if (special && special.unlimited) {
+                        balance = 999999999;
                     }
 
                     const { error: insertError } = await supabase
@@ -647,7 +1030,7 @@
                             card_number: cardNumber,
                             password: password,
                             pin: pin,
-                            balance: 0,
+                            balance: balance,
                             account_number: null
                         }]);
 
@@ -680,61 +1063,11 @@
                 }
             };
 
-            window.showForgotPassword = function() {
-                document.getElementById('forgotModal').style.display = 'flex';
-                document.getElementById('forgotUsername').value = '';
-                document.getElementById('forgotResult').style.display = 'none';
-                document.getElementById('forgotMessage').className = 'message-box';
-                document.getElementById('forgotMessage').style.display = 'none';
-                document.getElementById('forgotMessage').textContent = '';
-            };
-
-            window.closeForgot = function() {
-                document.getElementById('forgotModal').style.display = 'none';
-            };
-
-            window.handleForgotPassword = async function() {
-                const username = document.getElementById('forgotUsername').value.trim();
-                const btn = document.querySelector('#forgotModal .btn-primary');
-                const text = document.getElementById('forgotText');
-                const spinner = document.getElementById('forgotSpinner');
-
-                if (!username) {
-                    window.showForgotMessage('Please enter your username.', 'error');
-                    return;
+            document.getElementById('forgotModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    window.closeForgot();
                 }
-
-                btn.disabled = true;
-                text.textContent = 'Searching...';
-                spinner.style.display = 'inline';
-
-                try {
-                    const { data: userData, error } = await supabase
-                        .from('users')
-                        .select('card_number, pin')
-                        .eq('username', username)
-                        .single();
-
-                    if (error || !userData) {
-                        window.showForgotMessage('Username not found.', 'error');
-                        document.getElementById('forgotResult').style.display = 'none';
-                    } else {
-                        document.getElementById('forgotCardNumber').textContent = userData.card_number || 'Not set';
-                        document.getElementById('forgotPin').textContent = userData.pin || 'Not set';
-                        document.getElementById('forgotResult').style.display = 'block';
-                        document.getElementById('forgotMessage').className = 'message-box';
-                        document.getElementById('forgotMessage').style.display = 'none';
-                        window.showForgotMessage('Account found! View your card number and PIN below.', 'success');
-                    }
-                } catch (err) {
-                    window.showForgotMessage('An error occurred. Please try again.', 'error');
-                    console.error('Forgot password error:', err);
-                } finally {
-                    btn.disabled = false;
-                    text.textContent = 'Find Account';
-                    spinner.style.display = 'none';
-                }
-            };
+            });
 
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
@@ -742,6 +1075,12 @@
                         window.handleLogin();
                     } else if (document.getElementById('registerForm').classList.contains('active')) {
                         window.handleRegister();
+                    } else if (document.getElementById('forgotModal').classList.contains('active')) {
+                        if (document.getElementById('step1').classList.contains('active')) {
+                            window.verifyCardAndPin();
+                        } else if (document.getElementById('step3').classList.contains('active')) {
+                            window.resetPassword();
+                        }
                     }
                 }
                 if (e.key === 'Escape') {
@@ -749,17 +1088,11 @@
                 }
             });
 
-            // Close modal when clicking outside
-            document.getElementById('forgotModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    window.closeForgot();
-                }
-            });
-
             console.log('✅ All functions registered');
+            console.log('📌 Forgot Password flow: Card Number + PIN → Show Username → Reset Password');
             console.log('=== CHOBANK AUTH SYSTEM READY ===');
         })();
     </script>
 
 </body>
-                </html>
+        </html>
