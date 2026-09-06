@@ -57,7 +57,6 @@
             border-radius: 20px;
             padding: 32px 28px;
             border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         .generator-container h2 {
             font-size: 1.6rem;
@@ -111,6 +110,11 @@
             background: #f5f5f5;
             cursor: default;
         }
+        .form-control:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         textarea.form-control {
             min-height: 80px;
             resize: vertical;
@@ -131,6 +135,32 @@
             float: right;
             font-weight: 700;
             color: #000;
+        }
+        .search-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .search-options button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #666;
+        }
+        .search-options button.active {
+            border-color: #000;
+            background: #000;
+            color: #fff;
+        }
+        .search-options button:hover:not(.active) {
+            border-color: #999;
         }
         .receiver-info {
             background: #f8f9fa;
@@ -524,18 +554,22 @@
             </div>
 
             <form id="payment-form">
-                <div class="form-grid">
-                    <div class="form-group full-width">
-                        <label>Sender Name</label>
-                        <input type="text" id="payer-name" class="form-control" readonly>
+                <div class="form-group full-width">
+                    <label>Sender Name</label>
+                    <input type="text" id="payer-name" class="form-control" readonly>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Search by (choose one)</label>
+                    <div class="search-options">
+                        <button id="searchAccount" onclick="setSearchMode('account')">Account Number</button>
+                        <button id="searchUsername" onclick="setSearchMode('username')">Username</button>
                     </div>
-                    <div class="form-group full-width">
-                        <label>Find Recipient (Username / Account Number / Invoice)</label>
-                        <input type="text" id="receiver-search" class="form-control" placeholder="@username or 8-digit account number or invoice number" required>
-                        <div style="margin-top:6px;font-size:0.7rem;color:#888;">
-                            <i class="fas fa-info-circle"></i> Enter @username, account number, or invoice number
-                        </div>
-                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label id="searchLabel">Select search method first</label>
+                    <input type="text" id="receiver-search" class="form-control" placeholder="Choose Account Number or Username first" disabled required>
                 </div>
 
                 <!-- Receiver Info -->
@@ -545,11 +579,6 @@
                         <span class="value" id="receiverNameDisplay">-</span>
                     </div>
                     <div class="row">
-                        <span class="label">Account Number</span>
-                        <span class="value" id="receiverAccountDisplay">-</span>
-                    </div>
-                    <div class="row">
-                        <span class="label">Status</span>
                         <span id="receiverStatus">-</span>
                     </div>
                 </div>
@@ -660,27 +689,20 @@
 
         let currentUser = null;
         let foundReceiver = null;
+        let searchMode = null; // 'account' or 'username'
 
         // =============================================
         // AMBIL DATA USER
         // =============================================
         async function loadUser() {
             try {
-                console.log('Loading user with ID:', parseInt(userId));
-                
                 const { data: userData, error } = await supabase
                     .from('users')
                     .select('*')
                     .eq('id', parseInt(userId))
                     .single();
 
-                if (error) {
-                    console.error('Load user error:', error);
-                    showMessage('Error loading user: ' + error.message, 'error');
-                    return;
-                }
-
-                if (!userData) {
+                if (error || !userData) {
                     showMessage('User not found. Please login again.', 'error');
                     setTimeout(() => {
                         window.location.href = 'index.html';
@@ -691,29 +713,56 @@
                 currentUser = userData;
                 console.log('User loaded:', currentUser);
 
-                // Set fields
                 document.getElementById('payer-name').value = userData.full_name || userData.username;
                 document.getElementById('balanceDisplay').textContent = '$' + (userData.balance || 0).toFixed(2);
 
-                // Set date
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('date').value = today;
 
-                // Set time
                 const now = new Date();
-                const currentHour = String(now.getHours()).padStart(2, '0');
-                const currentMinute = String(now.getMinutes()).padStart(2, '0');
-                document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+                document.getElementById('time-input').value = now.toTimeString().slice(0, 5);
 
-                showMessage('✅ User loaded: ' + userData.full_name, 'success');
-                setTimeout(() => {
-                    hideMessage();
-                }, 2000);
+                // Enable search setelah user load
+                document.getElementById('receiver-search').disabled = true;
 
             } catch (err) {
                 console.error('Error:', err);
-                showMessage('Error: ' + err.message, 'error');
+                showMessage('Error loading user: ' + err.message, 'error');
             }
+        }
+
+        // =============================================
+        // SEARCH MODE
+        // =============================================
+        function setSearchMode(mode) {
+            searchMode = mode;
+            const accBtn = document.getElementById('searchAccount');
+            const userBtn = document.getElementById('searchUsername');
+            const label = document.getElementById('searchLabel');
+            const input = document.getElementById('receiver-search');
+
+            // Reset semua button
+            accBtn.classList.remove('active');
+            userBtn.classList.remove('active');
+
+            if (mode === 'account') {
+                accBtn.classList.add('active');
+                label.textContent = 'Account Number';
+                input.placeholder = 'Enter 8-digit account number';
+                input.disabled = false;
+                input.value = '';
+                input.focus();
+            } else {
+                userBtn.classList.add('active');
+                label.textContent = 'Username';
+                input.placeholder = 'Enter @username (without @)';
+                input.disabled = false;
+                input.value = '';
+                input.focus();
+            }
+
+            document.getElementById('receiverInfo').style.display = 'none';
+            foundReceiver = null;
         }
 
         // =============================================
@@ -743,20 +792,29 @@
         // RESET FORM
         // =============================================
         function resetForm() {
+            // Reset search
             document.getElementById('receiver-search').value = '';
-            document.getElementById('amount').value = '';
-            document.getElementById('notes').value = '';
+            document.getElementById('receiver-search').disabled = true;
             document.getElementById('receiverInfo').style.display = 'none';
             foundReceiver = null;
+            searchMode = null;
+            
+            // Reset buttons
+            document.getElementById('searchAccount').classList.remove('active');
+            document.getElementById('searchUsername').classList.remove('active');
+            document.getElementById('searchLabel').textContent = 'Select search method first';
+            document.getElementById('receiver-search').placeholder = 'Choose Account Number or Username first';
+            
+            // Reset others
+            document.getElementById('amount').value = '';
+            document.getElementById('notes').value = '';
             document.getElementById('preview-section').classList.add('hidden');
             hideMessage();
             
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date').value = today;
             const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+            document.getElementById('time-input').value = now.toTimeString().slice(0, 5);
             if (currentUser) {
                 document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
             }
@@ -769,6 +827,14 @@
 
         document.getElementById('receiver-search').addEventListener('input', function() {
             clearTimeout(searchTimeout);
+            
+            // Cek apakah mode sudah dipilih
+            if (!searchMode) {
+                showMessage('Please select search method first (Account Number or Username)', 'error');
+                this.value = '';
+                return;
+            }
+            
             const query = this.value.trim();
             
             if (query.length < 2) {
@@ -785,73 +851,16 @@
         async function searchReceiver(query) {
             const info = document.getElementById('receiverInfo');
             const nameDisplay = document.getElementById('receiverNameDisplay');
-            const accountDisplay = document.getElementById('receiverAccountDisplay');
             const statusDisplay = document.getElementById('receiverStatus');
 
-            let searchField = 'username';
+            let searchField = searchMode === 'account' ? 'account_number' : 'username';
             let searchValue = query;
 
-            // Cek apakah query adalah @username
-            if (query.startsWith('@')) {
-                searchField = 'username';
+            // If username mode and starts with @, remove it
+            if (searchMode === 'username' && query.startsWith('@')) {
                 searchValue = query.substring(1);
-            } 
-            // Cek apakah query adalah angka 8 digit (account number)
-            else if (/^\d{8}$/.test(query)) {
-                searchField = 'account_number';
-                searchValue = query;
-            }
-            // Cek apakah query adalah invoice number (CHBxxxx-xxxxx)
-            else if (/^CHB\d{4}-[A-Z0-9]{5}$/i.test(query)) {
-                try {
-                    const { data: txData, error: txError } = await supabase
-                        .from('transactions')
-                        .select('sender_id, sender_name, receiver_name')
-                        .eq('invoice_number', query.toUpperCase())
-                        .single();
-
-                    if (txError || !txData) {
-                        info.style.display = 'block';
-                        nameDisplay.textContent = '-';
-                        accountDisplay.textContent = '-';
-                        statusDisplay.innerHTML = '<span class="not-found">❌ Invoice not found</span>';
-                        foundReceiver = null;
-                        return;
-                    }
-
-                    const { data: userData, error: userError } = await supabase
-                        .from('users')
-                        .select('*')
-                        .eq('id', txData.sender_id)
-                        .single();
-
-                    if (userError || !userData) {
-                        info.style.display = 'block';
-                        nameDisplay.textContent = txData.sender_name || txData.receiver_name || '-';
-                        accountDisplay.textContent = '-';
-                        statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
-                        foundReceiver = null;
-                        return;
-                    }
-
-                    foundReceiver = userData;
-                    info.style.display = 'block';
-                    nameDisplay.textContent = userData.full_name || userData.username;
-                    accountDisplay.textContent = userData.account_number || '-';
-                    statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found via invoice</span>';
-                    return;
-                } catch (err) {
-                    console.error('Invoice search error:', err);
-                    info.style.display = 'block';
-                    nameDisplay.textContent = '-';
-                    accountDisplay.textContent = '-';
-                    statusDisplay.innerHTML = '<span class="not-found">❌ Error searching invoice</span>';
-                    foundReceiver = null;
-                    return;
-                }
             }
 
-            // Search by username or account_number
             try {
                 const { data: userData, error: userError } = await supabase
                     .from('users')
@@ -862,7 +871,6 @@
                 if (userError || !userData) {
                     info.style.display = 'block';
                     nameDisplay.textContent = '-';
-                    accountDisplay.textContent = '-';
                     statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
                     foundReceiver = null;
                     return;
@@ -872,7 +880,6 @@
                 if (userData.id === parseInt(userId)) {
                     info.style.display = 'block';
                     nameDisplay.textContent = userData.full_name || userData.username;
-                    accountDisplay.textContent = userData.account_number || '-';
                     statusDisplay.innerHTML = '<span class="not-found">⚠️ Cannot send to yourself</span>';
                     foundReceiver = null;
                     return;
@@ -881,14 +888,12 @@
                 foundReceiver = userData;
                 info.style.display = 'block';
                 nameDisplay.textContent = userData.full_name || userData.username;
-                accountDisplay.textContent = userData.account_number || '-';
                 statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found</span>';
 
             } catch (err) {
                 console.error('Search error:', err);
                 info.style.display = 'block';
                 nameDisplay.textContent = '-';
-                accountDisplay.textContent = '-';
                 statusDisplay.innerHTML = '<span class="not-found">❌ Error searching</span>';
                 foundReceiver = null;
             }
@@ -1219,4 +1224,4 @@
         console.log('Transaction page loaded');
     </script>
 </body>
-    </html>
+                            </html>
