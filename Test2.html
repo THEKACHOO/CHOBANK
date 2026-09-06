@@ -651,7 +651,7 @@
                 </div>
                 <div class="action-buttons">
                     <button type="button" id="generate-btn" class="action-btn btn-primary">Generate Slip</button>
-                    <button type="reset" class="action-btn btn-secondary">Reset</button>
+                    <button type="reset" class="action-btn btn-secondary" onclick="resetForm()">Reset</button>
                 </div>
             </form>
 
@@ -694,26 +694,33 @@
     </div>
 
     <script>
-        // ===== SUPABASE CONFIG =====
+        // =============================================
+        // SUPABASE CONFIG
+        // =============================================
         const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
 
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ===== CEK SESSION =====
+        // =============================================
+        // CEK SESSION
+        // =============================================
         const userId = localStorage.getItem('chobank_user_id');
         const userUsername = localStorage.getItem('chobank_username');
 
+        console.log('User ID:', userId);
+        console.log('Username:', userUsername);
+
         if (!userId || !userUsername) {
             window.location.href = 'Test1.html';
-            return;
         }
 
         let currentUser = null;
-        let currentCurrency = 'USD';
 
-        // ===== AMBIL DATA USER =====
-        (async function() {
+        // =============================================
+        // AMBIL DATA USER
+        // =============================================
+        async function loadUser() {
             try {
                 const { data: userData, error } = await supabase
                     .from('users')
@@ -728,32 +735,36 @@
                 }
 
                 currentUser = userData;
-                
-                // Set sender name dari database
+                console.log('User loaded:', currentUser);
+
+                // Set sender name
                 document.getElementById('payer-name').value = userData.full_name || userData.username;
-                
-                // Set today date
+
+                // Set date
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('date').value = today;
-                
-                // Set current time
+
+                // Set time
                 const now = new Date();
                 const currentHour = String(now.getHours()).padStart(2, '0');
                 const currentMinute = String(now.getMinutes()).padStart(2, '0');
                 document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
-                
-                // Update balance display dari database
-                document.getElementById('balanceDisplay').textContent = '$' + (userData.balance || 0).toFixed(2);
 
-                console.log('User loaded:', currentUser);
+                // Update balance
+                document.getElementById('balanceDisplay').textContent = '$' + (userData.balance || 0).toFixed(2);
 
             } catch (error) {
                 console.error('Error:', error);
                 window.location.href = 'Test1.html';
             }
-        })();
+        }
 
-        // ===== SHOW MESSAGE =====
+        loadUser();
+
+        // =============================================
+        // FUNCTIONS
+        // =============================================
+
         function showMessage(text, type) {
             const msg = document.getElementById('messageBox');
             msg.textContent = text;
@@ -767,12 +778,33 @@
             msg.style.display = 'none';
         }
 
-        // ===== GO BACK =====
         function goBack() {
             window.location.href = 'dashboard.html';
         }
 
-        // ===== GENERATE PROOF =====
+        function resetForm() {
+            document.getElementById('payment-form').reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+            if (currentUser) {
+                document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
+            }
+            hideMessage();
+            document.getElementById('preview-section').classList.add('hidden');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        }
+
+        // =============================================
+        // GENERATE SLIP
+        // =============================================
         document.getElementById('generate-btn').addEventListener('click', function() {
             const required = ['receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date', 'time-input'];
             for (let id of required) {
@@ -782,11 +814,22 @@
                     return;
                 }
             }
-            
+
+            // Ambil data dari form
+            const payerName = document.getElementById('payer-name').value.trim();
+            const receiverName = document.getElementById('receiver-name').value.trim();
+            const receiverAccount = document.getElementById('receiver-account').value.trim();
+            const recipientBank = document.getElementById('recipient-bank').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value.trim());
+            const date = document.getElementById('date').value;
+            const currency = document.getElementById('currency-select').value;
+            const notes = document.getElementById('notes').value.trim();
+
+            // Format waktu
             const timeFormat = document.querySelector('input[name="time-format"]:checked').value;
             const timeInput = document.getElementById('time-input').value;
             const [hours, minutes] = timeInput.split(':').map(Number);
-            
+
             let formattedTime;
             if (timeFormat === '12') {
                 const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -795,53 +838,38 @@
             } else {
                 formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
             }
-            
-            const selectedCurrency = document.getElementById('currency-select').value;
-            currentCurrency = selectedCurrency;
-            
-            const data = {
-                payerName: document.getElementById('payer-name').value.trim(),
-                receiverName: document.getElementById('receiver-name').value.trim(),
-                receiverAccount: document.getElementById('receiver-account').value.trim(),
-                recipientBank: document.getElementById('recipient-bank').value.trim(),
-                amount: parseFloat(document.getElementById('amount').value.trim()),
-                date: document.getElementById('date').value,
-                currency: selectedCurrency,
-                notes: document.getElementById('notes').value.trim(),
-                time: formattedTime
-            };
-            
+
             // CEK SALDO
-            if (data.amount > (currentUser ? currentUser.balance : 0)) {
-                alert('Insufficient balance!');
+            if (amount > (currentUser ? currentUser.balance : 0)) {
+                alert('Insufficient balance! Your balance: $' + (currentUser ? currentUser.balance.toFixed(2) : '0.00'));
                 return;
             }
-            
-            const dateObj = new Date(data.date);
-            const formattedDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-            
-            const ref = 'CHB' + Math.floor(Math.random()*9000+1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-            
-            const amountNum = data.amount;
-            let formattedAmount;
+
+            // Generate ref
+            const ref = 'CHB' + Math.floor(Math.random() * 9000 + 1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+
+            // Format amount
             const currencySymbols = {
-                'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥', 
+                'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥',
                 'AUD': 'A$', 'CAD': 'C$', 'CHF': 'Fr', 'CNY': '¥',
                 'SGD': 'S$', 'MYR': 'RM'
             };
-            
-            const symbol = currencySymbols[data.currency] || '$';
-            
-            if (data.currency === 'JPY' || data.currency === 'CNY') {
-                formattedAmount = symbol + (isNaN(amountNum) ? data.amount : Math.round(amountNum).toLocaleString());
+            const symbol = currencySymbols[currency] || '$';
+            let formattedAmount;
+            if (currency === 'JPY' || currency === 'CNY') {
+                formattedAmount = symbol + (isNaN(amount) ? amount : Math.round(amount).toLocaleString());
             } else {
-                formattedAmount = symbol + (isNaN(amountNum) ? data.amount : amountNum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                formattedAmount = symbol + (isNaN(amount) ? amount : amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }
-            
+
+            const dateObj = new Date(date);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            // Update slip
             document.getElementById('preview-status').textContent = 'Payment Complete';
             document.getElementById('preview-thankyou').textContent = 'Thank you! Your payment was successfully processed';
             document.getElementById('preview-ref').textContent = ref;
-            
+
             let detailsHTML = `
                 <div class="slip-row">
                     <span class="slip-label">Amount</span>
@@ -849,19 +877,19 @@
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">From</span>
-                    <span class="slip-value">${escapeHtml(data.payerName)}</span>
+                    <span class="slip-value">${escapeHtml(payerName)}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">To</span>
-                    <span class="slip-value">${escapeHtml(data.receiverName)}</span>
+                    <span class="slip-value">${escapeHtml(receiverName)}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Recipient Bank</span>
-                    <span class="slip-value">${escapeHtml(data.recipientBank)}</span>
+                    <span class="slip-value">${escapeHtml(recipientBank)}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Account</span>
-                    <span class="slip-value">${escapeHtml(data.receiverAccount)}</span>
+                    <span class="slip-value">${escapeHtml(receiverAccount)}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Date</span>
@@ -869,45 +897,46 @@
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Time</span>
-                    <span class="slip-value">${data.time}</span>
+                    <span class="slip-value">${formattedTime}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Currency</span>
-                    <span class="slip-value">${data.currency}</span>
+                    <span class="slip-value">${currency}</span>
                 </div>
                 <div class="slip-row">
                     <span class="slip-label">Status</span>
                     <span class="slip-value"><span class="status-badge">SUCCESS</span></span>
                 </div>
             `;
-            
+
             document.getElementById('slip-details').innerHTML = detailsHTML;
-            
+
             const noteContainer = document.getElementById('slip-note-container');
-            if (data.notes) {
+            if (notes) {
                 noteContainer.innerHTML = `
                     <div class="slip-note">
                         <strong>Notes</strong>
-                        ${escapeHtml(data.notes)}
+                        ${escapeHtml(notes)}
                     </div>
                 `;
             } else {
                 noteContainer.innerHTML = '';
             }
-            
-            // ===== UPDATE SALDO DI DATABASE =====
-            updateBalance(data.amount, data.receiverName, data.currency, ref);
-            
+
+            // ===== UPDATE BALANCE =====
+            updateBalance(amount, receiverName, currency, ref);
+
             document.getElementById('preview-section').classList.remove('hidden');
             document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
 
-        // ===== UPDATE BALANCE =====
+        // =============================================
+        // UPDATE BALANCE
+        // =============================================
         async function updateBalance(amount, receiverName, currency, ref) {
             try {
                 const newBalance = (currentUser.balance - amount);
-                
-                // Get current history
+
                 const currentHistory = currentUser.history || [];
                 const newHistory = [
                     ...currentHistory,
@@ -919,50 +948,46 @@
                         invoice: ref
                     }
                 ];
-                
+
                 const { error } = await supabase
                     .from('users')
-                    .update({ 
+                    .update({
                         balance: newBalance,
                         history: newHistory
                     })
                     .eq('id', parseInt(userId));
 
                 if (error) {
-                    console.error('Update balance error:', error);
+                    console.error('Update error:', error);
                     alert('Failed to update balance. Please try again.');
                     return;
                 }
 
-                // Update local user
                 currentUser.balance = newBalance;
                 currentUser.history = newHistory;
-                
-                // Update balance display
-                document.getElementById('balanceDisplay').textContent = '$' + newBalance.toFixed(2);
 
-                console.log('Balance updated successfully');
+                document.getElementById('balanceDisplay').textContent = '$' + newBalance.toFixed(2);
+                console.log('Balance updated to:', newBalance);
 
             } catch (err) {
-                console.error('Error updating balance:', err);
+                console.error('Error:', err);
                 alert('An error occurred while updating balance.');
             }
         }
 
-        // ===== ESCAPE HTML =====
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]));
-        }
-
-        // ===== DOWNLOAD PROOF =====
+        // =============================================
+        // DOWNLOAD SLIP
+        // =============================================
         document.getElementById('download-btn').addEventListener('click', async function() {
             const card = document.getElementById('proof-preview');
-            if (!card) { alert('Create transaction first'); return; }
-            
+            if (!card) {
+                alert('Create transaction first');
+                return;
+            }
+
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
-            
+
             const cloneCard = card.cloneNode(true);
             cloneCard.style.position = 'fixed';
             cloneCard.style.left = '-9999px';
@@ -974,7 +999,7 @@
             cloneCard.style.boxSizing = 'border-box';
             cloneCard.style.background = 'white';
             cloneCard.style.fontFamily = "'Outfit', sans-serif";
-            
+
             const style = document.createElement('style');
             style.textContent = `
                 .watermark-bg { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: flex !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; z-index: 99999 !important; opacity: 0.025 !important; }
@@ -999,9 +1024,9 @@
                 .slip-credit { text-align: center !important; font-size: 0.5rem !important; color: #aaa !important; margin-top: 12px !important; padding-top: 10px !important; border-top: 1px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
             `;
             cloneCard.appendChild(style);
-            
+
             document.body.appendChild(cloneCard);
-            
+
             setTimeout(async () => {
                 try {
                     const canvas = await html2canvas(cloneCard, {
@@ -1010,12 +1035,12 @@
                         useCORS: true,
                         logging: false
                     });
-                    
+
                     const link = document.createElement('a');
                     link.download = `slip-payment-${Date.now()}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
-                    
+
                     document.body.removeChild(cloneCard);
                     loading.classList.add('hidden');
                 } catch (err) {
@@ -1027,33 +1052,12 @@
             }, 200);
         });
 
-        // ===== NEW PROOF =====
+        // =============================================
+        // NEW PROOF / RESET
+        // =============================================
         document.getElementById('new-proof-btn').addEventListener('click', function() {
-            document.getElementById('preview-section').classList.add('hidden');
-            document.getElementById('payment-form').reset();
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
-            
-            if (currentUser) {
-                document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
-            }
-            
-            hideMessage();
+            resetForm();
         });
-
-        // ===== RESET =====
-        document.querySelector('.btn-secondary').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('new-proof-btn').click();
-        });
-
-        console.log('Test2 loaded');
     </script>
 </body>
-                </html>
+    </html>
