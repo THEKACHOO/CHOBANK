@@ -205,12 +205,6 @@
             color: #000;
         }
 
-        .password-hint {
-            font-size: 0.7rem;
-            color: #888;
-            margin-top: 4px;
-        }
-
         .requirements {
             font-size: 0.7rem;
             color: #888;
@@ -218,7 +212,6 @@
             line-height: 1.5;
         }
 
-        /* LOGIN OPTION TOGGLE */
         .login-options {
             display: flex;
             gap: 8px;
@@ -268,7 +261,6 @@
             text-decoration: underline;
         }
 
-        /* HIDE/SHOW fields */
         .login-field {
             display: none;
         }
@@ -323,7 +315,6 @@
                     <input type="text" id="loginUsername" placeholder="Enter your username" required maxlength="12">
                 </div>
 
-                <!-- Login Options: Password or PIN -->
                 <div class="login-options">
                     <button class="login-option-btn active" id="loginPasswordOption" onclick="window.setLoginMethod('password')">
                         <i class="fas fa-key"></i> Password
@@ -333,7 +324,6 @@
                     </button>
                 </div>
 
-                <!-- Password Field -->
                 <div class="login-field active" id="loginPasswordField">
                     <div class="form-group">
                         <label for="loginPassword">Password</label>
@@ -341,7 +331,6 @@
                     </div>
                 </div>
 
-                <!-- PIN Field -->
                 <div class="login-field" id="loginPinField">
                     <div class="form-group">
                         <label for="loginPin">PIN (4 digits)</label>
@@ -359,7 +348,7 @@
                 </div>
             </div>
 
-            <!-- REGISTER FORM -->
+            <!-- REGISTER FORM - TANPA EMAIL! -->
             <div class="form-container" id="registerForm">
                 <h2>Create Account</h2>
                 <p class="subtitle">Create CHOBANK account now!</p>
@@ -407,22 +396,9 @@
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log('Supabase client created');
 
-            // ===== VARIABLES =====
-            let loginMethod = 'password'; // 'password' or 'pin'
+            let loginMethod = 'password';
 
-            // ===== CEK SESSION =====
-            (async function() {
-                try {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (session) {
-                        window.location.href = 'dashboard.html';
-                    }
-                } catch (error) {
-                    console.error('Session error:', error);
-                }
-            })();
-
-            // ===== FUNGSI SWITCH TAB =====
+            // ===== SWITCH TAB =====
             window.switchTab = function(tab) {
                 console.log('🔄 Switching to:', tab);
                 
@@ -442,7 +418,7 @@
                     loginForm.className = 'form-container active';
                     registerForm.className = 'form-container';
                     console.log('✅ Login tab active');
-                } else if (tab === 'register') {
+                } else {
                     registerTab.className = 'tab-btn active';
                     loginTab.className = 'tab-btn';
                     registerForm.className = 'form-container active';
@@ -474,7 +450,7 @@
                 }
             };
 
-            // ===== FUNGSI SHOW MESSAGE =====
+            // ===== SHOW MESSAGE =====
             window.showMessage = function(text, type) {
                 const msg = document.getElementById('messageBox');
                 msg.textContent = text;
@@ -483,25 +459,20 @@
                 console.log('📨 Message:', type, '-', text);
             };
 
-            // ===== VALIDASI USERNAME =====
+            // ===== VALIDASI =====
             function validateUsername(username) {
-                const regex = /^[a-zA-Z0-9]{5,12}$/;
-                return regex.test(username);
+                return /^[a-zA-Z0-9]{5,12}$/.test(username);
             }
 
-            // ===== VALIDASI PASSWORD =====
             function validatePassword(password) {
-                const regex = /^[a-zA-Z0-9]{4,12}$/;
-                return regex.test(password);
+                return /^[a-zA-Z0-9]{4,12}$/.test(password);
             }
 
-            // ===== VALIDASI PIN =====
             function validatePin(pin) {
-                const regex = /^[0-9]{4}$/;
-                return regex.test(pin);
+                return /^[0-9]{4}$/.test(pin);
             }
 
-            // ===== FUNGSI LOGIN =====
+            // ===== LOGIN =====
             window.handleLogin = async function() {
                 console.log('🔐 Login attempt with:', loginMethod);
                 
@@ -548,7 +519,6 @@
                 spinner.style.display = 'inline';
 
                 try {
-                    // Cari user di tabel users berdasarkan username
                     const { data: userData, error: userError } = await supabase
                         .from('users')
                         .select('*')
@@ -563,7 +533,6 @@
                         return;
                     }
 
-                    // Cek password atau pin
                     let isValid = false;
                     if (loginMethod === 'password') {
                         isValid = (password === userData.password);
@@ -579,20 +548,11 @@
                         return;
                     }
 
-                    // Login dengan Supabase Auth
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: userData.email,
-                        password: userData.password
-                    });
+                    window.showMessage('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
 
-                    if (error) {
-                        window.showMessage('Login failed. Please try again.', 'error');
-                    } else {
-                        window.showMessage('Login successful! Redirecting...', 'success');
-                        setTimeout(() => {
-                            window.location.href = 'dashboard.html';
-                        }, 1000);
-                    }
                 } catch (err) {
                     window.showMessage('An error occurred. Please try again.', 'error');
                     console.error('Login error:', err);
@@ -603,7 +563,7 @@
                 }
             };
 
-            // ===== FUNGSI REGISTER =====
+            // ===== REGISTER - TANPA EMAIL! =====
             window.handleRegister = async function() {
                 console.log('📝 Register attempt');
                 
@@ -657,44 +617,20 @@
                         return;
                     }
 
-                    // Buat email fiktif dari username
-                    const fakeEmail = username.toLowerCase().replace(/[^a-z0-9]/g, '') + '@chobank.demo';
+                    // LANGSUNG INSERT KE TABEL USERS - TANPA EMAIL!
+                    const { error: insertError } = await supabase
+                        .from('users')
+                        .insert([{ 
+                            username: username, 
+                            password: password,
+                            pin: pin
+                        }]);
 
-                    // Register ke Supabase Auth
-                    const { data: authData, error: authError } = await supabase.auth.signUp({
-                        email: fakeEmail,
-                        password: password,
-                        options: {
-                            data: {
-                                username: username,
-                                full_name: username
-                            }
-                        }
-                    });
-
-                    if (authError) {
-                        window.showMessage(authError.message, 'error');
+                    if (insertError) {
+                        console.error('Insert error:', insertError);
+                        window.showMessage('Registration failed. Please try again.', 'error');
                     } else {
-                        // Simpan ke tabel users
-                        const { error: insertError } = await supabase
-                            .from('users')
-                            .insert([
-                                { 
-                                    username: username, 
-                                    email: fakeEmail,
-                                    password: password,
-                                    pin: pin,
-                                    user_id: authData.user.id
-                                }
-                            ]);
-
-                        if (insertError) {
-                            console.error('Insert error:', insertError);
-                            window.showMessage('Account created but please try login.', 'success');
-                        } else {
-                            window.showMessage('Account created successfully! Please login.', 'success');
-                        }
-
+                        window.showMessage('Account created successfully! Please login.', 'success');
                         setTimeout(() => {
                             window.switchTab('login');
                             document.getElementById('loginUsername').value = username;
@@ -720,7 +656,7 @@
                 }
             };
 
-            // ===== ENTER KEY SUPPORT =====
+            // ===== ENTER KEY =====
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     if (document.getElementById('loginForm').classList.contains('active')) {
@@ -735,8 +671,8 @@
             console.log('📌 Login methods: Password or PIN');
             console.log('=== CHOBANK AUTH SYSTEM READY ===');
 
-        })(); // END IIFE
+        })();
     </script>
 
 </body>
-</html>
+    </html>
