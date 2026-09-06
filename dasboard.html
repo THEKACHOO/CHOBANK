@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>CHOBANK - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #000000;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .header .logout {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header .logout:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .greeting {
+            margin-bottom: 20px;
+        }
+
+        .greeting h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .greeting .username {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .account-number {
+            background: #f0f0f0;
+            padding: 10px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-number .label {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .account-number .number {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .account-number .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .account-number .copy-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+
+        .balance-card {
+            background: #000000;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 28px 24px;
+            margin-bottom: 20px;
+        }
+
+        .balance-card .label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
+        }
+
+        .balance-card .amount {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin: 4px 0;
+        }
+
+        .balance-card .amount-rp {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .actions .btn-action {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .actions .btn-send {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .actions .btn-send:hover {
+            background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+        }
+
+        .actions .btn-receive {
+            background: #f0f0f0;
+            color: #000000;
+        }
+
+        .actions .btn-receive:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .history-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .history-item {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .history-item .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .history-item .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .history-item .icon.credit {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .history-item .icon.debit {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .history-item .details .title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .history-item .details .sub {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .history-item .amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .history-item .amount.credit {
+            color: #16a34a;
+        }
+
+        .history-item .amount.debit {
+            color: #dc2626;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .empty-history i {
+            font-size: 2.5rem;
+            color: #ddd;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px;
+            max-width: 380px;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal .sub {
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal .invoice-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal .invoice-box .label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal .invoice-box .number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        .modal .btn-close {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #000000;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal .btn-close:hover {
+            background: #1e1e1e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .balance-card .amount {
+                font-size: 2.2rem;
+            }
+            .actions .btn-action {
+                font-size: 0.85rem;
+                padding: 14px;
+            }
+            .modal {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>CHOBANK</h1>
+            <button class="logout" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
+        <!-- Greeting -->
+        <div class="greeting">
+            <h2>Hello, <span id="userFullName">User</span></h2>
+            <p class="username">@<span id="userUsername">username</span></p>
+        </div>
+
+        <!-- Account Number -->
+        <div class="account-number">
+            <div>
+                <div class="label">ACCOUNT NUMBER</div>
+                <div class="number" id="userAccountNumber">---- ----</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccountNumber()">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-card">
+            <div class="label">Total Balance</div>
+            <div class="amount">$<span id="userBalanceUSD">0.00</span></div>
+            <div class="amount-rp">Rp <span id="userBalanceIDR">0</span></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn-action btn-send" onclick="goToSend()">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+            <button class="btn-action btn-receive" onclick="showReceive()">
+                <i class="fas fa-arrow-down"></i> Receive
+            </button>
+        </div>
+
+        <!-- History -->
+        <div class="history-section">
+            <h3><i class="fas fa-clock"></i> Transaction History</h3>
+            <div id="historyList">
+                <!-- History items will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div class="modal-overlay" id="receiveModal">
+        <div class="modal">
+            <h3>Receive Money</h3>
+            <p class="sub">Share this invoice number to receive payment</p>
+            <div class="invoice-box">
+                <div class="label">INVOICE NUMBER</div>
+                <div class="number" id="invoiceNumber">INV-XXXXXX</div>
+            </div>
+            <button class="btn-close" onclick="closeReceive()">Close</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== SUPABASE CONFIG =====
+            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            // ===== SESSION CHECK =====
+            (async function() {
+                try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    const userId = session.user.id;
+
+                    // Get user data from table
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', userId)
+                        .single();
+
+                    if (error || !userData) {
+                        console.error('User not found:', error);
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    // Store user data globally
+                    window.currentUser = userData;
+
+                    // Render dashboard
+                    renderDashboard();
+
+                } catch (error) {
+                    console.error('Session error:', error);
+                    window.location.href = 'index.html';
+                }
+            })();
+
+            // ===== RENDER DASHBOARD =====
+            function renderDashboard() {
+                const user = window.currentUser;
+
+                // FULL NAME dari tabel users
+                document.getElementById('userFullName').textContent = user.full_name || user.username;
+                document.getElementById('userUsername').textContent = user.username;
+                document.getElementById('userAccountNumber').textContent = user.account_number || '---- ----';
+
+                // Balance
+                const balance = user.balance || 0;
+                document.getElementById('userBalanceUSD').textContent = balance.toFixed(2);
+                document.getElementById('userBalanceIDR').textContent = (balance * 16000).toLocaleString('id-ID');
+
+                // History
+                renderHistory(user.history || []);
+            }
+
+            // ===== RENDER HISTORY =====
+            function renderHistory(history) {
+                const container = document.getElementById('historyList');
+
+                if (!history || history.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-receipt"></i>
+                            No transactions yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = history.map(item => `
+                    <div class="history-item">
+                        <div class="left">
+                            <div class="icon ${item.type}">
+                                <i class="fas ${item.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                            </div>
+                            <div class="details">
+                                <div class="title">${item.description || 'Transaction'}</div>
+                                <div class="sub">${formatDate(item.date)}</div>
+                            </div>
+                        </div>
+                        <div class="amount ${item.type}">
+                            ${item.type === 'credit' ? '+' : '-'} $${item.amount.toFixed(2)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // ===== FORMAT DATE =====
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+
+            // ===== COPY ACCOUNT NUMBER =====
+            window.copyAccountNumber = function() {
+                const number = document.getElementById('userAccountNumber').textContent;
+                navigator.clipboard.writeText(number).then(() => {
+                    showToast('Account number copied');
+                }).catch(() => {
+                    showToast('Copy manually: ' + number);
+                });
+            };
+
+            // ===== SHOW RECEIVE =====
+            window.showReceive = function() {
+                const invoice = 'INV-' + Date.now().toString().slice(-8);
+                document.getElementById('invoiceNumber').textContent = invoice;
+                document.getElementById('receiveModal').classList.add('active');
+            };
+
+            window.closeReceive = function() {
+                document.getElementById('receiveModal').classList.remove('active');
+            };
+
+            // Close modal on overlay click
+            document.getElementById('receiveModal').addEventListener('click', function(e) {
+                if (e.target === this) closeReceive();
+            });
+
+            // ===== GO TO SEND =====
+            window.goToSend = function() {
+                window.location.href = 'send.html';
+            };
+
+            // ===== LOGOUT =====
+            window.handleLogout = async function() {
+                await supabase.auth.signOut();
+                window.location.href = 'index.html';
+            };
+
+            // ===== SHOW TOAST =====
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            console.log('Dashboard loaded');
+            console.log('User:', window.currentUser);
+
+        })();
+    </script>
+
+</body>
+</html>
