@@ -29,27 +29,76 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            position: relative;
         }
         .header h1 {
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -0.02em;
         }
-        .header .logout {
-            color: #666;
-            font-size: 0.85rem;
-            padding: 8px 16px;
-            border-radius: 12px;
-            background: #f0f0f0;
-            transition: all 0.2s;
-            cursor: pointer;
+        .header .menu-btn {
+            background: none;
             border: none;
+            color: #000;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .header .menu-btn:hover {
+            background: #f0f0f0;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            min-width: 180px;
+            overflow: hidden;
+            z-index: 100;
+            border: 1px solid #eee;
+        }
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        .dropdown-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: #000;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
             font-family: 'Outfit', sans-serif;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .header .logout:hover {
-            background: #000;
-            color: #fff;
+        .dropdown-menu .menu-item:hover {
+            background: #f5f5f5;
         }
+        .dropdown-menu .menu-item i {
+            width: 20px;
+            color: #666;
+        }
+        .dropdown-menu .menu-item.logout {
+            color: #dc2626;
+            border-top: 1px solid #eee;
+        }
+        .dropdown-menu .menu-item.logout i {
+            color: #dc2626;
+        }
+
         .greeting {
             margin-bottom: 20px;
         }
@@ -63,29 +112,6 @@
             font-size: 1.6rem;
             font-weight: 700;
             display: inline;
-        }
-        /* BADGE - selalu hitam, di samping username */
-        .greeting .badge {
-            font-size: 0.55rem;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            background: #000000 !important;
-            color: #ffffff !important;
-            border: none !important;
-            display: none;
-            margin-left: 4px;
-        }
-        .greeting .badge.show {
-            display: inline-block;
-        }
-        .greeting .username {
-            color: #666;
-            font-size: 0.9rem;
-            font-weight: 400;
-            margin-top: 2px;
         }
         .greeting .edit-name-btn {
             background: none;
@@ -101,11 +127,98 @@
             background: #f0f0f0;
             color: #000;
         }
-        .account-row {
+        /* BADGE - di samping username */
+        .greeting .username-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+        .greeting .username {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        .greeting .badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: none !important;
+            display: none;
+        }
+        .greeting .badge.show {
+            display: inline-block;
+        }
+
+        /* CARD NUMBER - di atas account number, dengan toggle */
+        .card-row {
             background: #f0f0f0;
             border-radius: 12px;
             padding: 10px 16px;
             margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-row .label {
+            font-size: 0.65rem;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .card-row .number {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .card-row .number.hidden {
+            filter: blur(4px);
+            user-select: none;
+        }
+        .card-row .toggle-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .card-row .toggle-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .card-row .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .card-row .copy-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .card-row .actions-right {
+            display: flex;
+            gap: 4px;
+        }
+
+        .account-row {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -135,40 +248,7 @@
             background: #e0e0e0;
             color: #000;
         }
-        .card-row {
-            background: #f0f0f0;
-            border-radius: 12px;
-            padding: 10px 16px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .card-row .label {
-            font-size: 0.65rem;
-            color: #888;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-        .card-row .number {
-            font-size: 0.95rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        .card-row .copy-btn {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .card-row .copy-btn:hover {
-            background: #e0e0e0;
-            color: #000;
-        }
+
         .balance-card {
             background: #000000;
             color: #ffffff;
@@ -217,6 +297,7 @@
         .balance-card .edit-balance-btn.show {
             display: flex;
         }
+
         .actions {
             display: flex;
             gap: 12px;
@@ -254,6 +335,7 @@
             background: #e0e0e0;
             transform: translateY(-2px);
         }
+
         .history-section h3 {
             font-size: 1.1rem;
             font-weight: 700;
@@ -322,6 +404,7 @@
             display: block;
             margin-bottom: 12px;
         }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -548,40 +631,61 @@
     <div class="container">
         <div class="header">
             <h1>CHOBANK</h1>
-            <button class="logout" onclick="handleLogout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
+            <button class="menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
             </button>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a class="menu-item" href="invest.html">
+                    <i class="fas fa-chart-line"></i> Investment
+                </a>
+                <a class="menu-item" href="https://x.com/HaiKachoo" target="_blank">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+                <button class="menu-item logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </div>
 
         <div class="greeting">
             <div class="name-row">
                 <h2>Hello, <span id="userFullName">User</span></h2>
-                <!-- BADGE di samping username (sebelah kanan) -->
-                <span class="badge owner" id="ownerBadge">OWNER</span>
-                <span class="badge admin" id="adminBadge">ADMIN</span>
                 <button class="edit-name-btn" onclick="openEditName()" title="Edit Full Name">
                     <i class="fas fa-pen"></i>
                 </button>
             </div>
-            <p class="username">@<span id="userUsername">username</span></p>
+            <div class="username-wrapper">
+                <span class="username">@<span id="userUsername">username</span></span>
+                <!-- BADGE di samping username -->
+                <span class="badge owner" id="ownerBadge">OWNER</span>
+                <span class="badge admin" id="adminBadge">ADMIN</span>
+            </div>
         </div>
 
+        <!-- CARD NUMBER - di atas account number, dengan toggle -->
+        <div class="card-row">
+            <div>
+                <div class="label">CARD NUMBER</div>
+                <div class="number hidden" id="userCardNumber">**** **** ****</div>
+            </div>
+            <div class="actions-right">
+                <button class="toggle-btn" onclick="toggleCardNumber()" title="Show/Hide">
+                    <i class="fas fa-eye" id="cardToggleIcon"></i>
+                </button>
+                <button class="copy-btn" onclick="copyCardNumber()">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ACCOUNT NUMBER -->
         <div class="account-row">
             <div>
                 <div class="label">ACCOUNT NUMBER</div>
                 <div class="number" id="userAccountNumber">---- ----</div>
             </div>
             <button class="copy-btn" onclick="copyAccountNumber()">
-                <i class="fas fa-copy"></i>
-            </button>
-        </div>
-
-        <div class="card-row">
-            <div>
-                <div class="label">CARD NUMBER</div>
-                <div class="number" id="userCardNumber">**** **** ****</div>
-            </div>
-            <button class="copy-btn" onclick="copyCardNumber()">
                 <i class="fas fa-copy"></i>
             </button>
         </div>
@@ -610,7 +714,7 @@
         </div>
     </div>
 
-    <!-- RECEIVE MODAL -->
+    <!-- RECEIVE MODAL - TANPA CARD NUMBER -->
     <div class="modal-overlay" id="receiveModal">
         <div class="modal">
             <h3>Receive Money</h3>
@@ -630,15 +734,6 @@
                     <span class="value">
                         <span id="receiveAccountNumber">-</span>
                         <button class="copy-small" onclick="copyReceiveInfo('account')">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </span>
-                </div>
-                <div class="row">
-                    <span class="label">Card Number</span>
-                    <span class="value">
-                        <span id="receiveCardNumber">-</span>
-                        <button class="copy-small" onclick="copyReceiveInfo('card')">
                             <i class="fas fa-copy"></i>
                         </button>
                     </span>
@@ -708,10 +803,26 @@
             }
 
             let currentUser = null;
+            let cardVisible = false;
 
             const OWNER = ['kafka'];
             const ADMINS = ['thekachoo', 'kachoo', 'chobank', 'gathur'];
             const CAN_EDIT_BALANCE = [...OWNER, ...ADMINS];
+
+            // Toggle menu
+            window.toggleMenu = function() {
+                const menu = document.getElementById('dropdownMenu');
+                menu.classList.toggle('show');
+            };
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                const menu = document.getElementById('dropdownMenu');
+                const btn = document.querySelector('.menu-btn');
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove('show');
+                }
+            });
 
             (async function() {
                 try {
@@ -843,6 +954,20 @@
                 return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             }
 
+            // Toggle Card Number visibility
+            window.toggleCardNumber = function() {
+                const cardEl = document.getElementById('userCardNumber');
+                const icon = document.getElementById('cardToggleIcon');
+                cardVisible = !cardVisible;
+                if (cardVisible) {
+                    cardEl.classList.remove('hidden');
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    cardEl.classList.add('hidden');
+                    icon.className = 'fas fa-eye';
+                }
+            };
+
             window.copyAccountNumber = function() {
                 const number = document.getElementById('userAccountNumber').textContent;
                 navigator.clipboard.writeText(number).then(() => {
@@ -861,6 +986,7 @@
                 });
             };
 
+            // RECEIVE MODAL - TANPA CARD NUMBER
             window.showReceive = function() {
                 if (!currentUser) {
                     showToast('Please wait, user data loading...');
@@ -868,8 +994,6 @@
                 }
                 document.getElementById('receiveUsername').textContent = currentUser.username;
                 document.getElementById('receiveAccountNumber').textContent = currentUser.account_number || '----';
-                const card = currentUser.card_number || '**** **** **** 0000';
-                document.getElementById('receiveCardNumber').textContent = card.replace(/(.{4})/g, '$1 ').trim();
                 document.getElementById('receiveFullName').textContent = currentUser.full_name || currentUser.username;
                 document.getElementById('receiveModal').classList.add('active');
             };
@@ -889,13 +1013,11 @@
                 } else if (type === 'account') {
                     text = document.getElementById('receiveAccountNumber').textContent;
                     showToast('Account number copied: ' + text);
-                } else if (type === 'card') {
-                    text = document.getElementById('receiveCardNumber').textContent;
-                    showToast('Card number copied: ' + text);
                 }
                 navigator.clipboard.writeText(text).catch(() => {});
             };
 
+            // EDIT NAME
             window.openEditName = function() {
                 const modal = document.getElementById('editNameModal');
                 const input = document.getElementById('editNameInput');
@@ -963,6 +1085,7 @@
                 }
             };
 
+            // EDIT BALANCE
             window.openEditBalance = function() {
                 const modal = document.getElementById('editBalanceModal');
                 const input = document.getElementById('editBalanceAmount');
@@ -1050,9 +1173,9 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded - badge di samping username.');
+            console.log('Dashboard loaded - semua perintah sudah diikuti');
         })();
     </script>
 
 </body>
-    </html>
+                        </html>
