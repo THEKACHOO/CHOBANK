@@ -13,7 +13,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #ffffff;
             color: #000000;
@@ -24,12 +23,10 @@
             justify-content: center;
             padding: 20px;
         }
-
         .container {
             max-width: 440px;
             width: 100%;
         }
-
         .header-chobank-text {
             font-family: 'Outfit', sans-serif;
             font-size: 3.2rem;
@@ -39,7 +36,6 @@
             text-align: center;
             margin-bottom: 32px;
         }
-
         .glass-card {
             background: rgba(255,255,255,0.75);
             backdrop-filter: blur(14px);
@@ -49,7 +45,6 @@
             border: 1px solid rgba(0,0,0,0.08);
             box-shadow: 0 10px 25px -10px rgba(0,0,0,0.05);
         }
-
         .tab-switcher {
             display: flex;
             background: #f0f0f0;
@@ -57,7 +52,6 @@
             padding: 4px;
             margin-bottom: 28px;
         }
-
         .tab-btn {
             flex: 1;
             padding: 12px;
@@ -71,48 +65,39 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .tab-btn.active {
             background: #000000;
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-
         .tab-btn:hover:not(.active) {
             color: #000;
         }
-
         .form-container {
             display: none;
         }
-
         .form-container.active {
             display: block;
             animation: fadeIn 0.3s ease;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .form-container h2 {
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 4px;
         }
-
         .form-container .subtitle {
             color: #666;
             font-size: 0.85rem;
             margin-bottom: 22px;
             font-weight: 400;
         }
-
         .form-group {
             margin-bottom: 16px;
         }
-
         .form-group label {
             display: block;
             font-weight: 600;
@@ -120,7 +105,6 @@
             margin-bottom: 6px;
             color: #333;
         }
-
         .form-group input {
             width: 100%;
             padding: 14px 16px;
@@ -131,17 +115,14 @@
             transition: all 0.2s ease;
             background: #ffffff;
         }
-
         .form-group input:focus {
             outline: none;
             border-color: #000000;
             box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
         }
-
         .form-group input[type="password"] {
             letter-spacing: 2px;
         }
-
         .btn-primary {
             width: 100%;
             padding: 16px;
@@ -156,19 +137,16 @@
             transition: all 0.25s ease;
             margin-top: 4px;
         }
-
         .btn-primary:hover {
             background: #1e1e1e;
             transform: translateY(-2px);
             box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
         }
-
         .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
-
         .message-box {
             padding: 12px 16px;
             border-radius: 12px;
@@ -176,42 +154,35 @@
             margin-bottom: 16px;
             display: none;
         }
-
         .message-box.error {
             display: block;
             background: #fee2e2;
             color: #dc2626;
         }
-
         .message-box.success {
             display: block;
             background: #dcfce7;
             color: #16a34a;
         }
-
         .back-home {
             text-align: center;
             margin-top: 16px;
         }
-
         .back-home a {
             color: #666;
             text-decoration: none;
             font-size: 0.85rem;
             transition: color 0.2s;
         }
-
         .back-home a:hover {
             color: #000;
         }
-
         .requirements {
             font-size: 0.7rem;
             color: #888;
             margin-top: 4px;
             line-height: 1.5;
         }
-
         .login-options {
             display: flex;
             gap: 8px;
@@ -220,7 +191,6 @@
             border-radius: 12px;
             padding: 4px;
         }
-
         .login-option-btn {
             flex: 1;
             padding: 10px;
@@ -234,42 +204,34 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .login-option-btn.active {
             background: #000000;
             color: #ffffff;
         }
-
         .login-option-btn:hover:not(.active) {
             color: #000;
         }
-
         .forgot-password {
             text-align: center;
             margin-top: 14px;
         }
-
         .forgot-password a {
             color: #888;
             text-decoration: none;
             font-size: 0.8rem;
             transition: color 0.2s;
         }
-
         .forgot-password a:hover {
             color: #000;
             text-decoration: underline;
         }
-
         .login-field {
             display: none;
         }
-
         .login-field.active {
             display: block;
             animation: fadeIn 0.3s ease;
         }
-
         @media (max-width: 480px) {
             .container {
                 padding: 0 8px;
@@ -348,7 +310,7 @@
                 </div>
             </div>
 
-            <!-- REGISTER FORM - TANPA EMAIL! -->
+            <!-- REGISTER FORM -->
             <div class="form-container" id="registerForm">
                 <h2>Create Account</h2>
                 <p class="subtitle">Create CHOBANK account now!</p>
@@ -389,7 +351,7 @@
             
             console.log('=== CHOBANK AUTH SYSTEM STARTED ===');
 
-            // ===== SUPABASE CONFIG =====
+            // ===== GANTI DENGAN URL DAN KEY SUPABASE KAMU! =====
             const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
 
@@ -398,45 +360,36 @@
 
             let loginMethod = 'password';
 
-            // ===== SWITCH TAB =====
             window.switchTab = function(tab) {
                 console.log('🔄 Switching to:', tab);
-                
                 const loginTab = document.getElementById('loginTab');
                 const registerTab = document.getElementById('registerTab');
                 const loginForm = document.getElementById('loginForm');
                 const registerForm = document.getElementById('registerForm');
                 const msg = document.getElementById('messageBox');
-
                 msg.className = 'message-box';
                 msg.textContent = '';
                 msg.style.display = 'none';
-
                 if (tab === 'login') {
                     loginTab.className = 'tab-btn active';
                     registerTab.className = 'tab-btn';
                     loginForm.className = 'form-container active';
                     registerForm.className = 'form-container';
-                    console.log('✅ Login tab active');
                 } else {
                     registerTab.className = 'tab-btn active';
                     loginTab.className = 'tab-btn';
                     registerForm.className = 'form-container active';
                     loginForm.className = 'form-container';
-                    console.log('✅ Register tab active');
                 }
             };
 
-            // ===== SET LOGIN METHOD =====
             window.setLoginMethod = function(method) {
                 loginMethod = method;
                 console.log('🔑 Login method:', method);
-
                 const passwordBtn = document.getElementById('loginPasswordOption');
                 const pinBtn = document.getElementById('loginPinOption');
                 const passwordField = document.getElementById('loginPasswordField');
                 const pinField = document.getElementById('loginPinField');
-
                 if (method === 'password') {
                     passwordBtn.className = 'login-option-btn active';
                     pinBtn.className = 'login-option-btn';
@@ -450,7 +403,6 @@
                 }
             };
 
-            // ===== SHOW MESSAGE =====
             window.showMessage = function(text, type) {
                 const msg = document.getElementById('messageBox');
                 msg.textContent = text;
@@ -459,7 +411,6 @@
                 console.log('📨 Message:', type, '-', text);
             };
 
-            // ===== VALIDASI =====
             function validateUsername(username) {
                 return /^[a-zA-Z0-9]{5,12}$/.test(username);
             }
@@ -472,59 +423,47 @@
                 return /^[0-9]{4}$/.test(pin);
             }
 
-            // ===== LOGIN =====
             window.handleLogin = async function() {
                 console.log('🔐 Login attempt with:', loginMethod);
-                
                 const username = document.getElementById('loginUsername').value.trim();
                 let password = '';
                 let pin = '';
-
                 if (loginMethod === 'password') {
                     password = document.getElementById('loginPassword').value.trim();
                 } else {
                     pin = document.getElementById('loginPin').value.trim();
                 }
-
                 const btn = document.getElementById('loginBtn');
                 const text = document.getElementById('loginText');
                 const spinner = document.getElementById('loginSpinner');
-
                 const msg = document.getElementById('messageBox');
                 msg.className = 'message-box';
                 msg.style.display = 'none';
-
                 if (!username) {
                     window.showMessage('Please enter your username.', 'error');
                     return;
                 }
-
                 if (loginMethod === 'password' && !password) {
                     window.showMessage('Please enter your password.', 'error');
                     return;
                 }
-
                 if (loginMethod === 'pin' && !pin) {
                     window.showMessage('Please enter your PIN.', 'error');
                     return;
                 }
-
                 if (loginMethod === 'pin' && !validatePin(pin)) {
                     window.showMessage('PIN must be exactly 4 digits.', 'error');
                     return;
                 }
-
                 btn.disabled = true;
                 text.textContent = 'Logging in...';
                 spinner.style.display = 'inline';
-
                 try {
                     const { data: userData, error: userError } = await supabase
                         .from('users')
                         .select('*')
                         .eq('username', username)
                         .single();
-
                     if (userError || !userData) {
                         window.showMessage('Invalid username.', 'error');
                         btn.disabled = false;
@@ -532,14 +471,12 @@
                         spinner.style.display = 'none';
                         return;
                     }
-
                     let isValid = false;
                     if (loginMethod === 'password') {
                         isValid = (password === userData.password);
                     } else {
                         isValid = (pin === userData.pin);
                     }
-
                     if (!isValid) {
                         window.showMessage('Invalid ' + loginMethod + '.', 'error');
                         btn.disabled = false;
@@ -547,12 +484,10 @@
                         spinner.style.display = 'none';
                         return;
                     }
-
                     window.showMessage('Login successful! Redirecting...', 'success');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
-
                 } catch (err) {
                     window.showMessage('An error occurred. Please try again.', 'error');
                     console.error('Login error:', err);
@@ -563,52 +498,38 @@
                 }
             };
 
-            // ===== REGISTER - TANPA EMAIL! =====
             window.handleRegister = async function() {
                 console.log('📝 Register attempt');
-                
                 const username = document.getElementById('regUsername').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
                 const pin = document.getElementById('regPin').value.trim();
-
                 const btn = document.getElementById('registerBtn');
                 const text = document.getElementById('registerText');
                 const spinner = document.getElementById('registerSpinner');
-
                 const msg = document.getElementById('messageBox');
                 msg.className = 'message-box';
                 msg.style.display = 'none';
-
-                // Validasi Username
                 if (!validateUsername(username)) {
                     window.showMessage('Username must be 5-12 characters (letters & numbers only).', 'error');
                     return;
                 }
-
-                // Validasi Password
                 if (!validatePassword(password)) {
                     window.showMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
                     return;
                 }
-
-                // Validasi PIN
                 if (!validatePin(pin)) {
                     window.showMessage('PIN must be exactly 4 digits (0-9).', 'error');
                     return;
                 }
-
                 btn.disabled = true;
                 text.textContent = 'Creating account...';
                 spinner.style.display = 'inline';
-
                 try {
-                    // Cek apakah username sudah terdaftar
-                    const { data: existingUser, error: checkError } = await supabase
+                    const { data: existingUser } = await supabase
                         .from('users')
                         .select('username')
                         .eq('username', username)
                         .single();
-
                     if (existingUser) {
                         window.showMessage('Username already taken. Please choose another.', 'error');
                         btn.disabled = false;
@@ -616,8 +537,6 @@
                         spinner.style.display = 'none';
                         return;
                     }
-
-                    // LANGSUNG INSERT KE TABEL USERS - TANPA EMAIL!
                     const { error: insertError } = await supabase
                         .from('users')
                         .insert([{ 
@@ -625,7 +544,6 @@
                             password: password,
                             pin: pin
                         }]);
-
                     if (insertError) {
                         console.error('Insert error:', insertError);
                         window.showMessage('Registration failed. Please try again.', 'error');
@@ -656,7 +574,6 @@
                 }
             };
 
-            // ===== ENTER KEY =====
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     if (document.getElementById('loginForm').classList.contains('active')) {
@@ -670,9 +587,8 @@
             console.log('✅ All functions registered');
             console.log('📌 Login methods: Password or PIN');
             console.log('=== CHOBANK AUTH SYSTEM READY ===');
-
         })();
     </script>
 
 </body>
-    </html>
+                        </html>
