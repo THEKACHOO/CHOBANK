@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CHOBANK - Send Money</title>
+    <title>CHOBANK - International Payment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -56,67 +56,6 @@
         .back-btn:hover {
             background: #000;
             color: #fff;
-        }
-
-        .payment-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .payment-option {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px 20px;
-            text-align: center;
-            border: 2px solid #e0e0e0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .payment-option:hover {
-            transform: translateY(-4px);
-            border-color: #000000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        }
-
-        .payment-icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-            color: #000000;
-        }
-
-        .payment-option h2 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .payment-option p {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 14px;
-        }
-
-        .select-btn {
-            background: #000000;
-            color: #ffffff;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            max-width: 180px;
-            transition: all 0.2s ease;
-        }
-
-        .select-btn:hover {
-            background: #333333;
-            transform: scale(1.02);
         }
 
         .generator-container {
@@ -521,6 +460,39 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
 
+        .time-format-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+
+        .time-format-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 400;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .currency-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: 'Outfit', sans-serif;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .currency-select:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
         .loading {
             text-align: center;
             padding: 40px;
@@ -595,34 +567,108 @@
             </button>
         </div>
 
-        <div class="payment-options">
-            <div class="payment-option" id="domestic-btn">
-                <div class="payment-icon"><i class="fas fa-landmark"></i></div>
-                <h2>Domestic Payment</h2>
-                <p>Transfer dalam negeri</p>
-                <button class="select-btn" data-type="domestic">Pilih</button>
-            </div>
-            
-            <div class="payment-option" id="international-btn">
-                <div class="payment-icon"><i class="fas fa-globe-americas"></i></div>
-                <h2>International Payment</h2>
-                <p>International Transactions</p>
-                <button class="select-btn" data-type="international">Select</button>
-            </div>
-            
-            <div class="payment-option" id="invoice-btn">
-                <div class="payment-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                <h2>Invoice Payment</h2>
-                <p>For Invoice Payment Only</p>
-                <button class="select-btn" data-type="invoice">Select</button>
-            </div>
-        </div>
+        <section class="generator-container" id="generator">
+            <h2>International Payment</h2>
+            <p>International Bank Transfer</p>
 
-        <section class="generator-container hidden" id="generator"></section>
+            <div id="messageBox" class="message-box"></div>
+
+            <div class="auto-bank-info">
+                <i class="fas fa-building"></i> Sender Bank: CHOBANK
+                <span class="balance-info" id="balanceDisplay">Balance: $0.00</span>
+            </div>
+
+            <form id="payment-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Sender Name</label>
+                        <input type="text" id="payer-name" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Recipient Name</label>
+                        <input type="text" id="receiver-name" class="form-control" placeholder="Full recipient name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Number</label>
+                        <input type="text" id="receiver-account" class="form-control" placeholder="Account number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Recipient Bank</label>
+                        <input type="text" id="recipient-bank" class="form-control" placeholder="Recipient bank name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" id="amount" class="form-control" placeholder="Payment amount" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select id="currency-select" class="currency-select">
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="CHF">CHF - Swiss Franc</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="SGD">SGD - Singapore Dollar</option>
+                            <option value="MYR">MYR - Malaysian Ringgit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="date" class="form-control" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Time</label>
+                        <input type="time" id="time-input" class="form-control" required>
+                        <div class="time-format-group">
+                            <label><input type="radio" name="time-format" value="24" checked> 24 Hour</label>
+                            <label><input type="radio" name="time-format" value="12"> 12 Hour (AM/PM)</label>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Notes</label>
+                        <textarea id="notes" class="form-control" rows="2" placeholder="Additional notes"></textarea>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" id="generate-btn" class="action-btn btn-primary">Generate Slip</button>
+                    <button type="reset" class="action-btn btn-secondary">Reset</button>
+                </div>
+            </form>
+
+            <div class="preview-section hidden" id="preview-section">
+                <h3 class="preview-title">Payment Slip Preview</h3>
+                <div class="preview-container">
+                    <div class="slip-card" id="proof-preview">
+                        <div class="watermark-bg">
+                            <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
+                        </div>
+                        <div class="slip-header">
+                            <div class="check-circle"><i class="fas fa-check"></i></div>
+                            <div class="tx-status" id="preview-status">Payment Complete</div>
+                            <div class="tx-thankyou" id="preview-thankyou">Thank you! Your payment was successfully processed</div>
+                        </div>
+                        <div class="slip-details" id="slip-details"></div>
+                        <div id="slip-note-container"></div>
+                        <div class="slip-footer">
+                            <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
+                            <span class="bank-label">CHOBANK</span>
+                        </div>
+                        <div class="slip-credit">For roleplay purpose only, featured by The Kachoo</div>
+                    </div>
+                </div>
+                <button type="button" id="download-btn" class="download-btn">Print Slip</button>
+                <div class="new-proof-btn-wrapper">
+                    <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">Create New</button>
+                </div>
+            </div>
+        </section>
 
         <div class="loading hidden" id="loading">
             <div class="spinner"></div>
-            <p style="font-size: 1rem; color: #666;">Membuat gambar receipt...</p>
+            <p style="font-size: 1rem; color: #666;">Generating image...</p>
         </div>
 
         <footer>
@@ -646,7 +692,6 @@
         }
 
         let currentUser = null;
-        let currentPaymentType = '';
         let currentCurrency = 'USD';
 
         // ===== AMBIL DATA USER =====
@@ -665,6 +710,23 @@
                 }
 
                 currentUser = userData;
+                
+                // Set sender name
+                document.getElementById('payer-name').value = userData.full_name || userData.username;
+                
+                // Set today date
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').value = today;
+                
+                // Set current time
+                const now = new Date();
+                const currentHour = String(now.getHours()).padStart(2, '0');
+                const currentMinute = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+                
+                // Update balance display
+                document.getElementById('balanceDisplay').textContent = 'Balance: $' + (userData.balance || 0).toFixed(2);
+
                 console.log('User loaded:', currentUser);
 
             } catch (error) {
@@ -673,193 +735,9 @@
             }
         })();
 
-        // ===== SELECT PAYMENT TYPE =====
-        document.querySelectorAll('.select-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                currentPaymentType = this.getAttribute('data-type');
-                loadPaymentForm(currentPaymentType);
-                document.getElementById('generator').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-
-        // ===== LOAD PAYMENT FORM =====
-        function loadPaymentForm(type) {
-            const generator = document.getElementById('generator');
-            let title, subtitle, currency, showInvoiceField, showCurrencySelect, formLabels;
-            let isDomestic = type === 'domestic';
-            let isInternational = type === 'international';
-            let isInvoice = type === 'invoice';
-            
-            if (isDomestic) {
-                title = 'Pembayaran Dalam Negeri';
-                subtitle = 'Transfer ke bank lokal';
-                currency = 'IDR';
-                showInvoiceField = false;
-                showCurrencySelect = false;
-                formLabels = {
-                    payerName: 'Nama Pengirim', receiverName: 'Nama Penerima',
-                    receiverAccount: 'No. Rekening', recipientBank: 'Bank Penerima',
-                    amount: 'Jumlah', date: 'Tanggal', notes: 'Catatan',
-                    placeholderPayerName: 'Nama lengkap pengirim',
-                    placeholderReceiverName: 'Nama lengkap penerima',
-                    placeholderReceiverAccount: 'Nomor rekening',
-                    placeholderRecipientBank: 'Nama bank penerima',
-                    placeholderAmount: 'Jumlah pembayaran',
-                    placeholderNotes: 'Catatan tambahan'
-                };
-            } else if (isInternational) {
-                title = 'International Payment';
-                subtitle = 'International Bank Transfer';
-                currency = 'USD';
-                showInvoiceField = false;
-                showCurrencySelect = true;
-                formLabels = {
-                    payerName: 'Sender Name', receiverName: 'Recipient Name',
-                    receiverAccount: 'Account Number', recipientBank: 'Recipient Bank',
-                    amount: 'Amount', date: 'Date', notes: 'Notes',
-                    placeholderPayerName: 'Full sender name',
-                    placeholderReceiverName: 'Full recipient name',
-                    placeholderReceiverAccount: 'Account number',
-                    placeholderRecipientBank: 'Recipient bank name',
-                    placeholderAmount: 'Payment amount',
-                    placeholderNotes: 'Additional notes'
-                };
-            } else {
-                title = 'Invoice Payment';
-                subtitle = 'Pembayaran Invoice';
-                currency = 'IDR';
-                showInvoiceField = true;
-                showCurrencySelect = false;
-                formLabels = {
-                    payerName: 'Sender Name', receiverName: 'Recipient Name',
-                    receiverAccount: 'Account Number', recipientBank: 'Recipient Bank',
-                    amount: 'Amount', date: 'Date', notes: 'Notes',
-                    placeholderPayerName: 'Full sender name',
-                    placeholderReceiverName: 'Full recipient name',
-                    placeholderReceiverAccount: 'Account number',
-                    placeholderRecipientBank: 'Recipient bank name',
-                    placeholderAmount: 'Payment amount',
-                    placeholderNotes: 'Additional notes'
-                };
-            }
-            
-            const today = new Date().toISOString().split('T')[0];
-            const now = new Date();
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const currentTime = `${currentHour}:${currentMinute}`;
-            
-            // Sender name otomatis dari user login
-            const senderName = currentUser ? currentUser.full_name : '';
-            const senderBank = 'CHOBANK';
-            
-            let formHTML = `
-                <h2>${title}</h2>
-                <p>${subtitle}</p>
-                <div class="auto-bank-info">
-                    <i class="fas fa-building"></i> ${isDomestic ? 'Bank Pengirim' : 'Sender Bank'}: ${senderBank}
-                    <span class="balance-info">Balance: $${(currentUser ? currentUser.balance : 0).toFixed(2)}</span>
-                </div>
-                <form id="payment-form">
-                    <div class="form-grid">
-                        <div class="form-group"><label>${formLabels.payerName}</label><input type="text" id="payer-name" class="form-control" value="${senderName}" readonly></div>
-                        <div class="form-group"><label>${formLabels.receiverName}</label><input type="text" id="receiver-name" class="form-control" placeholder="${formLabels.placeholderReceiverName}" required></div>
-                        <div class="form-group"><label>${formLabels.receiverAccount}</label><input type="text" id="receiver-account" class="form-control" placeholder="${formLabels.placeholderReceiverAccount}" required></div>
-                        <div class="form-group"><label>${formLabels.recipientBank}</label><input type="text" id="recipient-bank" class="form-control" placeholder="${formLabels.placeholderRecipientBank}" required></div>
-                        <div class="form-group">
-                            <label>${formLabels.amount}</label>
-                            <input type="number" id="amount" class="form-control" placeholder="${formLabels.placeholderAmount}" min="0.01" step="0.01" required>
-                        </div>
-                        <div class="form-group">
-                            <label>${formLabels.date}</label>
-                            <input type="date" id="date" class="form-control" value="${today}" required>
-                        </div>
-                        ${showCurrencySelect ? `
-                        <div class="form-group">
-                            <label>Currency</label>
-                            <select id="currency-select" class="currency-select">
-                                <option value="USD">USD - US Dollar</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="GBP">GBP - British Pound</option>
-                                <option value="JPY">JPY - Japanese Yen</option>
-                                <option value="AUD">AUD - Australian Dollar</option>
-                                <option value="CAD">CAD - Canadian Dollar</option>
-                                <option value="CHF">CHF - Swiss Franc</option>
-                                <option value="CNY">CNY - Chinese Yuan</option>
-                                <option value="SGD">SGD - Singapore Dollar</option>
-                                <option value="MYR">MYR - Malaysian Ringgit</option>
-                            </select>
-                        </div>
-                        ` : ''}
-                        ${showInvoiceField ? `<div class="form-group"><label>Invoice Number</label><input type="text" id="invoice-number" class="form-control" placeholder="Invoice number"></div>` : ''}
-                        <div class="form-group full-width">
-                            <label>${isDomestic ? 'Waktu' : 'Time'}</label>
-                            <input type="time" id="time-input" class="form-control" value="${currentTime}" required>
-                            <div class="time-format-group">
-                                <label><input type="radio" name="time-format" value="24" checked> ${isDomestic ? '24 Jam' : '24 Hour'}</label>
-                                <label><input type="radio" name="time-format" value="12"> ${isDomestic ? '12 Jam (AM/PM)' : '12 Hour (AM/PM)'}</label>
-                            </div>
-                        </div>
-                        <div class="form-group full-width">
-                            <label>${formLabels.notes}</label>
-                            <textarea id="notes" class="form-control" rows="2" placeholder="${formLabels.placeholderNotes}"></textarea>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="button" id="generate-btn" class="action-btn btn-primary">${isDomestic ? 'Buat Slip' : 'Generate Slip'}</button>
-                        <button type="reset" class="action-btn btn-secondary">${isDomestic ? 'Reset' : 'Reset'}</button>
-                    </div>
-                </form>
-                <div class="preview-section hidden" id="preview-section">
-                    <h3 class="preview-title">${isDomestic ? 'Preview Slip Pembayaran' : 'Payment Slip Preview'}</h3>
-                    <div class="preview-container">
-                        <div class="slip-card" id="proof-preview">
-                            <div class="watermark-bg">
-                                <img src="https://thekachoo.github.io/CHOBANK/chobank1.png" alt="CHOBANK" onerror="this.style.display='none'">
-                            </div>
-                            
-                            <div class="slip-header">
-                                <div class="check-circle"><i class="fas fa-check"></i></div>
-                                <div class="tx-status" id="preview-status">${isDomestic ? 'Payment Success' : 'Payment Complete'}</div>
-                                <div class="tx-thankyou" id="preview-thankyou">${isDomestic ? 'Terima kasih! Pembayaran Anda berhasil diproses' : 'Thank you! Your payment was successfully processed'}</div>
-                            </div>
-                            <div class="slip-details" id="slip-details"></div>
-                            <div id="slip-note-container"></div>
-                            <div class="slip-footer">
-                                <span class="ref">Ref: <span id="preview-ref">CHB1234-ABCDE</span></span>
-                                <span class="bank-label">CHOBANK</span>
-                            </div>
-                            <div class="slip-credit">${isDomestic ? 'Hanya untuk tujuan roleplay, Fitur dibuat oleh The Kachoo' : 'For roleplay purpose only, featured by The Kachoo'}</div>
-                        </div>
-                    </div>
-                    <button type="button" id="download-btn" class="download-btn">${isDomestic ? 'Cetak Slip' : 'Print Slip'}</button>
-                    <div class="new-proof-btn-wrapper">
-                        <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">${isDomestic ? 'Buat Baru' : 'Create New'}</button>
-                    </div>
-                </div>
-            `;
-            
-            generator.innerHTML = formHTML;
-            generator.classList.remove('hidden');
-            generator.classList.add('fade-in');
-            
-            setTimeout(() => {
-                document.getElementById('generate-btn').addEventListener('click', generateProof);
-                document.getElementById('download-btn').addEventListener('click', downloadProof);
-                document.getElementById('new-proof-btn').addEventListener('click', () => {
-                    document.getElementById('preview-section').classList.add('hidden');
-                    document.getElementById('payment-form').reset();
-                    document.getElementById('date').value = today;
-                    document.getElementById('time-input').value = currentTime;
-                    document.getElementById('payer-name').value = senderName;
-                });
-            }, 100);
-        }
-
         // ===== SHOW MESSAGE =====
         function showMessage(text, type) {
             const msg = document.getElementById('messageBox');
-            if (!msg) return;
             msg.textContent = text;
             msg.className = 'message-box ' + type;
             msg.style.display = 'block';
@@ -867,21 +745,17 @@
 
         function hideMessage() {
             const msg = document.getElementById('messageBox');
-            if (!msg) return;
             msg.className = 'message-box';
             msg.style.display = 'none';
         }
 
         // ===== GENERATE PROOF =====
-        function generateProof() {
-            const isDomestic = currentPaymentType === 'domestic';
-            const isInvoice = currentPaymentType === 'invoice';
-            
+        document.getElementById('generate-btn').addEventListener('click', function() {
             const required = ['receiver-name', 'receiver-account', 'recipient-bank', 'amount', 'date', 'time-input'];
             for (let id of required) {
                 const field = document.getElementById(id);
                 if (!field.value.trim()) {
-                    alert(isDomestic ? 'Isi semua field yang diperlukan' : 'Fill all required fields');
+                    alert('Fill all required fields');
                     return;
                 }
             }
@@ -899,7 +773,7 @@
                 formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
             }
             
-            const selectedCurrency = document.getElementById('currency-select')?.value || 'USD';
+            const selectedCurrency = document.getElementById('currency-select').value;
             currentCurrency = selectedCurrency;
             
             const data = {
@@ -909,21 +783,19 @@
                 recipientBank: document.getElementById('recipient-bank').value.trim(),
                 amount: parseFloat(document.getElementById('amount').value.trim()),
                 date: document.getElementById('date').value,
-                currency: currentPaymentType === 'international' ? selectedCurrency : (currentPaymentType === 'domestic' ? 'IDR' : 'IDR'),
-                invoiceNumber: document.getElementById('invoice-number')?.value.trim() || '',
+                currency: selectedCurrency,
                 notes: document.getElementById('notes').value.trim(),
-                time: formattedTime,
-                timeFormat: timeFormat
+                time: formattedTime
             };
             
             // CEK SALDO
             if (data.amount > (currentUser ? currentUser.balance : 0)) {
-                alert(isDomestic ? 'Saldo tidak mencukupi!' : 'Insufficient balance!');
+                alert('Insufficient balance!');
                 return;
             }
             
             const dateObj = new Date(data.date);
-            const formattedDate = dateObj.toLocaleDateString(isDomestic ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            const formattedDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
             
             const ref = 'CHB' + Math.floor(Math.random()*9000+1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
             
@@ -932,64 +804,57 @@
             const currencySymbols = {
                 'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥', 
                 'AUD': 'A$', 'CAD': 'C$', 'CHF': 'Fr', 'CNY': '¥',
-                'SGD': 'S$', 'MYR': 'RM', 'IDR': 'Rp '
+                'SGD': 'S$', 'MYR': 'RM'
             };
             
             const symbol = currencySymbols[data.currency] || '$';
             
-            if (data.currency === 'IDR') {
-                formattedAmount = 'Rp ' + (isNaN(amountNum) ? data.amount : amountNum.toLocaleString('id-ID'));
-            } else if (data.currency === 'JPY' || data.currency === 'CNY') {
+            if (data.currency === 'JPY' || data.currency === 'CNY') {
                 formattedAmount = symbol + (isNaN(amountNum) ? data.amount : Math.round(amountNum).toLocaleString());
             } else {
                 formattedAmount = symbol + (isNaN(amountNum) ? data.amount : amountNum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }
             
-            const statusText = 'SUCCESS';
-            const headerStatus = isDomestic ? 'Payment Success' : 'Payment Complete';
-            
-            document.getElementById('preview-status').textContent = headerStatus;
+            document.getElementById('preview-status').textContent = 'Payment Complete';
+            document.getElementById('preview-thankyou').textContent = 'Thank you! Your payment was successfully processed';
             document.getElementById('preview-ref').textContent = ref;
             
             let detailsHTML = `
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Jumlah' : 'Amount'}</span>
+                    <span class="slip-label">Amount</span>
                     <span class="slip-value amount">${formattedAmount}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Pengirim' : 'From'}</span>
+                    <span class="slip-label">From</span>
                     <span class="slip-value">${escapeHtml(data.payerName)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Penerima' : 'To'}</span>
+                    <span class="slip-label">To</span>
                     <span class="slip-value">${escapeHtml(data.receiverName)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Bank Penerima' : 'Recipient Bank'}</span>
+                    <span class="slip-label">Recipient Bank</span>
                     <span class="slip-value">${escapeHtml(data.recipientBank)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'No. Rekening' : 'Account'}</span>
+                    <span class="slip-label">Account</span>
                     <span class="slip-value">${escapeHtml(data.receiverAccount)}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Tanggal' : 'Date'}</span>
+                    <span class="slip-label">Date</span>
                     <span class="slip-value">${formattedDate}</span>
                 </div>
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Waktu' : 'Time'}</span>
+                    <span class="slip-label">Time</span>
                     <span class="slip-value">${data.time}</span>
                 </div>
-            `;
-            
-            if (data.invoiceNumber) {
-                detailsHTML += `<div class="slip-row"><span class="slip-label">Invoice Number</span><span class="slip-value">${escapeHtml(data.invoiceNumber)}</span></div>`;
-            }
-            
-            detailsHTML += `
                 <div class="slip-row">
-                    <span class="slip-label">${isDomestic ? 'Status' : 'Status'}</span>
-                    <span class="slip-value"><span class="status-badge">${statusText}</span></span>
+                    <span class="slip-label">Currency</span>
+                    <span class="slip-value">${data.currency}</span>
+                </div>
+                <div class="slip-row">
+                    <span class="slip-label">Status</span>
+                    <span class="slip-value"><span class="status-badge">SUCCESS</span></span>
                 </div>
             `;
             
@@ -999,7 +864,7 @@
             if (data.notes) {
                 noteContainer.innerHTML = `
                     <div class="slip-note">
-                        <strong>${isDomestic ? 'Catatan' : 'Notes'}</strong>
+                        <strong>Notes</strong>
                         ${escapeHtml(data.notes)}
                     </div>
                 `;
@@ -1012,25 +877,31 @@
             
             document.getElementById('preview-section').classList.remove('hidden');
             document.getElementById('preview-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        });
 
         // ===== UPDATE BALANCE =====
         async function updateBalance(amount, receiverName, currency, ref) {
             try {
-                // Kurangi saldo pengirim
                 const newBalance = (currentUser.balance - amount);
+                
+                // Get current history
+                const currentHistory = currentUser.history || [];
+                const newHistory = [
+                    ...currentHistory,
+                    {
+                        type: 'debit',
+                        amount: amount,
+                        description: 'Transfer to ' + receiverName + ' (' + currency + ')',
+                        date: new Date().toISOString(),
+                        invoice: ref
+                    }
+                ];
                 
                 const { error } = await supabase
                     .from('users')
                     .update({ 
                         balance: newBalance,
-                        history: supabase.sql`history || jsonb_build_object(
-                            'type', 'debit',
-                            'amount', ${amount},
-                            'description', ${'Transfer to ' + receiverName + ' (' + currency + ')'},
-                            'date', ${new Date().toISOString()},
-                            'invoice', ${ref}
-                        )`
+                        history: newHistory
                     })
                     .eq('id', parseInt(userId));
 
@@ -1042,12 +913,10 @@
 
                 // Update local user
                 currentUser.balance = newBalance;
+                currentUser.history = newHistory;
                 
-                // Update balance display di auto-bank-info
-                const balanceInfo = document.querySelector('.balance-info');
-                if (balanceInfo) {
-                    balanceInfo.textContent = 'Balance: $' + newBalance.toFixed(2);
-                }
+                // Update balance display
+                document.getElementById('balanceDisplay').textContent = 'Balance: $' + newBalance.toFixed(2);
 
                 console.log('Balance updated successfully');
                 showToast('Balance updated: $' + newBalance.toFixed(2));
@@ -1058,6 +927,31 @@
             }
         }
 
+        // ===== SHOW TOAST =====
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #000000;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 14px;
+                font-size: 0.85rem;
+                font-family: 'Outfit', sans-serif;
+                z-index: 2000;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+                animation: fadeIn 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
         // ===== ESCAPE HTML =====
         function escapeHtml(str) {
             if (!str) return '';
@@ -1065,9 +959,9 @@
         }
 
         // ===== DOWNLOAD PROOF =====
-        async function downloadProof() {
+        document.getElementById('download-btn').addEventListener('click', async function() {
             const card = document.getElementById('proof-preview');
-            if (!card) { alert('Buat transaksi dulu'); return; }
+            if (!card) { alert('Create transaction first'); return; }
             
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
@@ -1086,24 +980,8 @@
             
             const style = document.createElement('style');
             style.textContent = `
-                .watermark-bg {
-                    position: absolute !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    pointer-events: none !important;
-                    z-index: 99999 !important;
-                    opacity: 0.025 !important;
-                }
-                .watermark-bg img {
-                    width: 45% !important;
-                    height: auto !important;
-                    object-fit: contain !important;
-                }
+                .watermark-bg { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; display: flex !important; align-items: center !important; justify-content: center !important; pointer-events: none !important; z-index: 99999 !important; opacity: 0.025 !important; }
+                .watermark-bg img { width: 45% !important; height: auto !important; object-fit: contain !important; }
                 .slip-header { text-align: center !important; margin-bottom: 24px !important; padding-bottom: 20px !important; border-bottom: 2px solid #f0f0f0 !important; position: relative !important; z-index: 1 !important; }
                 .check-circle { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 56px !important; height: 56px !important; background: #000000 !important; border-radius: 50% !important; color: #ffffff !important; font-size: 1.8rem !important; margin-bottom: 8px !important; }
                 .tx-status { font-size: 1.2rem !important; font-weight: 700 !important; color: #000000 !important; }
@@ -1137,7 +1015,7 @@
                     });
                     
                     const link = document.createElement('a');
-                    link.download = `slip-payment-${currentPaymentType}-${Date.now()}.png`;
+                    link.download = `slip-payment-${Date.now()}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
@@ -1147,28 +1025,43 @@
                     console.error(err);
                     document.body.removeChild(cloneCard);
                     loading.classList.add('hidden');
-                    alert('Gagal mengunduh');
+                    alert('Failed to download');
                 }
             }, 200);
-        }
+        });
+
+        // ===== NEW PROOF =====
+        document.getElementById('new-proof-btn').addEventListener('click', function() {
+            document.getElementById('preview-section').classList.add('hidden');
+            document.getElementById('payment-form').reset();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+            
+            if (currentUser) {
+                document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
+            }
+            
+            hideMessage();
+        });
+
+        // ===== RESET =====
+        document.querySelector('.btn-secondary').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('new-proof-btn').click();
+        });
 
         // ===== GO BACK =====
         function goBack() {
             window.location.href = 'dashboard.html';
         }
 
-        // ===== SHOW TOAST =====
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
         console.log('Test2 loaded');
     </script>
 </body>
-</html>
+                                </html>
