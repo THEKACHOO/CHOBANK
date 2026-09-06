@@ -14,31 +14,26 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #ffffff;
             font-family: 'Outfit', sans-serif;
             padding: 24px 16px 48px;
         }
-
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
-
         .site-header {
             text-align: center;
             margin-bottom: 32px;
             position: relative;
         }
-
         .header-chobank-text {
             font-size: 3rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #000000;
         }
-
         .back-btn {
             position: absolute;
             left: 0;
@@ -49,65 +44,47 @@
             padding: 8px 12px;
             border-radius: 12px;
             background: #f0f0f0;
-            transition: all 0.2s;
             border: none;
             cursor: pointer;
             font-family: 'Outfit', sans-serif;
         }
-
         .back-btn:hover {
             background: #000;
             color: #fff;
         }
-
         .generator-container {
             background: #ffffff;
             border-radius: 20px;
             padding: 32px 28px;
             border: 1px solid #e0e0e0;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            position: relative;
-            overflow: hidden;
         }
-
         .generator-container h2 {
             font-size: 1.6rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 4px;
-            position: relative;
-            z-index: 1;
         }
-
         .generator-container > p {
             text-align: center;
             color: #666;
             margin-bottom: 24px;
             font-size: 0.9rem;
-            position: relative;
-            z-index: 1;
         }
-
         .hidden {
             display: none;
         }
-
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            position: relative;
-            z-index: 1;
         }
-
         .form-group {
             margin-bottom: 6px;
         }
-
         .form-group.full-width {
             grid-column: 1 / -1;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 6px;
@@ -115,7 +92,6 @@
             font-size: 0.85rem;
             color: #333;
         }
-
         .form-control {
             width: 100%;
             padding: 12px 16px;
@@ -126,23 +102,19 @@
             transition: all 0.2s ease;
             background: #ffffff;
         }
-
         .form-control:focus {
             outline: none;
             border-color: #000000;
             box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
         }
-
         .form-control[readonly] {
             background: #f5f5f5;
             cursor: default;
         }
-
         textarea.form-control {
             min-height: 80px;
             resize: vertical;
         }
-
         .auto-bank-info {
             background: #f5f5f5;
             border-radius: 12px;
@@ -151,21 +123,15 @@
             font-size: 0.85rem;
             border-left: 4px solid #000000;
             font-weight: 500;
-            position: relative;
-            z-index: 1;
         }
-
         .auto-bank-info i {
             margin-right: 8px;
         }
-
         .auto-bank-info .balance-info {
             float: right;
             font-weight: 700;
             color: #000;
         }
-
-        /* RECEIVER INFO */
         .receiver-info {
             background: #f8f9fa;
             border-radius: 12px;
@@ -174,46 +140,37 @@
             border: 1px solid #e0e0e0;
             display: none;
         }
-
+        .receiver-info .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
         .receiver-info .label {
             font-size: 0.7rem;
             color: #888;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .receiver-info .value {
             font-weight: 600;
             font-size: 0.95rem;
             color: #000;
         }
-
-        .receiver-info .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-        }
-
         .receiver-info .found {
             color: #16a34a;
             font-size: 0.75rem;
             font-weight: 600;
         }
-
         .receiver-info .not-found {
             color: #dc2626;
             font-size: 0.75rem;
             font-weight: 600;
         }
-
         .action-buttons {
             display: flex;
             gap: 12px;
             margin-top: 24px;
-            position: relative;
-            z-index: 1;
         }
-
         .action-btn {
             padding: 14px 32px;
             border-radius: 12px;
@@ -224,35 +181,29 @@
             flex: 1;
             transition: all 0.2s ease;
         }
-
         .btn-primary {
             background: #000000;
             color: #ffffff;
         }
-
         .btn-primary:hover {
             background: #333333;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-
         .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
-
         .btn-secondary {
             background: #f0f0f0;
             color: #000000;
             border: 2px solid #ddd;
         }
-
         .btn-secondary:hover {
             background: #e5e5e5;
             transform: translateY(-2px);
         }
-
         .message-box {
             padding: 12px 16px;
             border-radius: 12px;
@@ -260,45 +211,32 @@
             margin-bottom: 16px;
             display: none;
         }
-
         .message-box.error {
             display: block;
             background: #fee2e2;
             color: #dc2626;
         }
-
         .message-box.success {
             display: block;
             background: #dcfce7;
             color: #16a34a;
         }
-
-        .message-box.info {
-            display: block;
-            background: #e8f4fd;
-            color: #0c6b9e;
-        }
-
         .preview-section {
             margin-top: 32px;
             border-top: 2px solid #f0f0f0;
             padding-top: 32px;
-            position: relative;
         }
-
         .preview-title {
             font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
         }
-
         .preview-container {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
-
         .slip-card {
             background: #ffffff;
             border-radius: 16px;
@@ -307,15 +245,9 @@
             max-width: 600px;
             border: 2px solid #e0e0e0;
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
-        .slip-card:hover {
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
         .watermark-bg {
             position: absolute;
             top: 0;
@@ -329,13 +261,11 @@
             z-index: 1;
             opacity: 0.025;
         }
-
         .watermark-bg img {
             width: 45%;
             height: auto;
             object-fit: contain;
         }
-
         .slip-header {
             text-align: center;
             margin-bottom: 24px;
@@ -344,7 +274,6 @@
             position: relative;
             z-index: 2;
         }
-
         .slip-header .check-circle {
             display: inline-flex;
             align-items: center;
@@ -357,20 +286,17 @@
             font-size: 1.8rem;
             margin-bottom: 8px;
         }
-
         .slip-header .tx-status {
             font-size: 1.2rem;
             font-weight: 700;
             color: #000000;
         }
-
         .slip-header .tx-thankyou {
             font-size: 0.7rem;
             color: #888;
             font-weight: 400;
             margin-top: 2px;
         }
-
         .slip-details {
             background: #fafafa;
             border-radius: 12px;
@@ -380,7 +306,6 @@
             position: relative;
             z-index: 2;
         }
-
         .slip-row {
             display: flex;
             justify-content: space-between;
@@ -388,16 +313,13 @@
             border-bottom: 1px solid #eee;
             font-size: 0.9rem;
         }
-
         .slip-row:last-child {
             border-bottom: none;
         }
-
         .slip-row .slip-label {
             color: #666;
             font-weight: 400;
         }
-
         .slip-row .slip-value {
             color: #000000;
             font-weight: 500;
@@ -405,13 +327,11 @@
             word-break: break-word;
             max-width: 60%;
         }
-
         .slip-row .slip-value.amount {
             font-size: 1.3rem;
             font-weight: 800;
             color: #000000;
         }
-
         .slip-row .slip-value .status-badge {
             display: inline-block;
             padding: 4px 16px;
@@ -423,7 +343,6 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-
         .slip-note {
             background: #f8f8f8;
             border-radius: 10px;
@@ -435,7 +354,6 @@
             position: relative;
             z-index: 2;
         }
-
         .slip-note strong {
             display: block;
             font-size: 0.7rem;
@@ -444,7 +362,6 @@
             color: #666;
             margin-bottom: 4px;
         }
-
         .slip-footer {
             margin-top: 16px;
             padding-top: 16px;
@@ -455,18 +372,15 @@
             position: relative;
             z-index: 2;
         }
-
         .slip-footer .ref {
             font-size: 0.7rem;
             color: #666;
             letter-spacing: 0.3px;
         }
-
         .slip-footer .ref span {
             font-weight: 600;
             color: #000000;
         }
-
         .slip-footer .bank-label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -474,7 +388,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .slip-credit {
             text-align: center;
             font-size: 0.5rem;
@@ -486,7 +399,6 @@
             position: relative;
             z-index: 2;
         }
-
         .download-btn {
             background: #000000;
             color: #ffffff;
@@ -499,22 +411,17 @@
             width: 100%;
             font-family: 'Outfit', sans-serif;
             transition: all 0.2s ease;
-            position: relative;
-            z-index: 2;
         }
-
         .download-btn:hover {
             background: #333333;
             transform: translateY(-2px);
             box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
-
         .time-format-group {
             display: flex;
             gap: 16px;
             margin-top: 6px;
         }
-
         .time-format-group label {
             display: flex;
             align-items: center;
@@ -524,7 +431,6 @@
             cursor: pointer;
             color: #555;
         }
-
         .currency-select {
             width: 100%;
             padding: 12px 16px;
@@ -533,20 +439,11 @@
             font-size: 0.9rem;
             font-family: 'Outfit', sans-serif;
             background: #ffffff;
-            transition: all 0.2s ease;
         }
-
-        .currency-select:focus {
-            outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-        }
-
         .loading {
             text-align: center;
             padding: 40px;
         }
-
         .spinner {
             border: 4px solid #f0f0f0;
             border-top: 4px solid #000000;
@@ -556,25 +453,10 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .fade-in {
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .new-proof-btn-wrapper {
-            margin-top: 12px;
-        }
-
         footer {
             text-align: center;
             margin-top: 48px;
@@ -583,7 +465,6 @@
             color: #999;
             font-size: 0.75rem;
         }
-
         @media (max-width: 640px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -631,7 +512,7 @@
             <div class="header-chobank-text">CHOBANK</div>
         </div>
 
-        <section class="generator-container" id="generator">
+        <section class="generator-container">
             <h2>Send Money</h2>
             <p>Transfer to CHOBANK user</p>
 
@@ -738,8 +619,8 @@
                     </div>
                 </div>
                 <button type="button" id="download-btn" class="download-btn">Print Slip</button>
-                <div class="new-proof-btn-wrapper">
-                    <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width: 100%;">Create New</button>
+                <div style="margin-top:12px;">
+                    <button type="button" id="new-proof-btn" class="action-btn btn-secondary" style="width:100%;">Create New</button>
                 </div>
             </div>
         </section>
@@ -769,8 +650,12 @@
         const userId = localStorage.getItem('chobank_user_id');
         const userUsername = localStorage.getItem('chobank_username');
 
+        console.log('User ID:', userId);
+        console.log('Username:', userUsername);
+
         if (!userId || !userUsername) {
             window.location.href = 'index.html';
+            return;
         }
 
         let currentUser = null;
@@ -781,37 +666,101 @@
         // =============================================
         async function loadUser() {
             try {
+                console.log('Loading user with ID:', parseInt(userId));
+                
                 const { data: userData, error } = await supabase
                     .from('users')
                     .select('*')
                     .eq('id', parseInt(userId))
                     .single();
 
-                if (error || !userData) {
-                    alert('User not found. Please login again.');
-                    window.location.href = 'index.html';
+                if (error) {
+                    console.error('Load user error:', error);
+                    showMessage('Error loading user: ' + error.message, 'error');
+                    return;
+                }
+
+                if (!userData) {
+                    showMessage('User not found. Please login again.', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
                     return;
                 }
 
                 currentUser = userData;
                 console.log('User loaded:', currentUser);
 
+                // Set fields
                 document.getElementById('payer-name').value = userData.full_name || userData.username;
                 document.getElementById('balanceDisplay').textContent = '$' + (userData.balance || 0).toFixed(2);
 
+                // Set date
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('date').value = today;
 
+                // Set time
                 const now = new Date();
-                document.getElementById('time-input').value = now.toTimeString().slice(0, 5);
+                const currentHour = String(now.getHours()).padStart(2, '0');
+                const currentMinute = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+
+                showMessage('✅ User loaded: ' + userData.full_name, 'success');
+                setTimeout(() => {
+                    hideMessage();
+                }, 2000);
 
             } catch (err) {
                 console.error('Error:', err);
-                alert('Error loading user: ' + err.message);
+                showMessage('Error: ' + err.message, 'error');
             }
         }
 
-        loadUser();
+        // =============================================
+        // SHOW/HIDE MESSAGE
+        // =============================================
+        function showMessage(text, type) {
+            const msg = document.getElementById('messageBox');
+            msg.textContent = text;
+            msg.className = 'message-box ' + type;
+            msg.style.display = 'block';
+        }
+
+        function hideMessage() {
+            const msg = document.getElementById('messageBox');
+            msg.className = 'message-box';
+            msg.style.display = 'none';
+        }
+
+        // =============================================
+        // GO BACK
+        // =============================================
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // =============================================
+        // RESET FORM
+        // =============================================
+        function resetForm() {
+            document.getElementById('receiver-search').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('notes').value = '';
+            document.getElementById('receiverInfo').style.display = 'none';
+            foundReceiver = null;
+            document.getElementById('preview-section').classList.add('hidden');
+            hideMessage();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            const now = new Date();
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time-input').value = `${currentHour}:${currentMinute}`;
+            if (currentUser) {
+                document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
+            }
+        }
 
         // =============================================
         // SEARCH RECEIVER
@@ -854,34 +803,77 @@
             }
             // Cek apakah query adalah invoice number (CHBxxxx-xxxxx)
             else if (/^CHB\d{4}-[A-Z0-9]{5}$/i.test(query)) {
-                // Cari di transactions berdasarkan invoice
-                const { data: txData, error: txError } = await supabase
-                    .from('transactions')
-                    .select('sender_id, sender_name, receiver_name')
-                    .eq('invoice_number', query.toUpperCase())
-                    .single();
+                try {
+                    const { data: txData, error: txError } = await supabase
+                        .from('transactions')
+                        .select('sender_id, sender_name, receiver_name')
+                        .eq('invoice_number', query.toUpperCase())
+                        .single();
 
-                if (txError || !txData) {
+                    if (txError || !txData) {
+                        info.style.display = 'block';
+                        nameDisplay.textContent = '-';
+                        accountDisplay.textContent = '-';
+                        statusDisplay.innerHTML = '<span class="not-found">❌ Invoice not found</span>';
+                        foundReceiver = null;
+                        return;
+                    }
+
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', txData.sender_id)
+                        .single();
+
+                    if (userError || !userData) {
+                        info.style.display = 'block';
+                        nameDisplay.textContent = txData.sender_name || txData.receiver_name || '-';
+                        accountDisplay.textContent = '-';
+                        statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
+                        foundReceiver = null;
+                        return;
+                    }
+
+                    foundReceiver = userData;
+                    info.style.display = 'block';
+                    nameDisplay.textContent = userData.full_name || userData.username;
+                    accountDisplay.textContent = userData.account_number || '-';
+                    statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found via invoice</span>';
+                    return;
+                } catch (err) {
+                    console.error('Invoice search error:', err);
                     info.style.display = 'block';
                     nameDisplay.textContent = '-';
                     accountDisplay.textContent = '-';
-                    statusDisplay.innerHTML = '<span class="not-found">❌ Invoice not found</span>';
+                    statusDisplay.innerHTML = '<span class="not-found">❌ Error searching invoice</span>';
                     foundReceiver = null;
                     return;
                 }
+            }
 
-                // Cari user berdasarkan sender_id
+            // Search by username or account_number
+            try {
                 const { data: userData, error: userError } = await supabase
                     .from('users')
                     .select('*')
-                    .eq('id', txData.sender_id)
+                    .eq(searchField, searchValue)
                     .single();
 
                 if (userError || !userData) {
                     info.style.display = 'block';
-                    nameDisplay.textContent = txData.sender_name || txData.receiver_name || '-';
+                    nameDisplay.textContent = '-';
                     accountDisplay.textContent = '-';
                     statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
+                    foundReceiver = null;
+                    return;
+                }
+
+                // Cek apakah receiver sama dengan sender
+                if (userData.id === parseInt(userId)) {
+                    info.style.display = 'block';
+                    nameDisplay.textContent = userData.full_name || userData.username;
+                    accountDisplay.textContent = userData.account_number || '-';
+                    statusDisplay.innerHTML = '<span class="not-found">⚠️ Cannot send to yourself</span>';
                     foundReceiver = null;
                     return;
                 }
@@ -890,80 +882,21 @@
                 info.style.display = 'block';
                 nameDisplay.textContent = userData.full_name || userData.username;
                 accountDisplay.textContent = userData.account_number || '-';
-                statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found via invoice</span>';
-                return;
-            }
+                statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found</span>';
 
-            // Search by username or account_number
-            const { data: userData, error: userError } = await supabase
-                .from('users')
-                .select('*')
-                .eq(searchField, searchValue)
-                .single();
-
-            if (userError || !userData) {
+            } catch (err) {
+                console.error('Search error:', err);
                 info.style.display = 'block';
                 nameDisplay.textContent = '-';
                 accountDisplay.textContent = '-';
-                statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
+                statusDisplay.innerHTML = '<span class="not-found">❌ Error searching</span>';
                 foundReceiver = null;
-                return;
             }
-
-            // Cek apakah receiver sama dengan sender
-            if (userData.id === parseInt(userId)) {
-                info.style.display = 'block';
-                nameDisplay.textContent = userData.full_name || userData.username;
-                accountDisplay.textContent = userData.account_number || '-';
-                statusDisplay.innerHTML = '<span class="not-found">⚠️ Cannot send to yourself</span>';
-                foundReceiver = null;
-                return;
-            }
-
-            foundReceiver = userData;
-            info.style.display = 'block';
-            nameDisplay.textContent = userData.full_name || userData.username;
-            accountDisplay.textContent = userData.account_number || '-';
-            statusDisplay.innerHTML = '<span class="found">✅ CHOBANK user found</span>';
         }
 
         // =============================================
-        // FUNCTIONS
+        // ESCAPE HTML
         // =============================================
-
-        function showMessage(text, type) {
-            const msg = document.getElementById('messageBox');
-            msg.textContent = text;
-            msg.className = 'message-box ' + type;
-            msg.style.display = 'block';
-        }
-
-        function hideMessage() {
-            const msg = document.getElementById('messageBox');
-            msg.className = 'message-box';
-            msg.style.display = 'none';
-        }
-
-        function goBack() {
-            window.location.href = 'dashboard.html';
-        }
-
-        function resetForm() {
-            document.getElementById('payment-form').reset();
-            document.getElementById('receiverInfo').style.display = 'none';
-            foundReceiver = null;
-            document.getElementById('preview-section').classList.add('hidden');
-            hideMessage();
-            
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            const now = new Date();
-            document.getElementById('time-input').value = now.toTimeString().slice(0, 5);
-            if (currentUser) {
-                document.getElementById('payer-name').value = currentUser.full_name || currentUser.username;
-            }
-        }
-
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
@@ -974,12 +907,12 @@
         // =============================================
         document.getElementById('generate-btn').addEventListener('click', async function() {
             if (!currentUser) {
-                alert('Please wait for user data to load.');
+                showMessage('Please wait for user data to load.', 'error');
                 return;
             }
 
             if (!foundReceiver) {
-                alert('Please search and select a valid CHOBANK user first.');
+                showMessage('Please search and select a valid CHOBANK user first.', 'error');
                 return;
             }
 
@@ -1003,12 +936,12 @@
             }
 
             if (!amount || amount <= 0) {
-                alert('Please enter a valid amount.');
+                showMessage('Please enter a valid amount.', 'error');
                 return;
             }
 
             if (amount > currentUser.balance) {
-                alert('Insufficient balance! Your balance: $' + currentUser.balance.toFixed(2));
+                showMessage('Insufficient balance! Your balance: $' + currentUser.balance.toFixed(2), 'error');
                 return;
             }
 
@@ -1132,7 +1065,7 @@
 
                 if (senderError) {
                     console.error('Sender update error:', senderError);
-                    alert('Failed to update sender balance.');
+                    showMessage('Failed to update sender balance: ' + senderError.message, 'error');
                     return;
                 }
 
@@ -1147,27 +1080,30 @@
 
                 if (receiverError) {
                     console.error('Receiver update error:', receiverError);
-                    // Rollback sender? For now just log
                 }
 
                 // INSERT TRANSACTION
-                const { error: txError } = await supabase
-                    .from('transactions')
-                    .insert([{
-                        sender_id: parseInt(userId),
-                        sender_name: payerName,
-                        receiver_name: receiverName,
-                        receiver_account: foundReceiver.account_number,
-                        receiver_bank: 'CHOBANK',
-                        amount: amount,
-                        currency: currency,
-                        description: notes || null,
-                        invoice_number: ref,
-                        status: 'completed'
-                    }]);
+                try {
+                    const { error: txError } = await supabase
+                        .from('transactions')
+                        .insert([{
+                            sender_id: parseInt(userId),
+                            sender_name: payerName,
+                            receiver_name: receiverName,
+                            receiver_account: foundReceiver.account_number,
+                            receiver_bank: 'CHOBANK',
+                            amount: amount,
+                            currency: currency,
+                            description: notes || null,
+                            invoice_number: ref,
+                            status: 'completed'
+                        }]);
 
-                if (txError) {
-                    console.error('Transaction insert error:', txError);
+                    if (txError) {
+                        console.error('Transaction insert error:', txError);
+                    }
+                } catch (txErr) {
+                    console.error('Transaction insert error:', txErr);
                 }
 
                 // Update local
@@ -1184,7 +1120,7 @@
 
             } catch (err) {
                 console.error('Error:', err);
-                alert('Error processing transaction: ' + err.message);
+                showMessage('Error processing transaction: ' + err.message, 'error');
                 return;
             }
 
@@ -1197,7 +1133,10 @@
         // =============================================
         document.getElementById('download-btn').addEventListener('click', async function() {
             const card = document.getElementById('proof-preview');
-            if (!card) { alert('Create transaction first'); return; }
+            if (!card) {
+                showMessage('Create transaction first', 'error');
+                return;
+            }
 
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
@@ -1260,7 +1199,7 @@
                     console.error(err);
                     document.body.removeChild(cloneCard);
                     loading.classList.add('hidden');
-                    alert('Failed to download');
+                    showMessage('Failed to download: ' + err.message, 'error');
                 }
             }, 200);
         });
@@ -1271,6 +1210,13 @@
         document.getElementById('new-proof-btn').addEventListener('click', function() {
             resetForm();
         });
+
+        // =============================================
+        // LOAD USER ON START
+        // =============================================
+        loadUser();
+
+        console.log('Transaction page loaded');
     </script>
 </body>
-  </html>
+    </html>
