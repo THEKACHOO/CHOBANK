@@ -40,8 +40,6 @@
         .receiver-info .row{display:flex;justify-content:space-between;padding:4px 0}
         .receiver-info .label{font-size:.7rem;color:#888;text-transform:uppercase;letter-spacing:.5px}
         .receiver-info .value{font-weight:600;font-size:.95rem;color:#000}
-        .receiver-info .found{color:#16a34a;font-size:.75rem;font-weight:600}
-        .receiver-info .not-found{color:#dc2626;font-size:.75rem;font-weight:600}
         .action-buttons{display:flex;gap:12px;margin-top:24px}
         .action-btn{padding:14px 32px;border-radius:12px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;flex:1;transition:all .2s ease}
         .btn-primary{background:#000;color:#fff}
@@ -131,9 +129,6 @@
                     <div class="row">
                         <span class="label">Recipient Name</span>
                         <span class="value" id="receiverNameDisplay">-</span>
-                    </div>
-                    <div class="row">
-                        <span id="receiverStatus">-</span>
                     </div>
                 </div>
 
@@ -318,7 +313,6 @@
         async function searchReceiver(query) {
             var info = document.getElementById('receiverInfo');
             var nameDisplay = document.getElementById('receiverNameDisplay');
-            var statusDisplay = document.getElementById('receiverStatus');
 
             var field = searchMode === 'account' ? 'account_number' : 'username';
             var value = query;
@@ -331,17 +325,13 @@
                     .single();
 
                 if (result.error || !result.data) {
-                    info.style.display = 'block';
-                    nameDisplay.textContent = '-';
-                    statusDisplay.innerHTML = '<span class="not-found">❌ User not found</span>';
+                    info.style.display = 'none';
                     foundReceiver = null;
                     return;
                 }
 
                 if (result.data.id === parseInt(userId)) {
-                    info.style.display = 'block';
-                    nameDisplay.textContent = result.data.full_name || result.data.username;
-                    statusDisplay.innerHTML = '<span class="not-found">Cannot send to yourself</span>';
+                    info.style.display = 'none';
                     foundReceiver = null;
                     return;
                 }
@@ -352,9 +342,7 @@
 
             } catch(err) {
                 console.error(err);
-                info.style.display = 'block';
-                nameDisplay.textContent = '-';
-                statusDisplay.innerHTML = '<span class="not-found">❌ Error</span>';
+                info.style.display = 'none';
                 foundReceiver = null;
             }
         }
@@ -669,4 +657,4 @@
         console.log('Transaction page loaded');
     </script>
 </body>
-            </html>
+                        </html>
