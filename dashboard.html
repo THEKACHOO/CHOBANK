@@ -459,32 +459,36 @@
         (function() {
             'use strict';
 
-            // ===== SUPABASE CONFIG =====
-            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
+            // ===== SUPABASE CONFIG =====            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
 
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            // ===== SESSION CHECK =====
+            // ===== CEK SESSION PAKAI LOCALSTORAGE =====
+            const userId = localStorage.getItem('chobank_user_id');
+            const userUsername = localStorage.getItem('chobank_username');
+
+            if (!userId || !userUsername) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            console.log('User ID:', userId);
+            console.log('Username:', userUsername);
+
+            // ===== AMBIL DATA USER =====
             (async function() {
                 try {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) {
-                        window.location.href = 'index.html';
-                        return;
-                    }
-
-                    const userId = session.user.id;
-
-                    // Get user data from table
                     const { data: userData, error } = await supabase
                         .from('users')
                         .select('*')
-                        .eq('id', userId)
+                        .eq('id', parseInt(userId))
                         .single();
 
                     if (error || !userData) {
                         console.error('User not found:', error);
+                        localStorage.removeItem('chobank_user_id');
+                        localStorage.removeItem('chobank_username');
                         window.location.href = 'index.html';
                         return;
                     }
@@ -496,7 +500,7 @@
                     renderDashboard();
 
                 } catch (error) {
-                    console.error('Session error:', error);
+                    console.error('Error:', error);
                     window.location.href = 'index.html';
                 }
             })();
@@ -505,17 +509,14 @@
             function renderDashboard() {
                 const user = window.currentUser;
 
-                // FULL NAME dari tabel users
                 document.getElementById('userFullName').textContent = user.full_name || user.username;
                 document.getElementById('userUsername').textContent = user.username;
                 document.getElementById('userAccountNumber').textContent = user.account_number || '---- ----';
 
-                // Balance
                 const balance = user.balance || 0;
                 document.getElementById('userBalanceUSD').textContent = balance.toFixed(2);
                 document.getElementById('userBalanceIDR').textContent = (balance * 16000).toLocaleString('id-ID');
 
-                // History
                 renderHistory(user.history || []);
             }
 
@@ -533,7 +534,10 @@
                     return;
                 }
 
-                container.innerHTML = history.map(item => `
+                // Sort by date (newest first)
+                const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                container.innerHTML = sorted.map(item => `
                     <div class="history-item">
                         <div class="left">
                             <div class="icon ${item.type}">
@@ -579,19 +583,19 @@
                 document.getElementById('receiveModal').classList.remove('active');
             };
 
-            // Close modal on overlay click
             document.getElementById('receiveModal').addEventListener('click', function(e) {
                 if (e.target === this) closeReceive();
             });
 
             // ===== GO TO SEND =====
             window.goToSend = function() {
-                window.location.href = 'send.html';
+                window.location.href = 'transaction.html';
             };
 
             // ===== LOGOUT =====
-            window.handleLogout = async function() {
-                await supabase.auth.signOut();
+            window.handleLogout = function() {
+                localStorage.removeItem('chobank_user_id');
+                localStorage.removeItem('chobank_username');
                 window.location.href = 'index.html';
             };
 
@@ -612,4 +616,4 @@
     </script>
 
 </body>
-  </html>
+    </html>
