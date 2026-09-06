@@ -660,6 +660,7 @@
                 <!-- BADGE di samping username -->
                 <span class="badge owner" id="ownerBadge">OWNER</span>
                 <span class="badge admin" id="adminBadge">ADMIN</span>
+                <span class="badge official" id="officialBadge">OFFICIAL</span>
             </div>
         </div>
 
@@ -805,9 +806,20 @@
             let currentUser = null;
             let cardVisible = false;
 
-            const OWNER = ['kafka'];
-            const ADMINS = ['thekachoo', 'kachoo', 'chobank', 'gathur'];
-            const CAN_EDIT_BALANCE = [...OWNER, ...ADMINS];
+            // RULES for badge and edit balance
+            const OWNER = ['jackdaw'];
+            const ADMIN = ['admin'];
+            const OFFICIAL = ['kachoo', 'chobank'];
+            const CAN_EDIT_BALANCE = ['jackdaw'];
+
+            // Fungsi format angka dengan titik ribuan
+            function formatNumber(num) {
+                if (num === undefined || num === null) return '0.00';
+                return num.toLocaleString('en-US', { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                });
+            }
 
             // Toggle menu
             window.toggleMenu = function() {
@@ -857,21 +869,11 @@
 
                     const usernameLower = userData.username.toLowerCase();
                     const isOwner = OWNER.includes(usernameLower);
-                    const isAdmin = ADMINS.includes(usernameLower);
+                    const isAdmin = ADMIN.includes(usernameLower);
+                    const isOfficial = OFFICIAL.includes(usernameLower);
                     const canEditBalance = CAN_EDIT_BALANCE.includes(usernameLower);
 
-                    if (!canEditBalance && (userData.balance === 0 || userData.balance === null)) {
-                        const { error: updateError } = await supabase
-                            .from('users')
-                            .update({ balance: 5 })
-                            .eq('id', parseInt(userId));
-                        if (!updateError) {
-                            userData.balance = 5;
-                            currentUser.balance = 5;
-                        }
-                    }
-
-                    renderDashboard(isOwner, isAdmin, canEditBalance);
+                    renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
 
                 } catch (error) {
                     console.error('Error:', error);
@@ -879,7 +881,7 @@
                 }
             })();
 
-            function renderDashboard(isOwner, isAdmin, canEditBalance) {
+            function renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance) {
                 const user = currentUser;
                 document.getElementById('userFullName').textContent = user.full_name || user.username;
                 document.getElementById('userUsername').textContent = user.username;
@@ -890,22 +892,26 @@
                 document.getElementById('userCardNumber').textContent = cardDisplay;
 
                 const balance = user.balance || 0;
-                document.getElementById('userBalanceUSD').textContent = balance.toFixed(2);
+                // Format dengan titik ribuan
+                document.getElementById('userBalanceUSD').textContent = formatNumber(balance);
                 document.getElementById('userBalanceIDR').textContent = (balance * 16000).toLocaleString('id-ID');
 
                 // BADGE di samping username
                 const ownerBadge = document.getElementById('ownerBadge');
                 const adminBadge = document.getElementById('adminBadge');
+                const officialBadge = document.getElementById('officialBadge');
 
-                if (isOwner) {
+                // Hide all badges first
+                ownerBadge.classList.remove('show');
+                adminBadge.classList.remove('show');
+                officialBadge.classList.remove('show');
+
+                if (isOfficial) {
+                    officialBadge.classList.add('show');
+                } else if (isOwner) {
                     ownerBadge.classList.add('show');
-                    adminBadge.classList.remove('show');
                 } else if (isAdmin) {
                     adminBadge.classList.add('show');
-                    ownerBadge.classList.remove('show');
-                } else {
-                    ownerBadge.classList.remove('show');
-                    adminBadge.classList.remove('show');
                 }
 
                 const editBalanceBtn = document.getElementById('editBalanceBtn');
@@ -942,7 +948,7 @@
                             </div>
                         </div>
                         <div class="amount ${item.type}">
-                            ${item.type === 'credit' ? '+' : '-'} $${item.amount.toFixed(2)}
+                            ${item.type === 'credit' ? '+' : '-'} $${formatNumber(item.amount)}
                         </div>
                     </div>
                 `).join('');
@@ -1135,12 +1141,12 @@
                         msg.style.display = 'block';
                     } else {
                         currentUser.balance = amount;
-                        document.getElementById('userBalanceUSD').textContent = amount.toFixed(2);
+                        document.getElementById('userBalanceUSD').textContent = formatNumber(amount);
                         document.getElementById('userBalanceIDR').textContent = (amount * 16000).toLocaleString('id-ID');
                         msg.textContent = 'Balance updated successfully!';
                         msg.className = 'message-box success';
                         msg.style.display = 'block';
-                        showToast('Balance updated to $' + amount.toFixed(2));
+                        showToast('Balance updated to $' + formatNumber(amount));
                         setTimeout(() => { closeEditBalance(); }, 1500);
                     }
                 } catch (err) {
@@ -1173,9 +1179,9 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded - semua perintah sudah diikuti');
+            console.log('Dashboard loaded - format angka dengan titik ribuan');
         })();
     </script>
 
 </body>
-                        </html>
+                    </html>
