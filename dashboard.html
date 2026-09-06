@@ -116,6 +116,7 @@
             border-radius: 24px;
             padding: 28px 24px;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .balance-card .label {
@@ -135,6 +136,29 @@
             font-size: 1.2rem;
             font-weight: 600;
             color: rgba(255,255,255,0.7);
+        }
+
+        .balance-card .edit-balance-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .balance-card .edit-balance-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
         }
 
         .actions {
@@ -261,6 +285,7 @@
             margin-bottom: 12px;
         }
 
+        /* MODAL EDIT BALANCE */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -303,45 +328,95 @@
             margin-bottom: 20px;
         }
 
-        .modal .invoice-box {
-            background: #f5f5f5;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            margin-bottom: 20px;
+        .modal .form-group {
+            margin-bottom: 16px;
         }
 
-        .modal .invoice-box .label {
-            font-size: 0.7rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            color: #333;
         }
 
-        .modal .invoice-box .number {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-top: 4px;
-            font-family: monospace;
+        .modal .form-group input,
+        .modal .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            background: #ffffff;
         }
 
-        .modal .btn-close {
+        .modal .form-group input:focus,
+        .modal .form-group select:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .modal .btn-primary {
             width: 100%;
             padding: 14px;
-            border: none;
-            border-radius: 14px;
             background: #000000;
             color: white;
-            font-family: 'Outfit', sans-serif;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            margin-top: 4px;
         }
 
-        .modal .btn-close:hover {
+        .modal .btn-primary:hover {
             background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+        }
+
+        .modal .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: #f0f0f0;
+            color: #000000;
+            border: 2px solid #ddd;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .modal .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+
+        .modal .message-box {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .modal .message-box.error {
+            display: block;
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .modal .message-box.success {
+            display: block;
+            background: #dcfce7;
+            color: #16a34a;
         }
 
         @keyframes fadeIn {
@@ -414,6 +489,9 @@
 
         <!-- Balance -->
         <div class="balance-card">
+            <button class="edit-balance-btn" onclick="openEditBalance()" title="Edit Balance">
+                <i class="fas fa-pen"></i>
+            </button>
             <div class="label">Total Balance</div>
             <div class="amount">$<span id="userBalanceUSD">0.00</span></div>
             <div class="amount-rp">Rp <span id="userBalanceIDR">0</span></div>
@@ -447,7 +525,28 @@
                 <div class="label">INVOICE NUMBER</div>
                 <div class="number" id="invoiceNumber">INV-XXXXXX</div>
             </div>
-            <button class="btn-close" onclick="closeReceive()">Close</button>
+            <button class="btn-primary" onclick="closeReceive()">Close</button>
+        </div>
+    </div>
+
+    <!-- Edit Balance Modal -->
+    <div class="modal-overlay" id="editBalanceModal">
+        <div class="modal">
+            <h3>Edit Balance</h3>
+            <p class="sub">Set your CHOBANK balance</p>
+
+            <div id="editBalanceMessage" class="message-box"></div>
+
+            <div class="form-group">
+                <label for="editBalanceAmount">Amount (USD)</label>
+                <input type="number" id="editBalanceAmount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+
+            <button class="btn-primary" onclick="saveBalance()">
+                <span id="saveBalanceText">Save Balance</span>
+                <span id="saveBalanceSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+            </button>
+            <button class="btn-secondary" onclick="closeEditBalance()">Cancel</button>
         </div>
     </div>
 
@@ -476,6 +575,8 @@
                 return;
             }
 
+            let currentUser = null;
+
             // ===== AMBIL DATA USER =====
             (async function() {
                 try {
@@ -493,7 +594,7 @@
                         return;
                     }
 
-                    window.currentUser = userData;
+                    currentUser = userData;
                     renderDashboard();
 
                 } catch (error) {
@@ -504,7 +605,7 @@
 
             // ===== RENDER DASHBOARD =====
             function renderDashboard() {
-                const user = window.currentUser;
+                const user = currentUser;
 
                 document.getElementById('userFullName').textContent = user.full_name || user.username;
                 document.getElementById('userUsername').textContent = user.username;
@@ -583,6 +684,90 @@
                 if (e.target === this) closeReceive();
             });
 
+            // ===== EDIT BALANCE =====
+            window.openEditBalance = function() {
+                const modal = document.getElementById('editBalanceModal');
+                const input = document.getElementById('editBalanceAmount');
+                const msg = document.getElementById('editBalanceMessage');
+                
+                // Reset
+                input.value = currentUser ? currentUser.balance : 0;
+                msg.className = 'message-box';
+                msg.textContent = '';
+                msg.style.display = 'none';
+                
+                modal.classList.add('active');
+                input.focus();
+            };
+
+            window.closeEditBalance = function() {
+                document.getElementById('editBalanceModal').classList.remove('active');
+            };
+
+            document.getElementById('editBalanceModal').addEventListener('click', function(e) {
+                if (e.target === this) closeEditBalance();
+            });
+
+            window.saveBalance = async function() {
+                const input = document.getElementById('editBalanceAmount');
+                const amount = parseFloat(input.value.trim());
+                const msg = document.getElementById('editBalanceMessage');
+                const btn = document.getElementById('saveBalanceBtn') || document.querySelector('#editBalanceModal .btn-primary');
+                const text = document.getElementById('saveBalanceText');
+                const spinner = document.getElementById('saveBalanceSpinner');
+
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+
+                if (isNaN(amount) || amount < 0) {
+                    msg.textContent = 'Please enter a valid amount (min 0).';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Saving...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .update({ balance: amount })
+                        .eq('id', parseInt(userId));
+
+                    if (error) {
+                        console.error('Update error:', error);
+                        msg.textContent = 'Failed to update balance.';
+                        msg.className = 'message-box error';
+                        msg.style.display = 'block';
+                    } else {
+                        // Update local
+                        currentUser.balance = amount;
+                        document.getElementById('userBalanceUSD').textContent = amount.toFixed(2);
+                        document.getElementById('userBalanceIDR').textContent = (amount * 16000).toLocaleString('id-ID');
+                        
+                        msg.textContent = 'Balance updated successfully!';
+                        msg.className = 'message-box success';
+                        msg.style.display = 'block';
+                        showToast('Balance updated to $' + amount.toFixed(2));
+                        
+                        setTimeout(() => {
+                            closeEditBalance();
+                        }, 1500);
+                    }
+                } catch (err) {
+                    console.error('Error:', err);
+                    msg.textContent = 'An error occurred. Please try again.';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Save Balance';
+                    spinner.style.display = 'none';
+                }
+            };
+
             // ===== GO TO SEND =====
             window.goToSend = function() {
                 window.location.href = 'Test2.html';
@@ -606,10 +791,10 @@
             }
 
             console.log('Dashboard loaded');
-            console.log('User:', window.currentUser);
+            console.log('User:', currentUser);
 
         })();
     </script>
 
 </body>
-</html>
+    </html>
