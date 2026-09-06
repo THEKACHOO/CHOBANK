@@ -64,6 +64,7 @@
             font-weight: 700;
             display: inline;
         }
+        /* BADGE - selalu hitam, di samping username */
         .greeting .badge {
             font-size: 0.55rem;
             font-weight: 700;
@@ -71,20 +72,14 @@
             border-radius: 12px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: none !important;
             display: none;
+            margin-left: 4px;
         }
         .greeting .badge.show {
             display: inline-block;
-        }
-        .greeting .badge.owner {
-            background: rgba(255,215,0,0.2);
-            color: #ffd700;
-            border: 1px solid rgba(255,215,0,0.4);
-        }
-        .greeting .badge.admin {
-            background: rgba(100,200,255,0.15);
-            color: #64c8ff;
-            border: 1px solid rgba(100,200,255,0.3);
         }
         .greeting .username {
             color: #666;
@@ -106,26 +101,27 @@
             background: #f0f0f0;
             color: #000;
         }
-        .account-number {
+        .account-row {
             background: #f0f0f0;
-            padding: 10px 16px;
             border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .account-number .label {
-            font-size: 0.75rem;
+        .account-row .label {
+            font-size: 0.65rem;
             color: #888;
             font-weight: 500;
+            letter-spacing: 0.3px;
         }
-        .account-number .number {
-            font-size: 1rem;
+        .account-row .number {
+            font-size: 0.95rem;
             font-weight: 700;
             letter-spacing: 2px;
         }
-        .account-number .copy-btn {
+        .account-row .copy-btn {
             background: none;
             border: none;
             color: #666;
@@ -135,7 +131,41 @@
             border-radius: 8px;
             transition: all 0.2s;
         }
-        .account-number .copy-btn:hover {
+        .account-row .copy-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .card-row {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-row .label {
+            font-size: 0.65rem;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .card-row .number {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .card-row .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .card-row .copy-btn:hover {
             background: #e0e0e0;
             color: #000;
         }
@@ -389,9 +419,93 @@
         .modal .btn-close:hover {
             background: #1e1e1e;
         }
+        .modal .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #000000;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .modal .btn-primary:hover {
+            background: #1e1e1e;
+        }
+        .modal .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            background: transparent;
+            color: #333;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .modal .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+        .message-box {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message-box.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+        .message-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            background: #f9f9f9;
+            transition: 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #000;
+            background: #fff;
+        }
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         .toast {
             position: fixed;
@@ -442,6 +556,7 @@
         <div class="greeting">
             <div class="name-row">
                 <h2>Hello, <span id="userFullName">User</span></h2>
+                <!-- BADGE di samping username (sebelah kanan) -->
                 <span class="badge owner" id="ownerBadge">OWNER</span>
                 <span class="badge admin" id="adminBadge">ADMIN</span>
                 <button class="edit-name-btn" onclick="openEditName()" title="Edit Full Name">
@@ -451,12 +566,22 @@
             <p class="username">@<span id="userUsername">username</span></p>
         </div>
 
-        <div class="account-number">
+        <div class="account-row">
             <div>
                 <div class="label">ACCOUNT NUMBER</div>
                 <div class="number" id="userAccountNumber">---- ----</div>
             </div>
             <button class="copy-btn" onclick="copyAccountNumber()">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+
+        <div class="card-row">
+            <div>
+                <div class="label">CARD NUMBER</div>
+                <div class="number" id="userCardNumber">**** **** ****</div>
+            </div>
+            <button class="copy-btn" onclick="copyCardNumber()">
                 <i class="fas fa-copy"></i>
             </button>
         </div>
@@ -485,7 +610,7 @@
         </div>
     </div>
 
-    <!-- RECEIVE MODAL - TAMPIL USERNAME + ACCOUNT NUMBER -->
+    <!-- RECEIVE MODAL -->
     <div class="modal-overlay" id="receiveModal">
         <div class="modal">
             <h3>Receive Money</h3>
@@ -510,6 +635,15 @@
                     </span>
                 </div>
                 <div class="row">
+                    <span class="label">Card Number</span>
+                    <span class="value">
+                        <span id="receiveCardNumber">-</span>
+                        <button class="copy-small" onclick="copyReceiveInfo('card')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </span>
+                </div>
+                <div class="row">
                     <span class="label">Full Name</span>
                     <span class="value" id="receiveFullName">-</span>
                 </div>
@@ -518,7 +652,7 @@
         </div>
     </div>
 
-    <!-- Edit Name Modal -->
+    <!-- EDIT NAME MODAL -->
     <div class="modal-overlay" id="editNameModal">
         <div class="modal">
             <h3>Edit Full Name</h3>
@@ -536,7 +670,7 @@
         </div>
     </div>
 
-    <!-- Edit Balance Modal -->
+    <!-- EDIT BALANCE MODAL -->
     <div class="modal-overlay" id="editBalanceModal">
         <div class="modal">
             <h3>Edit Balance</h3>
@@ -574,8 +708,7 @@
             }
 
             let currentUser = null;
-            
-            // RULES: OWNER & ADMIN
+
             const OWNER = ['kafka'];
             const ADMINS = ['thekachoo', 'kachoo', 'chobank', 'gathur'];
             const CAN_EDIT_BALANCE = [...OWNER, ...ADMINS];
@@ -597,24 +730,36 @@
                     }
 
                     currentUser = userData;
-                    
+
+                    if (!currentUser.card_number) {
+                        const dummyCard = '4532' + Math.random().toString().slice(2, 14).padEnd(12, '0');
+                        const { error: updateCard } = await supabase
+                            .from('users')
+                            .update({ card_number: dummyCard })
+                            .eq('id', parseInt(userId));
+                        if (!updateCard) {
+                            currentUser.card_number = dummyCard;
+                        } else {
+                            currentUser.card_number = '**** **** **** 1234';
+                        }
+                    }
+
                     const usernameLower = userData.username.toLowerCase();
                     const isOwner = OWNER.includes(usernameLower);
                     const isAdmin = ADMINS.includes(usernameLower);
                     const canEditBalance = CAN_EDIT_BALANCE.includes(usernameLower);
-                    
+
                     if (!canEditBalance && (userData.balance === 0 || userData.balance === null)) {
                         const { error: updateError } = await supabase
                             .from('users')
                             .update({ balance: 5 })
                             .eq('id', parseInt(userId));
-                        
                         if (!updateError) {
                             userData.balance = 5;
                             currentUser.balance = 5;
                         }
                     }
-                    
+
                     renderDashboard(isOwner, isAdmin, canEditBalance);
 
                 } catch (error) {
@@ -629,14 +774,18 @@
                 document.getElementById('userUsername').textContent = user.username;
                 document.getElementById('userAccountNumber').textContent = user.account_number || '---- ----';
 
+                const card = user.card_number || '**** **** **** 0000';
+                const cardDisplay = card.replace(/(.{4})/g, '$1 ').trim() || '**** **** **** 0000';
+                document.getElementById('userCardNumber').textContent = cardDisplay;
+
                 const balance = user.balance || 0;
                 document.getElementById('userBalanceUSD').textContent = balance.toFixed(2);
                 document.getElementById('userBalanceIDR').textContent = (balance * 16000).toLocaleString('id-ID');
 
-                // BADGE
+                // BADGE di samping username
                 const ownerBadge = document.getElementById('ownerBadge');
                 const adminBadge = document.getElementById('adminBadge');
-                
+
                 if (isOwner) {
                     ownerBadge.classList.add('show');
                     adminBadge.classList.remove('show');
@@ -648,7 +797,6 @@
                     adminBadge.classList.remove('show');
                 }
 
-                // EDIT BALANCE BUTTON
                 const editBalanceBtn = document.getElementById('editBalanceBtn');
                 if (canEditBalance) {
                     editBalanceBtn.classList.add('show');
@@ -695,9 +843,6 @@
                 return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             }
 
-            // =============================================
-            // COPY ACCOUNT NUMBER (dari dashboard)
-            // =============================================
             window.copyAccountNumber = function() {
                 const number = document.getElementById('userAccountNumber').textContent;
                 navigator.clipboard.writeText(number).then(() => {
@@ -707,33 +852,35 @@
                 });
             };
 
-            // =============================================
-            // RECEIVE MODAL - TAMPIL USERNAME + ACCOUNT NUMBER
-            // =============================================
+            window.copyCardNumber = function() {
+                const number = document.getElementById('userCardNumber').textContent;
+                navigator.clipboard.writeText(number).then(() => {
+                    showToast('Card number copied');
+                }).catch(() => {
+                    showToast('Copy manually: ' + number);
+                });
+            };
+
             window.showReceive = function() {
                 if (!currentUser) {
                     showToast('Please wait, user data loading...');
                     return;
                 }
-                
                 document.getElementById('receiveUsername').textContent = currentUser.username;
                 document.getElementById('receiveAccountNumber').textContent = currentUser.account_number || '----';
+                const card = currentUser.card_number || '**** **** **** 0000';
+                document.getElementById('receiveCardNumber').textContent = card.replace(/(.{4})/g, '$1 ').trim();
                 document.getElementById('receiveFullName').textContent = currentUser.full_name || currentUser.username;
-                
                 document.getElementById('receiveModal').classList.add('active');
             };
 
             window.closeReceive = function() {
                 document.getElementById('receiveModal').classList.remove('active');
             };
-
             document.getElementById('receiveModal').addEventListener('click', function(e) {
                 if (e.target === this) closeReceive();
             });
 
-            // =============================================
-            // COPY RECEIVE INFO
-            // =============================================
             window.copyReceiveInfo = function(type) {
                 let text = '';
                 if (type === 'username') {
@@ -742,16 +889,13 @@
                 } else if (type === 'account') {
                     text = document.getElementById('receiveAccountNumber').textContent;
                     showToast('Account number copied: ' + text);
+                } else if (type === 'card') {
+                    text = document.getElementById('receiveCardNumber').textContent;
+                    showToast('Card number copied: ' + text);
                 }
-                
-                navigator.clipboard.writeText(text).catch(() => {
-                    // Fallback
-                });
+                navigator.clipboard.writeText(text).catch(() => {});
             };
 
-            // =============================================
-            // EDIT NAME
-            // =============================================
             window.openEditName = function() {
                 const modal = document.getElementById('editNameModal');
                 const input = document.getElementById('editNameInput');
@@ -763,11 +907,9 @@
                 modal.classList.add('active');
                 input.focus();
             };
-
             window.closeEditName = function() {
                 document.getElementById('editNameModal').classList.remove('active');
             };
-
             document.getElementById('editNameModal').addEventListener('click', function(e) {
                 if (e.target === this) closeEditName();
             });
@@ -782,26 +924,22 @@
 
                 msg.className = 'message-box';
                 msg.style.display = 'none';
-
                 if (!fullName) {
                     msg.textContent = 'Please enter your full name.';
                     msg.className = 'message-box error';
                     msg.style.display = 'block';
                     return;
                 }
-
                 btn.disabled = true;
                 text.textContent = 'Saving...';
                 spinner.style.display = 'inline';
-
                 try {
                     const { error } = await supabase
                         .from('users')
                         .update({ full_name: fullName })
                         .eq('id', parseInt(userId));
-
                     if (error) {
-                        console.error('Update error:', error);
+                        console.error(error);
                         msg.textContent = 'Failed to update name.';
                         msg.className = 'message-box error';
                         msg.style.display = 'block';
@@ -812,13 +950,10 @@
                         msg.className = 'message-box success';
                         msg.style.display = 'block';
                         showToast('Name updated to ' + fullName);
-                        setTimeout(() => {
-                            closeEditName();
-                        }, 1500);
+                        setTimeout(() => { closeEditName(); }, 1500);
                     }
                 } catch (err) {
-                    console.error('Error:', err);
-                    msg.textContent = 'An error occurred. Please try again.';
+                    msg.textContent = 'An error occurred.';
                     msg.className = 'message-box error';
                     msg.style.display = 'block';
                 } finally {
@@ -828,9 +963,6 @@
                 }
             };
 
-            // =============================================
-            // EDIT BALANCE (HANYA OWNER & ADMIN)
-            // =============================================
             window.openEditBalance = function() {
                 const modal = document.getElementById('editBalanceModal');
                 const input = document.getElementById('editBalanceAmount');
@@ -842,11 +974,9 @@
                 modal.classList.add('active');
                 input.focus();
             };
-
             window.closeEditBalance = function() {
                 document.getElementById('editBalanceModal').classList.remove('active');
             };
-
             document.getElementById('editBalanceModal').addEventListener('click', function(e) {
                 if (e.target === this) closeEditBalance();
             });
@@ -861,26 +991,22 @@
 
                 msg.className = 'message-box';
                 msg.style.display = 'none';
-
                 if (isNaN(amount) || amount < 0) {
                     msg.textContent = 'Please enter a valid amount (min 0).';
                     msg.className = 'message-box error';
                     msg.style.display = 'block';
                     return;
                 }
-
                 btn.disabled = true;
                 text.textContent = 'Saving...';
                 spinner.style.display = 'inline';
-
                 try {
                     const { error } = await supabase
                         .from('users')
                         .update({ balance: amount })
                         .eq('id', parseInt(userId));
-
                     if (error) {
-                        console.error('Update error:', error);
+                        console.error(error);
                         msg.textContent = 'Failed to update balance.';
                         msg.className = 'message-box error';
                         msg.style.display = 'block';
@@ -892,13 +1018,10 @@
                         msg.className = 'message-box success';
                         msg.style.display = 'block';
                         showToast('Balance updated to $' + amount.toFixed(2));
-                        setTimeout(() => {
-                            closeEditBalance();
-                        }, 1500);
+                        setTimeout(() => { closeEditBalance(); }, 1500);
                     }
                 } catch (err) {
-                    console.error('Error:', err);
-                    msg.textContent = 'An error occurred. Please try again.';
+                    msg.textContent = 'An error occurred.';
                     msg.className = 'message-box error';
                     msg.style.display = 'block';
                 } finally {
@@ -927,11 +1050,9 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded');
-            console.log('User:', currentUser);
-
+            console.log('Dashboard loaded - badge di samping username.');
         })();
     </script>
 
 </body>
-</html>
+    </html>
