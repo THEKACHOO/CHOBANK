@@ -316,6 +316,11 @@
                 <p class="subtitle">Create CHOBANK account now!</p>
 
                 <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
                     <label for="regUsername">Username (5-12 characters)</label>
                     <input type="text" id="regUsername" placeholder="Choose a username" required minlength="5" maxlength="12">
                     <div class="requirements">5-12 characters (letters & numbers only)</div>
@@ -500,6 +505,7 @@
 
             window.handleRegister = async function() {
                 console.log('📝 Register attempt');
+                const fullName = document.getElementById('regFullName').value.trim();
                 const username = document.getElementById('regUsername').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
                 const pin = document.getElementById('regPin').value.trim();
@@ -509,6 +515,12 @@
                 const msg = document.getElementById('messageBox');
                 msg.className = 'message-box';
                 msg.style.display = 'none';
+
+                if (!fullName) {
+                    window.showMessage('Please enter your full name.', 'error');
+                    return;
+                }
+
                 if (!validateUsername(username)) {
                     window.showMessage('Username must be 5-12 characters (letters & numbers only).', 'error');
                     return;
@@ -540,6 +552,7 @@
                     const { error: insertError } = await supabase
                         .from('users')
                         .insert([{ 
+                            full_name: fullName,
                             username: username, 
                             password: password,
                             pin: pin
@@ -591,4 +604,4 @@
     </script>
 
 </body>
-                        </html>
+    </html>
