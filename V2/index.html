@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK ACCOUNT</title>
+    <title>CHOBANK - Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -406,6 +406,17 @@
             margin-top: 4px;
         }
 
+        .username-display {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 12px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 0 8px;
@@ -482,7 +493,7 @@
                 <div class="form-group">
                     <label for="regUsername">Username (5-12 characters)</label>
                     <input type="text" id="regUsername" placeholder="Choose a username" required minlength="5" maxlength="12">
-                    <div class="requirements">5-12 characters (letters & numbers only)</div>
+                    <div class="requirements">5-12 characters (letters & numbers only) • Case insensitive</div>
                 </div>
 
                 <div class="form-group">
@@ -562,7 +573,7 @@
                 <div class="info-box">
                     <div class="row">
                         <span class="label">Username</span>
-                        <span class="value" id="foundUsername">-</span>
+                        <span class="value username-display" id="foundUsername">-</span>
                     </div>
                 </div>
 
@@ -619,6 +630,7 @@
 
             let verifiedUserId = null;
             let verifiedUsername = null;
+            let verifiedOriginalUsername = null; // Simpan username asli dari database
 
             // RULES
             const RESERVED_USERNAMES = ['thekachoo', 'kafka', 'gathur', 'kazine', 'kafkapages', 'kaboom', 'chodate', 'chonnect', 'chosong'];
@@ -649,6 +661,10 @@
 
             function validatePassword(password) {
                 return /^[a-zA-Z0-9]{4,12}$/.test(password);
+            }
+
+            function normalizeUsername(username) {
+                return username.toLowerCase().trim();
             }
 
             window.switchTab = function(tab) {
@@ -700,6 +716,7 @@
                 document.getElementById('forgotModal').classList.add('active');
                 verifiedUserId = null;
                 verifiedUsername = null;
+                verifiedOriginalUsername = null;
                 window.goToStep1();
                 document.getElementById('forgotCardNumberInput').value = '';
                 document.getElementById('forgotPinInput').value = '';
@@ -779,7 +796,10 @@
                     }
 
                     verifiedUserId = userData.id;
-                    verifiedUsername = userData.username;
+                    verifiedUsername = userData.username; // Simpan username asli dari database
+                    verifiedOriginalUsername = userData.username;
+                    
+                    // Tampilkan username asli (dengan huruf besar/kecil sesuai database)
                     document.getElementById('foundUsername').textContent = userData.username;
 
                     window.goToStep2();
@@ -849,7 +869,8 @@
                         window.showForgotMessage('Password reset successfully! You can now login.', 'success');
                         setTimeout(() => {
                             window.closeForgot();
-                            document.getElementById('loginUsername').value = verifiedUsername;
+                            // Isi username dengan yang asli dari database (biar case sensitive sesuai)
+                            document.getElementById('loginUsername').value = verifiedOriginalUsername;
                             document.getElementById('loginPassword').value = '';
                             window.switchTab('login');
                         }, 1500);
@@ -866,7 +887,7 @@
 
             window.handleLogin = async function() {
                 console.log('🔐 Login attempt');
-                const username = document.getElementById('loginUsername').value.trim();
+                const usernameInput = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
                 const btn = document.getElementById('loginBtn');
                 const text = document.getElementById('loginText');
@@ -875,7 +896,7 @@
                 msg.className = 'message-box';
                 msg.style.display = 'none';
                 
-                if (!username) {
+                if (!usernameInput) {
                     window.showMessage('Please enter your username.', 'error');
                     return;
                 }
@@ -889,10 +910,11 @@
                 spinner.style.display = 'inline';
 
                 try {
+                    // Cari user dengan case-insensitive
                     const { data: userData, error: userError } = await supabase
                         .from('users')
                         .select('*')
-                        .eq('username', username)
+                        .ilike('username', usernameInput) // ilike = case insensitive
                         .single();
 
                     if (userError || !userData) {
@@ -903,7 +925,8 @@
                         return;
                     }
 
-                    const special = getSpecialUser(username);
+                    // Check password
+                    const special = getSpecialUser(userData.username);
                     let isValid = false;
                     if (special && special.password) {
                         isValid = (password.toUpperCase() === special.password);
@@ -939,7 +962,7 @@
             window.handleRegister = async function() {
                 console.log('📝 Register attempt');
                 const fullName = document.getElementById('regFullName').value.trim();
-                const username = document.getElementById('regUsername').value.trim().toLowerCase();
+                const username = document.getElementById('regUsername').value.trim();
                 const cardNumber = document.getElementById('regCardNumber').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
                 const pin = document.getElementById('regPin').value.trim();
@@ -955,16 +978,19 @@
                     return;
                 }
 
+                // Cek reserved usernames (case insensitive)
                 if (isReservedUsername(username)) {
                     window.showMessage('Invalid username. Please choose another.', 'error');
                     return;
                 }
 
+                // Cek username yang sudah ada di database (case insensitive)
                 const { data: existingUser } = await supabase
                     .from('users')
                     .select('username')
-                    .eq('username', username)
+                    .ilike('username', username)
                     .single();
+                    
                 if (existingUser) {
                     window.showMessage('Username already taken. Please choose another.', 'error');
                     return;
@@ -1022,11 +1048,12 @@
                         balance = 999999999;
                     }
 
+                    // Simpan username dengan format asli yang dimasukkan user
                     const { error: insertError } = await supabase
                         .from('users')
                         .insert([{ 
                             full_name: fullName,
-                            username: username,
+                            username: username, // Simpan asli (bisa campuran huruf besar/kecil)
                             card_number: cardNumber,
                             password: password,
                             pin: pin,
@@ -1089,10 +1116,11 @@
             });
 
             console.log('✅ All functions registered');
+            console.log('📌 Username is now CASE INSENSITIVE (Kachoo = kachoo = KACHOO)');
             console.log('📌 Forgot Password flow: Card Number + PIN → Show Username → Reset Password');
             console.log('=== CHOBANK AUTH SYSTEM READY ===');
         })();
     </script>
 
 </body>
-        </html>
+    </html>
