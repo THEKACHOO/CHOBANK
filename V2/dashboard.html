@@ -651,6 +651,32 @@
                 flex-wrap: wrap;
             }
         }
+
+        /* Salary info card */
+        .salary-info {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 4px solid #000;
+        }
+        .salary-info.show {
+            display: block;
+        }
+        .salary-info .title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .salary-info .detail {
+            font-size: 0.75rem;
+            color: #555;
+        }
+        .salary-info .detail span {
+            font-weight: 600;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -719,6 +745,12 @@
                 <span class="badge admin" id="adminBadge">ADMIN</span>
                 <span class="badge official" id="officialBadge">OFFICIAL</span>
             </div>
+        </div>
+
+        <!-- Salary Info Card (cuma muncul untuk karyawan) -->
+        <div class="salary-info" id="salaryInfo">
+            <div class="title">Salary Information</div>
+            <div class="detail" id="salaryDetail">Loading...</div>
         </div>
 
         <div class="card-row">
@@ -874,6 +906,15 @@
             const OFFICIAL = ['kachoo', 'chobank'];
             const CAN_EDIT_BALANCE = ['jackdaw'];
 
+            // Employee Salary Config
+            const EMPLOYEES = {
+                'jackdaw': { baseSalary: 16000 },
+                'laikaadara21': { baseSalary: 8000 },
+                'nonayou': { baseSalary: 3500 },
+                'vcentlucius': { baseSalary: 2500 }
+            };
+            const SALARY_INCREASE_PERCENT = 5;
+
             function formatNumber(num) {
                 if (num === undefined || num === null) return '0.00';
                 return num.toLocaleString('en-US', { 
@@ -889,26 +930,21 @@
                 return symbol + formatNumber(value);
             }
 
-            // Toggle menu
             window.toggleMenu = function() {
                 const menu = document.getElementById('dropdownMenu');
                 menu.classList.toggle('show');
-                // Sembunyikan sub menu saat toggle
                 document.getElementById('currencySubMenu').classList.remove('show');
             };
 
-            // Toggle currency sub menu
             window.toggleCurrencyMenu = function(e) {
                 if (e) e.stopPropagation();
                 const sub = document.getElementById('currencySubMenu');
                 sub.classList.toggle('show');
             };
 
-            // Select currency
             window.selectCurrency = function(code, rate, symbol) {
                 selectedCurrency = { code, rate, symbol };
                 
-                // Update active state di menu
                 document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
                     el.classList.remove('active');
                     if (el.dataset.currency === code) {
@@ -916,34 +952,25 @@
                     }
                 });
                 
-                // Update tampilan balance
                 updateBalanceDisplay();
-                
-                // Sembunyikan sub menu setelah pilih
                 document.getElementById('currencySubMenu').classList.remove('show');
-                
                 showToast('Currency changed to ' + code + ' (' + symbol + ')');
             };
 
-            // Update balance display
             function updateBalanceDisplay() {
                 const balance = currentUser ? currentUser.balance : 0;
                 const converted = balance * selectedCurrency.rate;
                 const display = document.getElementById('secondaryCurrencyDisplay');
                 display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
-                
-                // Simpan preference di localStorage
                 localStorage.setItem('chobank_currency', JSON.stringify(selectedCurrency));
             }
 
-            // Load saved currency preference
             function loadCurrencyPreference() {
                 const saved = localStorage.getItem('chobank_currency');
                 if (saved) {
                     try {
                         const parsed = JSON.parse(saved);
                         selectedCurrency = parsed;
-                        // Tandai yang aktif di menu
                         document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
                             el.classList.remove('active');
                             if (el.dataset.currency === parsed.code) {
@@ -965,6 +992,114 @@
                     sub.classList.remove('show');
                 }
             });
+
+            // Salary System
+            async function processSalaries() {
+                const today = new Date();
+                const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+                
+                if (today.getDate() !== 1) {
+                    return;
+                }
+
+                for (const [username, config] of Object.entries(EMPLOYEES)) {
+                    try {
+                        const { data: userData, error: findError } = await supabase
+                            .from('users')
+                            .select('*')
+                            .ilike('username', username)
+                            .single();
+
+                        if (findError || !userData) {
+                            continue;
+                        }
+
+                        const userHistory = userData.history || [];
+                        const alreadyPaidThisMonth = userHistory.some(item => 
+                            item.description && 
+                            item.description.includes('Monthly Salary') && 
+                            item.description.includes(currentMonth)
+                        );
+
+                        if (alreadyPaidThisMonth) {
+                            continue;
+                        }
+
+                        const salaryHistory = userHistory.filter(item => 
+                            item.description && item.description.includes('Monthly Salary')
+                        );
+                        
+                        const monthsWorked = salaryHistory.length;
+                        const salaryAmount = config.baseSalary * Math.pow(1 + (SALARY_INCREASE_PERCENT / 100), monthsWorked);
+                        const newBalance = (userData.balance || 0) + salaryAmount;
+
+                        const monthName = today.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                        userHistory.push({
+                            type: 'credit',
+                            amount: salaryAmount,
+                            description: 'Monthly Salary - ' + monthName,
+                            date: new Date().toISOString()
+                        });
+
+                        const { error: updateError } = await supabase
+                            .from('users')
+                            .update({ 
+                                balance: newBalance, 
+                                history: userHistory 
+                            })
+                            .eq('id', userData.id);
+
+                        if (!updateError && currentUser && currentUser.id === userData.id) {
+                            currentUser.balance = newBalance;
+                            currentUser.history = userHistory;
+                            document.getElementById('userBalanceUSD').textContent = formatNumber(newBalance);
+                            updateBalanceDisplay();
+                            renderHistory(userHistory);
+                            updateSalaryInfo(username);
+                        }
+
+                    } catch (err) {
+                        console.error('Error processing salary for ' + username + ':', err);
+                    }
+                }
+            }
+
+            function updateSalaryInfo(username) {
+                const salaryInfo = document.getElementById('salaryInfo');
+                const detail = document.getElementById('salaryDetail');
+                
+                const config = EMPLOYEES[username.toLowerCase()];
+                if (!config) {
+                    salaryInfo.classList.remove('show');
+                    return;
+                }
+
+                const history = currentUser.history || [];
+                const salaryHistory = history.filter(item => 
+                    item.description && item.description.includes('Monthly Salary')
+                );
+                const monthsWorked = salaryHistory.length;
+                
+                const currentSalary = config.baseSalary * Math.pow(1 + (SALARY_INCREASE_PERCENT / 100), monthsWorked);
+                const nextSalary = config.baseSalary * Math.pow(1 + (SALARY_INCREASE_PERCENT / 100), monthsWorked + 1);
+
+                const today = new Date();
+                const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+                const alreadyPaid = salaryHistory.some(item => 
+                    item.description && item.description.includes(currentMonth)
+                );
+
+                const statusText = alreadyPaid ? 'Already paid this month' : 'Waiting for next salary day (1st)';
+
+                detail.innerHTML = `
+                    Base Salary: <span>$${config.baseSalary.toFixed(2)}</span> | 
+                    This Month: <span>$${currentSalary.toFixed(2)}</span> | 
+                    Next Month: <span>$${nextSalary.toFixed(2)}</span><br>
+                    <span style="font-size:0.7rem;color:#888;">${statusText} | ${salaryHistory.length} month(s) worked</span>
+                `;
+                
+                salaryInfo.classList.add('show');
+            }
 
             (async function() {
                 try {
@@ -1002,11 +1137,17 @@
                     const isAdmin = ADMIN.includes(usernameLower);
                     const isOfficial = OFFICIAL.includes(usernameLower);
                     const canEditBalance = CAN_EDIT_BALANCE.includes(usernameLower);
+                    const isEmployee = Object.keys(EMPLOYEES).includes(usernameLower);
 
-                    // Load saved currency preference
                     loadCurrencyPreference();
 
-                    renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
+                    await processSalaries();
+
+                    renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance, isEmployee);
+
+                    if (isEmployee) {
+                        updateSalaryInfo(usernameLower);
+                    }
 
                 } catch (error) {
                     console.error('Error:', error);
@@ -1014,7 +1155,7 @@
                 }
             })();
 
-            function renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance) {
+            function renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance, isEmployee) {
                 const user = currentUser;
                 document.getElementById('userFullName').textContent = user.full_name || user.username;
                 document.getElementById('userUsername').textContent = user.username;
@@ -1027,12 +1168,10 @@
                 const balance = user.balance || 0;
                 document.getElementById('userBalanceUSD').textContent = formatNumber(balance);
                 
-                // Tampilkan dengan mata uang yang dipilih
                 const converted = balance * selectedCurrency.rate;
                 const display = document.getElementById('secondaryCurrencyDisplay');
                 display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
 
-                // Badge
                 const ownerBadge = document.getElementById('ownerBadge');
                 const adminBadge = document.getElementById('adminBadge');
                 const officialBadge = document.getElementById('officialBadge');
@@ -1273,7 +1412,6 @@
                     } else {
                         currentUser.balance = amount;
                         document.getElementById('userBalanceUSD').textContent = formatNumber(amount);
-                        // Update secondary currency
                         const converted = amount * selectedCurrency.rate;
                         const display = document.getElementById('secondaryCurrencyDisplay');
                         display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
@@ -1313,9 +1451,9 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded - Money Change with currency conversion');
+            console.log('Dashboard loaded with Auto Salary system');
         })();
     </script>
 
 </body>
-    </html>
+                            </html>
