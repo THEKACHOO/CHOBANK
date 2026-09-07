@@ -59,7 +59,7 @@
             background: #ffffff;
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            min-width: 180px;
+            min-width: 220px;
             overflow: hidden;
             z-index: 100;
             border: 1px solid #eee;
@@ -99,6 +99,35 @@
             color: #dc2626;
         }
 
+        /* Sub menu untuk currency */
+        .dropdown-menu .sub-menu {
+            display: none;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+        .dropdown-menu .sub-menu.show {
+            display: block;
+        }
+        .dropdown-menu .sub-menu .menu-item {
+            padding-left: 40px;
+            font-size: 0.85rem;
+        }
+        .dropdown-menu .sub-menu .menu-item .currency-symbol {
+            font-weight: 700;
+            color: #000;
+        }
+        .dropdown-menu .sub-menu .menu-item .currency-rate {
+            font-size: 0.65rem;
+            color: #888;
+            margin-left: auto;
+        }
+        .dropdown-menu .sub-menu .menu-item.active {
+            background: #e8e8e8;
+        }
+        .dropdown-menu .sub-menu .menu-item.active .currency-symbol {
+            color: #000;
+        }
+
         .greeting {
             margin-bottom: 20px;
         }
@@ -127,7 +156,6 @@
             background: #f0f0f0;
             color: #000;
         }
-        /* BADGE - di samping username */
         .greeting .username-wrapper {
             display: flex;
             align-items: center;
@@ -156,7 +184,6 @@
             display: inline-block;
         }
 
-        /* CARD NUMBER - di atas account number, dengan toggle */
         .card-row {
             background: #f0f0f0;
             border-radius: 12px;
@@ -268,7 +295,7 @@
             letter-spacing: -0.02em;
             margin: 4px 0;
         }
-        .balance-card .amount-rp {
+        .balance-card .amount-secondary {
             font-size: 1.2rem;
             font-weight: 600;
             color: rgba(255,255,255,0.7);
@@ -636,6 +663,37 @@
             </button>
             <!-- Dropdown Menu -->
             <div class="dropdown-menu" id="dropdownMenu">
+                <!-- Money Change dengan sub menu -->
+                <div class="menu-item" onclick="toggleCurrencyMenu()" style="cursor:pointer;">
+                    <i class="fas fa-money-bill-wave"></i> Money Change
+                    <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem;color:#999;"></i>
+                </div>
+                <div class="sub-menu" id="currencySubMenu">
+                    <div class="menu-item" data-currency="USD" data-rate="1" onclick="selectCurrency('USD', 1, '$')">
+                        <span class="currency-symbol">$</span> USD (Dollar)
+                        <span class="currency-rate">1 USD = 1 USD</span>
+                    </div>
+                    <div class="menu-item" data-currency="IDR" data-rate="16000" onclick="selectCurrency('IDR', 16000, 'Rp')">
+                        <span class="currency-symbol">Rp</span> IDR (Rupiah)
+                        <span class="currency-rate">1 USD = 16,000 IDR</span>
+                    </div>
+                    <div class="menu-item" data-currency="EUR" data-rate="0.92" onclick="selectCurrency('EUR', 0.92, '€')">
+                        <span class="currency-symbol">€</span> EUR (Euro)
+                        <span class="currency-rate">1 USD = 0.92 EUR</span>
+                    </div>
+                    <div class="menu-item" data-currency="GBP" data-rate="0.79" onclick="selectCurrency('GBP', 0.79, '£')">
+                        <span class="currency-symbol">£</span> GBP (Pound)
+                        <span class="currency-rate">1 USD = 0.79 GBP</span>
+                    </div>
+                    <div class="menu-item" data-currency="JPY" data-rate="149.50" onclick="selectCurrency('JPY', 149.50, '¥')">
+                        <span class="currency-symbol">¥</span> JPY (Yen)
+                        <span class="currency-rate">1 USD = 149.50 JPY</span>
+                    </div>
+                    <div class="menu-item" data-currency="SGD" data-rate="1.35" onclick="selectCurrency('SGD', 1.35, 'S$')">
+                        <span class="currency-symbol">S$</span> SGD (Singapore)
+                        <span class="currency-rate">1 USD = 1.35 SGD</span>
+                    </div>
+                </div>
                 <a class="menu-item" href="invest.html">
                     <i class="fas fa-chart-line"></i> Investment
                 </a>
@@ -657,14 +715,12 @@
             </div>
             <div class="username-wrapper">
                 <span class="username">@<span id="userUsername">username</span></span>
-                <!-- BADGE di samping username -->
                 <span class="badge owner" id="ownerBadge">OWNER</span>
                 <span class="badge admin" id="adminBadge">ADMIN</span>
                 <span class="badge official" id="officialBadge">OFFICIAL</span>
             </div>
         </div>
 
-        <!-- CARD NUMBER - di atas account number, dengan toggle -->
         <div class="card-row">
             <div>
                 <div class="label">CARD NUMBER</div>
@@ -680,7 +736,6 @@
             </div>
         </div>
 
-        <!-- ACCOUNT NUMBER -->
         <div class="account-row">
             <div>
                 <div class="label">ACCOUNT NUMBER</div>
@@ -697,7 +752,7 @@
             </button>
             <div class="label">Total Balance</div>
             <div class="amount">$<span id="userBalanceUSD">0.00</span></div>
-            <div class="amount-rp">Rp <span id="userBalanceIDR">0</span></div>
+            <div class="amount-secondary" id="secondaryCurrencyDisplay">Rp <span id="userBalanceIDR">0</span></div>
         </div>
 
         <div class="actions">
@@ -715,7 +770,7 @@
         </div>
     </div>
 
-    <!-- RECEIVE MODAL - TANPA CARD NUMBER -->
+    <!-- RECEIVE MODAL -->
     <div class="modal-overlay" id="receiveModal">
         <div class="modal">
             <h3>Receive Money</h3>
@@ -806,13 +861,19 @@
             let currentUser = null;
             let cardVisible = false;
 
-            // RULES for badge and edit balance
+            // Currency state
+            let selectedCurrency = {
+                code: 'IDR',
+                rate: 16000,
+                symbol: 'Rp'
+            };
+
+            // RULES
             const OWNER = ['jackdaw'];
             const ADMIN = ['admin'];
             const OFFICIAL = ['kachoo', 'chobank'];
             const CAN_EDIT_BALANCE = ['jackdaw'];
 
-            // Fungsi format angka dengan titik ribuan
             function formatNumber(num) {
                 if (num === undefined || num === null) return '0.00';
                 return num.toLocaleString('en-US', { 
@@ -821,18 +882,87 @@
                 });
             }
 
+            function formatCurrency(value, symbol) {
+                if (symbol === 'Rp') {
+                    return symbol + ' ' + Math.round(value).toLocaleString('id-ID');
+                }
+                return symbol + formatNumber(value);
+            }
+
             // Toggle menu
             window.toggleMenu = function() {
                 const menu = document.getElementById('dropdownMenu');
                 menu.classList.toggle('show');
+                // Sembunyikan sub menu saat toggle
+                document.getElementById('currencySubMenu').classList.remove('show');
             };
 
-            // Close menu when clicking outside
+            // Toggle currency sub menu
+            window.toggleCurrencyMenu = function(e) {
+                if (e) e.stopPropagation();
+                const sub = document.getElementById('currencySubMenu');
+                sub.classList.toggle('show');
+            };
+
+            // Select currency
+            window.selectCurrency = function(code, rate, symbol) {
+                selectedCurrency = { code, rate, symbol };
+                
+                // Update active state di menu
+                document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
+                    el.classList.remove('active');
+                    if (el.dataset.currency === code) {
+                        el.classList.add('active');
+                    }
+                });
+                
+                // Update tampilan balance
+                updateBalanceDisplay();
+                
+                // Sembunyikan sub menu setelah pilih
+                document.getElementById('currencySubMenu').classList.remove('show');
+                
+                showToast('Currency changed to ' + code + ' (' + symbol + ')');
+            };
+
+            // Update balance display
+            function updateBalanceDisplay() {
+                const balance = currentUser ? currentUser.balance : 0;
+                const converted = balance * selectedCurrency.rate;
+                const display = document.getElementById('secondaryCurrencyDisplay');
+                display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
+                
+                // Simpan preference di localStorage
+                localStorage.setItem('chobank_currency', JSON.stringify(selectedCurrency));
+            }
+
+            // Load saved currency preference
+            function loadCurrencyPreference() {
+                const saved = localStorage.getItem('chobank_currency');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        selectedCurrency = parsed;
+                        // Tandai yang aktif di menu
+                        document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
+                            el.classList.remove('active');
+                            if (el.dataset.currency === parsed.code) {
+                                el.classList.add('active');
+                            }
+                        });
+                        return true;
+                    } catch (e) {}
+                }
+                return false;
+            }
+
             document.addEventListener('click', function(e) {
                 const menu = document.getElementById('dropdownMenu');
                 const btn = document.querySelector('.menu-btn');
+                const sub = document.getElementById('currencySubMenu');
                 if (!btn.contains(e.target) && !menu.contains(e.target)) {
                     menu.classList.remove('show');
+                    sub.classList.remove('show');
                 }
             });
 
@@ -873,6 +1003,9 @@
                     const isOfficial = OFFICIAL.includes(usernameLower);
                     const canEditBalance = CAN_EDIT_BALANCE.includes(usernameLower);
 
+                    // Load saved currency preference
+                    loadCurrencyPreference();
+
                     renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
 
                 } catch (error) {
@@ -892,16 +1025,18 @@
                 document.getElementById('userCardNumber').textContent = cardDisplay;
 
                 const balance = user.balance || 0;
-                // Format dengan titik ribuan
                 document.getElementById('userBalanceUSD').textContent = formatNumber(balance);
-                document.getElementById('userBalanceIDR').textContent = (balance * 16000).toLocaleString('id-ID');
+                
+                // Tampilkan dengan mata uang yang dipilih
+                const converted = balance * selectedCurrency.rate;
+                const display = document.getElementById('secondaryCurrencyDisplay');
+                display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
 
-                // BADGE di samping username
+                // Badge
                 const ownerBadge = document.getElementById('ownerBadge');
                 const adminBadge = document.getElementById('adminBadge');
                 const officialBadge = document.getElementById('officialBadge');
 
-                // Hide all badges first
                 ownerBadge.classList.remove('show');
                 adminBadge.classList.remove('show');
                 officialBadge.classList.remove('show');
@@ -960,7 +1095,6 @@
                 return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             }
 
-            // Toggle Card Number visibility
             window.toggleCardNumber = function() {
                 const cardEl = document.getElementById('userCardNumber');
                 const icon = document.getElementById('cardToggleIcon');
@@ -992,7 +1126,6 @@
                 });
             };
 
-            // RECEIVE MODAL - TANPA CARD NUMBER
             window.showReceive = function() {
                 if (!currentUser) {
                     showToast('Please wait, user data loading...');
@@ -1023,7 +1156,6 @@
                 navigator.clipboard.writeText(text).catch(() => {});
             };
 
-            // EDIT NAME
             window.openEditName = function() {
                 const modal = document.getElementById('editNameModal');
                 const input = document.getElementById('editNameInput');
@@ -1091,7 +1223,6 @@
                 }
             };
 
-            // EDIT BALANCE
             window.openEditBalance = function() {
                 const modal = document.getElementById('editBalanceModal');
                 const input = document.getElementById('editBalanceAmount');
@@ -1142,7 +1273,10 @@
                     } else {
                         currentUser.balance = amount;
                         document.getElementById('userBalanceUSD').textContent = formatNumber(amount);
-                        document.getElementById('userBalanceIDR').textContent = (amount * 16000).toLocaleString('id-ID');
+                        // Update secondary currency
+                        const converted = amount * selectedCurrency.rate;
+                        const display = document.getElementById('secondaryCurrencyDisplay');
+                        display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
                         msg.textContent = 'Balance updated successfully!';
                         msg.className = 'message-box success';
                         msg.style.display = 'block';
@@ -1179,9 +1313,9 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded - format angka dengan titik ribuan');
+            console.log('Dashboard loaded - Money Change with currency conversion');
         })();
     </script>
 
 </body>
-                    </html>
+    </html>
