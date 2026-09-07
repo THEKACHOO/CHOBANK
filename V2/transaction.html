@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CHOBANK - Send Money</title>
+    <title>CHOBANK - Transfer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -445,7 +445,7 @@
 
             var ref = 'CHB' + Math.floor(Math.random() * 9000 + 1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
 
-            var symbols = { 'USD':'$', 'EUR':'€', 'GBP':'£', 'JPY':'¥', 'AUD':'A$', 'CAD':'C$', 'CHF':'Fr', 'CNY':'¥', 'SGD':'S$', 'MYR':'RM' };
+            var symbols = { 'USD':'$', 'EUR':'€', 'GBP':'£', 'JPY':'¥', 'AUD':'A$', 'CAD':'C$', 'CHF':'Fr', 'CNY':'¥', 'SGD':'S$', 'MYR':'RM', 'IDR':'Rp' };
             var symbol = symbols[currency] || '$';
             var formattedAmount = symbol + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -657,4 +657,4 @@
         console.log('Transaction page loaded');
     </script>
 </body>
-                        </html>
+            </html>
