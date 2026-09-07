@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CHOBANK - Transfer</title>
+    <title>CHOBANK - Send Money</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -83,6 +83,8 @@
         .spinner{border:4px solid #f0f0f0;border-top:4px solid #000;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin:0 auto 20px}
         @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
         footer{text-align:center;margin-top:48px;padding-top:20px;border-top:2px solid #eee;color:#999;font-size:.75rem}
+        .conversion-info{background:#f0f0f0;border-radius:8px;padding:8px 12px;font-size:.8rem;color:#555;margin-top:4px;display:none}
+        .conversion-info .usd-amount{font-weight:700;color:#000}
         @media(max-width:640px){.form-grid{grid-template-columns:1fr}.generator-container{padding:20px 16px}.slip-card{padding:20px 16px}.slip-row{font-size:.8rem;padding:8px 0}.slip-row .slip-value.amount{font-size:1.1rem}.watermark-bg img{width:60%!important}.site-header{display:flex;justify-content:center;align-items:center;position:relative}.back-btn{position:absolute;left:0;top:50%;transform:translateY(-50%)}.header-chobank-text{font-size:2.2rem}}
     </style>
 </head>
@@ -102,7 +104,7 @@
             <div id="messageBox" class="message-box"></div>
 
             <div class="auto-bank-info">
-                <i class="fas fa-wallet"></i> Your Balance
+                <i class="fas fa-wallet"></i> Your Balance (USD)
                 <span class="balance-info" id="balanceDisplay">$0.00</span>
             </div>
 
@@ -136,15 +138,24 @@
                     <div class="form-group">
                         <label>Amount</label>
                         <input type="number" id="amount" class="form-control" placeholder="Payment amount" min="0.01" step="0.01" required>
+                        <div class="conversion-info" id="conversionInfo">
+                            <i class="fas fa-exchange-alt"></i> <span id="conversionText">0.00 USD</span> will be deducted from your balance
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Currency</label>
                         <select id="currency-select" class="currency-select">
-                            <option value="USD">USD</option><option value="IDR">IDR</option><option value="GBP">GBP</option>
-                            <option value="EUR">EUR</option><option value="JPY">JPY</option>
-                            <option value="AUD">AUD</option><option value="CAD">CAD</option>
-                            <option value="CHF">CHF</option><option value="CNY">CNY</option>
-                            <option value="SGD">SGD</option><option value="MYR">MYR</option>
+                            <option value="USD">USD</option>
+                            <option value="IDR">IDR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="EUR">EUR</option>
+                            <option value="JPY">JPY</option>
+                            <option value="AUD">AUD</option>
+                            <option value="CAD">CAD</option>
+                            <option value="CHF">CHF</option>
+                            <option value="CNY">CNY</option>
+                            <option value="SGD">SGD</option>
+                            <option value="MYR">MYR</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -208,11 +219,34 @@
 
     <script>
         // =============================================
-        // SUPABASE CONFIG - PAKE VAR BIAR GA REDECLARE
+        // SUPABASE CONFIG
         // =============================================
         var SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
         var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // =============================================
+        // EXCHANGE RATES (1 USD = ...)
+        // =============================================
+        var exchangeRates = {
+            'USD': 1,
+            'IDR': 15700,
+            'GBP': 0.79,
+            'EUR': 0.92,
+            'JPY': 149.50,
+            'AUD': 1.52,
+            'CAD': 1.36,
+            'CHF': 0.88,
+            'CNY': 7.25,
+            'SGD': 1.34,
+            'MYR': 4.68
+        };
+
+        var currencySymbols = {
+            'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥',
+            'AUD': 'A$', 'CAD': 'C$', 'CHF': 'Fr', 'CNY': '¥',
+            'SGD': 'S$', 'MYR': 'RM', 'IDR': 'Rp'
+        };
 
         // CEK SESSION
         var userId = localStorage.getItem('chobank_user_id');
@@ -255,6 +289,46 @@
                 console.error(err);
                 alert('Error loading user');
             }
+        }
+
+        // =============================================
+        // CONVERSION
+        // =============================================
+        function convertToUSD(amount, currency) {
+            var rate = exchangeRates[currency] || 1;
+            return amount / rate;
+        }
+
+        function formatCurrency(amount, currency) {
+            var symbol = currencySymbols[currency] || '$';
+            return symbol + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        // =============================================
+        // REAL-TIME CONVERSION DISPLAY
+        // =============================================
+        document.getElementById('amount').addEventListener('input', function() {
+            updateConversion();
+        });
+
+        document.getElementById('currency-select').addEventListener('change', function() {
+            updateConversion();
+        });
+
+        function updateConversion() {
+            var amount = parseFloat(document.getElementById('amount').value.trim());
+            var currency = document.getElementById('currency-select').value;
+            var convInfo = document.getElementById('conversionInfo');
+            var convText = document.getElementById('conversionText');
+
+            if (!amount || amount <= 0 || currency === 'USD') {
+                convInfo.style.display = 'none';
+                return;
+            }
+
+            var usdAmount = convertToUSD(amount, currency);
+            convText.textContent = '$' + usdAmount.toFixed(2);
+            convInfo.style.display = 'block';
         }
 
         // =============================================
@@ -377,6 +451,7 @@
             document.getElementById('receiver-search').placeholder = 'Choose Account Number or Username first';
             document.getElementById('amount').value = '';
             document.getElementById('notes').value = '';
+            document.getElementById('conversionInfo').style.display = 'none';
             foundReceiver = null;
             searchMode = null;
             hideMessage();
@@ -438,16 +513,15 @@
                 return;
             }
 
-            if (amount > currentUser.balance) {
-                showMessage('Insufficient balance! Your balance: $' + currentUser.balance.toFixed(2), 'error');
+            // CONVERT TO USD
+            var usdAmount = convertToUSD(amount, currency);
+
+            if (usdAmount > currentUser.balance) {
+                showMessage('Insufficient balance! Need $' + usdAmount.toFixed(2) + ' USD. Your balance: $' + currentUser.balance.toFixed(2), 'error');
                 return;
             }
 
             var ref = 'CHB' + Math.floor(Math.random() * 9000 + 1000) + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
-
-            var symbols = { 'USD':'$', 'EUR':'€', 'GBP':'£', 'JPY':'¥', 'AUD':'A$', 'CAD':'C$', 'CHF':'Fr', 'CNY':'¥', 'SGD':'S$', 'MYR':'RM', 'IDR':'Rp' };
-            var symbol = symbols[currency] || '$';
-            var formattedAmount = symbol + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
             var dateObj = new Date(date);
             var formattedDate = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -459,8 +533,15 @@
             var payerName = currentUser.full_name || currentUser.username;
             var receiverName = foundReceiver.full_name || foundReceiver.username;
 
+            // Format amount in selected currency
+            var formattedAmount = formatCurrency(amount, currency);
+            
+            // Show USD equivalent in slip
+            var usdFormatted = '$' + usdAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
             var detailsHTML = `
                 <div class="slip-row"><span class="slip-label">Amount</span><span class="slip-value amount">${formattedAmount}</span></div>
+                <div class="slip-row"><span class="slip-label">USD Equivalent</span><span class="slip-value">${usdFormatted}</span></div>
                 <div class="slip-row"><span class="slip-label">From</span><span class="slip-value">${escapeHtml(payerName)}</span></div>
                 <div class="slip-row"><span class="slip-label">To</span><span class="slip-value">${escapeHtml(receiverName)}</span></div>
                 <div class="slip-row"><span class="slip-label">Account</span><span class="slip-value">${escapeHtml(foundReceiver.account_number || '-')}</span></div>
@@ -480,18 +561,18 @@
             }
 
             // =============================================
-            // UPDATE BALANCE
+            // UPDATE BALANCE (in USD)
             // =============================================
             try {
-                var newSenderBalance = currentUser.balance - amount;
-                var newReceiverBalance = foundReceiver.balance + amount;
+                var newSenderBalance = currentUser.balance - usdAmount;
+                var newReceiverBalance = foundReceiver.balance + usdAmount;
 
                 var senderHistory = currentUser.history || [];
                 var receiverHistory = foundReceiver.history || [];
 
                 senderHistory.push({
                     type: 'debit',
-                    amount: amount,
+                    amount: usdAmount,
                     description: 'Transfer to ' + receiverName + ' (' + currency + ')',
                     date: new Date().toISOString(),
                     invoice: ref
@@ -499,7 +580,7 @@
 
                 receiverHistory.push({
                     type: 'credit',
-                    amount: amount,
+                    amount: usdAmount,
                     description: 'Received from ' + payerName + ' (' + currency + ')',
                     date: new Date().toISOString(),
                     invoice: ref
@@ -536,7 +617,7 @@
                         receiver_name: receiverName,
                         receiver_account: foundReceiver.account_number,
                         receiver_bank: 'CHOBANK',
-                        amount: amount,
+                        amount: usdAmount,
                         currency: currency,
                         description: notes || null,
                         invoice_number: ref,
@@ -554,7 +635,7 @@
 
                 document.getElementById('balanceDisplay').textContent = '$' + newSenderBalance.toFixed(2);
 
-                showMessage('Transfer successful! ' + formattedAmount + ' sent to ' + receiverName, 'success');
+                showMessage('Transfer successful! ' + formattedAmount + ' sent to ' + receiverName + ' ($' + usdAmount.toFixed(2) + ' USD deducted)', 'success');
 
             } catch(err) {
                 console.error('Error:', err);
@@ -654,7 +735,7 @@
         // =============================================
         loadUser();
 
-        console.log('Transaction page loaded');
+        console.log('Transaction page loaded with currency conversion');
     </script>
 </body>
-            </html>
+    </html>
