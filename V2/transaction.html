@@ -401,6 +401,14 @@
                 if (result.error || !result.data) {
                     info.style.display = 'none';
                     foundReceiver = null;
+                    // Tampilkan X jika username tidak ditemukan
+                    if (searchMode === 'username') {
+                        var searchInput = document.getElementById('receiver-search');
+                        // Tambahkan X di akhir value tanpa mengubah warna
+                        if (!searchInput.value.endsWith(' ✕')) {
+                            searchInput.value = searchInput.value + ' ✕';
+                        }
+                    }
                     return;
                 }
 
@@ -738,4 +746,4 @@
         console.log('Transaction page loaded with currency conversion');
     </script>
 </body>
-    </html>
+                                                                                                         </html>
