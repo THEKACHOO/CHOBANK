@@ -32,4 +32,1349 @@
             position: relative;
         }
         .header h1 {
-            font-size: 1.8rem
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .header .menu-btn {
+            background: none;
+            border: none;
+            color: #000;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .header .menu-btn:hover {
+            background: #f0f0f0;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            min-width: 220px;
+            overflow: hidden;
+            z-index: 100;
+            border: 1px solid #eee;
+        }
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        .dropdown-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: #000;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .dropdown-menu .menu-item:hover {
+            background: #f5f5f5;
+        }
+        .dropdown-menu .menu-item i {
+            width: 20px;
+            color: #666;
+        }
+        .dropdown-menu .menu-item.logout {
+            color: #dc2626;
+            border-top: 1px solid #eee;
+        }
+        .dropdown-menu .menu-item.logout i {
+            color: #dc2626;
+        }
+
+        /* Sub menu untuk currency */
+        .dropdown-menu .sub-menu {
+            display: none;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+        }
+        .dropdown-menu .sub-menu.show {
+            display: block;
+        }
+        .dropdown-menu .sub-menu .menu-item {
+            padding-left: 40px;
+            font-size: 0.85rem;
+        }
+        .dropdown-menu .sub-menu .menu-item .currency-symbol {
+            font-weight: 700;
+            color: #000;
+        }
+        .dropdown-menu .sub-menu .menu-item .currency-rate {
+            font-size: 0.65rem;
+            color: #888;
+            margin-left: auto;
+        }
+        .dropdown-menu .sub-menu .menu-item.active {
+            background: #e8e8e8;
+        }
+        .dropdown-menu .sub-menu .menu-item.active .currency-symbol {
+            color: #000;
+        }
+
+        .greeting {
+            margin-bottom: 20px;
+        }
+        .greeting .name-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .greeting h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: inline;
+        }
+        .greeting .edit-name-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .greeting .edit-name-btn:hover {
+            background: #f0f0f0;
+            color: #000;
+        }
+        .greeting .username-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+        .greeting .username {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        .greeting .badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: #000000 !important;
+            color: #ffffff !important;
+            border: none !important;
+            display: none;
+        }
+        .greeting .badge.show {
+            display: inline-block;
+        }
+
+        .card-row {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-row .label {
+            font-size: 0.65rem;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .card-row .number {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .card-row .number.hidden {
+            filter: blur(4px);
+            user-select: none;
+        }
+        .card-row .toggle-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .card-row .toggle-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .card-row .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .card-row .copy-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .card-row .actions-right {
+            display: flex;
+            gap: 4px;
+        }
+
+        .account-row {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .account-row .label {
+            font-size: 0.65rem;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .account-row .number {
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .account-row .copy-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .account-row .copy-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+
+        .balance-card {
+            background: #000000;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .balance-card .label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
+        }
+        .balance-card .amount {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin: 4px 0;
+        }
+        .balance-card .amount-secondary {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+        }
+        .balance-card .edit-balance-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: rgba(255,255,255,0.5);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .balance-card .edit-balance-btn:hover {
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+        .balance-card .edit-balance-btn.show {
+            display: flex;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .actions .btn-action {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .actions .btn-send {
+            background: #000000;
+            color: #ffffff;
+        }
+        .actions .btn-send:hover {
+            background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+        }
+        .actions .btn-receive {
+            background: #f0f0f0;
+            color: #000000;
+        }
+        .actions .btn-receive:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .history-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .history-item {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .history-item .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .history-item .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .history-item .icon.credit {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .history-item .icon.debit {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .history-item .details .title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .history-item .details .sub {
+            font-size: 0.75rem;
+            color: #888;
+        }
+        .history-item .amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .history-item .amount.credit {
+            color: #16a34a;
+        }
+        .history-item .amount.debit {
+            color: #dc2626;
+        }
+        .empty-history {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .empty-history i {
+            font-size: 2.5rem;
+            color: #ddd;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px;
+            max-width: 380px;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .modal .sub {
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .modal .info-box {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        .modal .info-box .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .modal .info-box .row:last-child {
+            border-bottom: none;
+        }
+        .modal .info-box .label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modal .info-box .value {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal .info-box .copy-small {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .modal .info-box .copy-small:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        .modal .btn-close {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #000000;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal .btn-close:hover {
+            background: #1e1e1e;
+        }
+        .modal .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: #000000;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .modal .btn-primary:hover {
+            background: #1e1e1e;
+        }
+        .modal .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            background: transparent;
+            color: #333;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .modal .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+        .message-box {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message-box.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+        .message-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            background: #f9f9f9;
+            transition: 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #000;
+            background: #fff;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @media (max-width: 480px) {
+            .balance-card .amount {
+                font-size: 2.2rem;
+            }
+            .actions .btn-action {
+                font-size: 0.85rem;
+                padding: 14px;
+            }
+            .modal {
+                padding: 24px 18px;
+            }
+            .greeting .name-row {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>CHOBANK</h1>
+            <button class="menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu" id="dropdownMenu">
+                <!-- Money Change dengan sub menu -->
+                <div class="menu-item" onclick="toggleCurrencyMenu()" style="cursor:pointer;">
+                    <i class="fas fa-money-bill-wave"></i> Money Change
+                    <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem;color:#999;"></i>
+                </div>
+                <div class="sub-menu" id="currencySubMenu">
+                    <div class="menu-item" data-currency="USD" data-rate="1" onclick="selectCurrency('USD', 1, '$')">
+                        <span class="currency-symbol">$</span> USD (Dollar)
+                        <span class="currency-rate">1 USD = 1 USD</span>
+                    </div>
+                    <div class="menu-item" data-currency="IDR" data-rate="16000" onclick="selectCurrency('IDR', 16000, 'Rp')">
+                        <span class="currency-symbol">Rp</span> IDR (Rupiah)
+                        <span class="currency-rate">1 USD = 16,000 IDR</span>
+                    </div>
+                    <div class="menu-item" data-currency="EUR" data-rate="0.92" onclick="selectCurrency('EUR', 0.92, '€')">
+                        <span class="currency-symbol">€</span> EUR (Euro)
+                        <span class="currency-rate">1 USD = 0.92 EUR</span>
+                    </div>
+                    <div class="menu-item" data-currency="GBP" data-rate="0.79" onclick="selectCurrency('GBP', 0.79, '£')">
+                        <span class="currency-symbol">£</span> GBP (Pound)
+                        <span class="currency-rate">1 USD = 0.79 GBP</span>
+                    </div>
+                    <div class="menu-item" data-currency="JPY" data-rate="149.50" onclick="selectCurrency('JPY', 149.50, '¥')">
+                        <span class="currency-symbol">¥</span> JPY (Yen)
+                        <span class="currency-rate">1 USD = 149.50 JPY</span>
+                    </div>
+                    <div class="menu-item" data-currency="SGD" data-rate="1.35" onclick="selectCurrency('SGD', 1.35, 'S$')">
+                        <span class="currency-symbol">S$</span> SGD (Singapore)
+                        <span class="currency-rate">1 USD = 1.35 SGD</span>
+                    </div>
+                </div>
+                <a class="menu-item" href="invest.html">
+                    <i class="fas fa-chart-line"></i> Investment
+                </a>
+                <a class="menu-item" href="https://x.com/HaiKachoo" target="_blank">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+                <button class="menu-item logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="greeting">
+            <div class="name-row">
+                <h2>Hello, <span id="userFullName">User</span></h2>
+                <button class="edit-name-btn" onclick="openEditName()" title="Edit Full Name">
+                    <i class="fas fa-pen"></i>
+                </button>
+            </div>
+            <div class="username-wrapper">
+                <span class="username">@<span id="userUsername">username</span></span>
+                <span class="badge owner" id="ownerBadge">OWNER</span>
+                <span class="badge admin" id="adminBadge">ADMIN</span>
+                <span class="badge official" id="officialBadge">OFFICIAL</span>
+            </div>
+        </div>
+
+        <div class="card-row">
+            <div>
+                <div class="label">CARD NUMBER</div>
+                <div class="number hidden" id="userCardNumber">**** **** ****</div>
+            </div>
+            <div class="actions-right">
+                <button class="toggle-btn" onclick="toggleCardNumber()" title="Show/Hide">
+                    <i class="fas fa-eye" id="cardToggleIcon"></i>
+                </button>
+                <button class="copy-btn" onclick="copyCardNumber()">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="account-row">
+            <div>
+                <div class="label">ACCOUNT NUMBER</div>
+                <div class="number" id="userAccountNumber">---- ----</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccountNumber()">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+
+        <div class="balance-card">
+            <button class="edit-balance-btn" id="editBalanceBtn" onclick="openEditBalance()" title="Edit Balance">
+                <i class="fas fa-pen"></i>
+            </button>
+            <div class="label">Total Balance</div>
+            <div class="amount">$<span id="userBalanceUSD">0.00</span></div>
+            <div class="amount-secondary" id="secondaryCurrencyDisplay">Rp <span id="userBalanceIDR">0</span></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-action btn-send" onclick="goToSend()">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+            <button class="btn-action btn-receive" onclick="showReceive()">
+                <i class="fas fa-arrow-down"></i> Receive
+            </button>
+        </div>
+
+        <div class="history-section">
+            <h3><i class="fas fa-clock"></i> Transaction History</h3>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <!-- RECEIVE MODAL -->
+    <div class="modal-overlay" id="receiveModal">
+        <div class="modal">
+            <h3>Receive Money</h3>
+            <p class="sub">Share your CHOBANK info to receive payment</p>
+            <div class="info-box">
+                <div class="row">
+                    <span class="label">Username</span>
+                    <span class="value">
+                        <span id="receiveUsername">-</span>
+                        <button class="copy-small" onclick="copyReceiveInfo('username')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Account Number</span>
+                    <span class="value">
+                        <span id="receiveAccountNumber">-</span>
+                        <button class="copy-small" onclick="copyReceiveInfo('account')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">Full Name</span>
+                    <span class="value" id="receiveFullName">-</span>
+                </div>
+            </div>
+            <button class="btn-close" onclick="closeReceive()">Close</button>
+        </div>
+    </div>
+
+    <!-- EDIT NAME MODAL -->
+    <div class="modal-overlay" id="editNameModal">
+        <div class="modal">
+            <h3>Edit Full Name</h3>
+            <p class="sub">Change your display name</p>
+            <div id="editNameMessage" class="message-box"></div>
+            <div class="form-group">
+                <label for="editNameInput">Full Name</label>
+                <input type="text" id="editNameInput" placeholder="Enter your full name" required>
+            </div>
+            <button class="btn-primary" onclick="saveName()">
+                <span id="saveNameText">Save</span>
+                <span id="saveNameSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+            </button>
+            <button class="btn-secondary" onclick="closeEditName()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- EDIT BALANCE MODAL -->
+    <div class="modal-overlay" id="editBalanceModal">
+        <div class="modal">
+            <h3>Edit Balance</h3>
+            <p class="sub">Set your CHOBANK balance</p>
+            <div id="editBalanceMessage" class="message-box"></div>
+            <div class="form-group">
+                <label for="editBalanceAmount">Amount (USD)</label>
+                <input type="number" id="editBalanceAmount" placeholder="Enter amount" min="0" step="0.01">
+            </div>
+            <button class="btn-primary" onclick="saveBalance()">
+                <span id="saveBalanceText">Save</span>
+                <span id="saveBalanceSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+            </button>
+            <button class="btn-secondary" onclick="closeEditBalance()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            const userId = localStorage.getItem('chobank_user_id');
+            const userUsername = localStorage.getItem('chobank_username');
+
+            if (!userId || !userUsername) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            let currentUser = null;
+            let cardVisible = false;
+
+            let selectedCurrency = {
+                code: 'IDR',
+                rate: 16000,
+                symbol: 'Rp'
+            };
+
+            const OWNER = ['jackdaw'];
+            const ADMIN = ['admin'];
+            const OFFICIAL = ['kachoo', 'chobank'];
+            const CAN_EDIT_BALANCE = ['jackdaw'];
+
+            const EMPLOYEES = {
+                'jackdaw': { baseSalary: 16000 },
+                'laikaadara21': { baseSalary: 8000 },
+                'nonayou': { baseSalary: 3500 },
+                'vcentlucius': { baseSalary: 2500 }
+            };
+            const SALARY_INCREASE_PERCENT = 5;
+
+            function formatNumber(num) {
+                if (num === undefined || num === null) return '0.00';
+                return num.toLocaleString('en-US', { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                });
+            }
+
+            function formatCurrency(value, symbol) {
+                if (symbol === 'Rp') {
+                    return symbol + ' ' + Math.round(value).toLocaleString('id-ID');
+                }
+                return symbol + formatNumber(value);
+            }
+
+            window.toggleMenu = function() {
+                const menu = document.getElementById('dropdownMenu');
+                menu.classList.toggle('show');
+                document.getElementById('currencySubMenu').classList.remove('show');
+            };
+
+            window.toggleCurrencyMenu = function(e) {
+                if (e) e.stopPropagation();
+                const sub = document.getElementById('currencySubMenu');
+                sub.classList.toggle('show');
+            };
+
+            window.selectCurrency = function(code, rate, symbol) {
+                selectedCurrency = { code, rate, symbol };
+                
+                document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
+                    el.classList.remove('active');
+                    if (el.dataset.currency === code) {
+                        el.classList.add('active');
+                    }
+                });
+                
+                updateBalanceDisplay();
+                document.getElementById('currencySubMenu').classList.remove('show');
+                showToast('Currency changed to ' + code + ' (' + symbol + ')');
+            };
+
+            function updateBalanceDisplay() {
+                const balance = currentUser ? currentUser.balance : 0;
+                const converted = balance * selectedCurrency.rate;
+                const display = document.getElementById('secondaryCurrencyDisplay');
+                display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
+                localStorage.setItem('chobank_currency', JSON.stringify(selectedCurrency));
+            }
+
+            function loadCurrencyPreference() {
+                const saved = localStorage.getItem('chobank_currency');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        selectedCurrency = parsed;
+                        document.querySelectorAll('#currencySubMenu .menu-item').forEach(el => {
+                            el.classList.remove('active');
+                            if (el.dataset.currency === parsed.code) {
+                                el.classList.add('active');
+                            }
+                        });
+                        return true;
+                    } catch (e) {}
+                }
+                return false;
+            }
+
+            document.addEventListener('click', function(e) {
+                const menu = document.getElementById('dropdownMenu');
+                const btn = document.querySelector('.menu-btn');
+                const sub = document.getElementById('currencySubMenu');
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove('show');
+                    sub.classList.remove('show');
+                }
+            });
+
+            async function processSalaries() {
+                const today = new Date();
+                const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+                
+                if (today.getDate() !== 1) {
+                    return;
+                }
+
+                for (const [username, config] of Object.entries(EMPLOYEES)) {
+                    try {
+                        const { data: userData, error: findError } = await supabase
+                            .from('users')
+                            .select('*')
+                            .ilike('username', username)
+                            .single();
+
+                        if (findError || !userData) {
+                            continue;
+                        }
+
+                        const userHistory = userData.history || [];
+                        const alreadyPaidThisMonth = userHistory.some(item => 
+                            item.description && 
+                            item.description.includes('Monthly Salary') && 
+                            item.description.includes(currentMonth)
+                        );
+
+                        if (alreadyPaidThisMonth) {
+                            continue;
+                        }
+
+                        const salaryHistory = userHistory.filter(item => 
+                            item.description && item.description.includes('Monthly Salary')
+                        );
+                        
+                        const monthsWorked = salaryHistory.length;
+                        const salaryAmount = config.baseSalary * Math.pow(1 + (SALARY_INCREASE_PERCENT / 100), monthsWorked);
+                        const newBalance = (userData.balance || 0) + salaryAmount;
+
+                        const monthName = today.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                        userHistory.push({
+                            type: 'credit',
+                            amount: salaryAmount,
+                            description: 'Monthly Salary - ' + monthName,
+                            date: new Date().toISOString()
+                        });
+
+                        await supabase
+                            .from('users')
+                            .update({ 
+                                balance: newBalance, 
+                                history: userHistory 
+                            })
+                            .eq('id', userData.id);
+
+                        if (currentUser && currentUser.id === userData.id) {
+                            currentUser.balance = newBalance;
+                            currentUser.history = userHistory;
+                            document.getElementById('userBalanceUSD').textContent = formatNumber(newBalance);
+                            updateBalanceDisplay();
+                            renderHistory(userHistory);
+                        }
+
+                    } catch (err) {
+                        console.error('Error processing salary for ' + username + ':', err);
+                    }
+                }
+            }
+
+            (async function() {
+                try {
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', parseInt(userId))
+                        .single();
+
+                    if (error || !userData) {
+                        console.error('User not found:', error);
+                        localStorage.removeItem('chobank_user_id');
+                        localStorage.removeItem('chobank_username');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    currentUser = userData;
+
+                    if (!currentUser.card_number) {
+                        const dummyCard = '4532' + Math.random().toString().slice(2, 14).padEnd(12, '0');
+                        const { error: updateCard } = await supabase
+                            .from('users')
+                            .update({ card_number: dummyCard })
+                            .eq('id', parseInt(userId));
+                        if (!updateCard) {
+                            currentUser.card_number = dummyCard;
+                        } else {
+                            currentUser.card_number = '**** **** **** 1234';
+                        }
+                    }
+
+                    const usernameLower = userData.username.toLowerCase();
+                    const isOwner = OWNER.includes(usernameLower);
+                    const isAdmin = ADMIN.includes(usernameLower);
+                    const isOfficial = OFFICIAL.includes(usernameLower);
+                    const canEditBalance = CAN_EDIT_BALANCE.includes(usernameLower);
+
+                    loadCurrencyPreference();
+
+                    await processSalaries();
+
+                    renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    window.location.href = 'index.html';
+                }
+            })();
+
+            function renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance) {
+                const user = currentUser;
+                document.getElementById('userFullName').textContent = user.full_name || user.username;
+                document.getElementById('userUsername').textContent = user.username;
+                document.getElementById('userAccountNumber').textContent = user.account_number || '---- ----';
+
+                const card = user.card_number || '**** **** **** 0000';
+                const cardDisplay = card.replace(/(.{4})/g, '$1 ').trim() || '**** **** **** 0000';
+                document.getElementById('userCardNumber').textContent = cardDisplay;
+
+                const balance = user.balance || 0;
+                document.getElementById('userBalanceUSD').textContent = formatNumber(balance);
+                
+                const converted = balance * selectedCurrency.rate;
+                const display = document.getElementById('secondaryCurrencyDisplay');
+                display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
+
+                const ownerBadge = document.getElementById('ownerBadge');
+                const adminBadge = document.getElementById('adminBadge');
+                const officialBadge = document.getElementById('officialBadge');
+
+                ownerBadge.classList.remove('show');
+                adminBadge.classList.remove('show');
+                officialBadge.classList.remove('show');
+
+                if (isOfficial) {
+                    officialBadge.classList.add('show');
+                } else if (isOwner) {
+                    ownerBadge.classList.add('show');
+                } else if (isAdmin) {
+                    adminBadge.classList.add('show');
+                }
+
+                const editBalanceBtn = document.getElementById('editBalanceBtn');
+                if (canEditBalance) {
+                    editBalanceBtn.classList.add('show');
+                } else {
+                    editBalanceBtn.classList.remove('show');
+                }
+
+                renderHistory(user.history || []);
+            }
+
+            function renderHistory(history) {
+                const container = document.getElementById('historyList');
+                if (!history || history.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-receipt"></i>
+                            No transactions yet
+                        </div>
+                    `;
+                    return;
+                }
+                const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
+                container.innerHTML = sorted.map(item => `
+                    <div class="history-item">
+                        <div class="left">
+                            <div class="icon ${item.type}">
+                                <i class="fas ${item.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                            </div>
+                            <div class="details">
+                                <div class="title">${item.description || 'Transaction'}</div>
+                                <div class="sub">${formatDate(item.date)}</div>
+                            </div>
+                        </div>
+                        <div class="amount ${item.type}">
+                            ${item.type === 'credit' ? '+' : '-'} $${formatNumber(item.amount)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+
+            window.toggleCardNumber = function() {
+                const cardEl = document.getElementById('userCardNumber');
+                const icon = document.getElementById('cardToggleIcon');
+                cardVisible = !cardVisible;
+                if (cardVisible) {
+                    cardEl.classList.remove('hidden');
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    cardEl.classList.add('hidden');
+                    icon.className = 'fas fa-eye';
+                }
+            };
+
+            window.copyAccountNumber = function() {
+                const number = document.getElementById('userAccountNumber').textContent;
+                navigator.clipboard.writeText(number).then(() => {
+                    showToast('Account number copied');
+                }).catch(() => {
+                    showToast('Copy manually: ' + number);
+                });
+            };
+
+            window.copyCardNumber = function() {
+                const number = document.getElementById('userCardNumber').textContent;
+                navigator.clipboard.writeText(number).then(() => {
+                    showToast('Card number copied');
+                }).catch(() => {
+                    showToast('Copy manually: ' + number);
+                });
+            };
+
+            window.showReceive = function() {
+                if (!currentUser) {
+                    showToast('Please wait, user data loading...');
+                    return;
+                }
+                document.getElementById('receiveUsername').textContent = currentUser.username;
+                document.getElementById('receiveAccountNumber').textContent = currentUser.account_number || '----';
+                document.getElementById('receiveFullName').textContent = currentUser.full_name || currentUser.username;
+                document.getElementById('receiveModal').classList.add('active');
+            };
+
+            window.closeReceive = function() {
+                document.getElementById('receiveModal').classList.remove('active');
+            };
+            document.getElementById('receiveModal').addEventListener('click', function(e) {
+                if (e.target === this) closeReceive();
+            });
+
+            window.copyReceiveInfo = function(type) {
+                let text = '';
+                if (type === 'username') {
+                    text = document.getElementById('receiveUsername').textContent;
+                    showToast('Username copied: @' + text);
+                } else if (type === 'account') {
+                    text = document.getElementById('receiveAccountNumber').textContent;
+                    showToast('Account number copied: ' + text);
+                }
+                navigator.clipboard.writeText(text).catch(() => {});
+            };
+
+            window.openEditName = function() {
+                const modal = document.getElementById('editNameModal');
+                const input = document.getElementById('editNameInput');
+                const msg = document.getElementById('editNameMessage');
+                input.value = currentUser ? currentUser.full_name : '';
+                msg.className = 'message-box';
+                msg.textContent = '';
+                msg.style.display = 'none';
+                modal.classList.add('active');
+                input.focus();
+            };
+            window.closeEditName = function() {
+                document.getElementById('editNameModal').classList.remove('active');
+            };
+            document.getElementById('editNameModal').addEventListener('click', function(e) {
+                if (e.target === this) closeEditName();
+            });
+
+            window.saveName = async function() {
+                const input = document.getElementById('editNameInput');
+                const fullName = input.value.trim();
+                const msg = document.getElementById('editNameMessage');
+                const btn = document.querySelector('#editNameModal .btn-primary');
+                const text = document.getElementById('saveNameText');
+                const spinner = document.getElementById('saveNameSpinner');
+
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+                if (!fullName) {
+                    msg.textContent = 'Please enter your full name.';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                    return;
+                }
+                btn.disabled = true;
+                text.textContent = 'Saving...';
+                spinner.style.display = 'inline';
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .update({ full_name: fullName })
+                        .eq('id', parseInt(userId));
+                    if (error) {
+                        console.error(error);
+                        msg.textContent = 'Failed to update name.';
+                        msg.className = 'message-box error';
+                        msg.style.display = 'block';
+                    } else {
+                        currentUser.full_name = fullName;
+                        document.getElementById('userFullName').textContent = fullName;
+                        msg.textContent = 'Name updated successfully!';
+                        msg.className = 'message-box success';
+                        msg.style.display = 'block';
+                        showToast('Name updated to ' + fullName);
+                        setTimeout(() => { closeEditName(); }, 1500);
+                    }
+                } catch (err) {
+                    msg.textContent = 'An error occurred.';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Save';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.openEditBalance = function() {
+                const modal = document.getElementById('editBalanceModal');
+                const input = document.getElementById('editBalanceAmount');
+                const msg = document.getElementById('editBalanceMessage');
+                input.value = currentUser ? currentUser.balance : 0;
+                msg.className = 'message-box';
+                msg.textContent = '';
+                msg.style.display = 'none';
+                modal.classList.add('active');
+                input.focus();
+            };
+            window.closeEditBalance = function() {
+                document.getElementById('editBalanceModal').classList.remove('active');
+            };
+            document.getElementById('editBalanceModal').addEventListener('click', function(e) {
+                if (e.target === this) closeEditBalance();
+            });
+
+            window.saveBalance = async function() {
+                const input = document.getElementById('editBalanceAmount');
+                const amount = parseFloat(input.value.trim());
+                const msg = document.getElementById('editBalanceMessage');
+                const btn = document.querySelector('#editBalanceModal .btn-primary');
+                const text = document.getElementById('saveBalanceText');
+                const spinner = document.getElementById('saveBalanceSpinner');
+
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+                if (isNaN(amount) || amount < 0) {
+                    msg.textContent = 'Please enter a valid amount (min 0).';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                    return;
+                }
+                btn.disabled = true;
+                text.textContent = 'Saving...';
+                spinner.style.display = 'inline';
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .update({ balance: amount })
+                        .eq('id', parseInt(userId));
+                    if (error) {
+                        console.error(error);
+                        msg.textContent = 'Failed to update balance.';
+                        msg.className = 'message-box error';
+                        msg.style.display = 'block';
+                    } else {
+                        currentUser.balance = amount;
+                        document.getElementById('userBalanceUSD').textContent = formatNumber(amount);
+                        const converted = amount * selectedCurrency.rate;
+                        const display = document.getElementById('secondaryCurrencyDisplay');
+                        display.textContent = selectedCurrency.symbol + ' ' + formatNumber(converted);
+                        msg.textContent = 'Balance updated successfully!';
+                        msg.className = 'message-box success';
+                        msg.style.display = 'block';
+                        showToast('Balance updated to $' + formatNumber(amount));
+                        setTimeout(() => { closeEditBalance(); }, 1500);
+                    }
+                } catch (err) {
+                    msg.textContent = 'An error occurred.';
+                    msg.className = 'message-box error';
+                    msg.style.display = 'block';
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Save';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.goToSend = function() {
+                window.location.href = 'transaction.html';
+            };
+
+            window.handleLogout = function() {
+                localStorage.removeItem('chobank_user_id');
+                localStorage.removeItem('chobank_username');
+                window.location.href = 'index.html';
+            };
+
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            console.log('Dashboard loaded');
+        })();
+    </script>
+
+</body>
+</html>
