@@ -360,14 +360,39 @@
             transform: translateY(-2px);
         }
 
-        /* Top-up buttons */
-        .topup-section {
-            display: flex;
-            gap: 8px;
+        /* Top-up button */
+        .topup-container {
             margin-bottom: 20px;
+        }
+        .topup-btn-main {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            background: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #000;
+            text-align: center;
+        }
+        .topup-btn-main:hover {
+            background: #f0f0f0;
+            border-color: #000;
+        }
+
+        .topup-options {
+            display: none;
+            gap: 8px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
-        .topup-section .topup-btn {
+        .topup-options.show {
+            display: flex;
+        }
+        .topup-options .topup-opt {
             flex: 1;
             min-width: 60px;
             padding: 10px 8px;
@@ -382,16 +407,18 @@
             color: #000;
             text-align: center;
         }
-        .topup-section .topup-btn:hover {
+        .topup-options .topup-opt:hover {
             background: #f0f0f0;
             border-color: #000;
         }
-        .topup-section .topup-btn.custom {
+        .topup-options .topup-opt.custom {
             flex: 1.5;
             min-width: 80px;
+            padding: 4px;
         }
-        .topup-section .topup-btn.custom input {
+        .topup-options .topup-opt.custom input {
             width: 100%;
+            padding: 10px 8px;
             border: none;
             background: transparent;
             text-align: center;
@@ -401,7 +428,7 @@
             outline: none;
             color: #000;
         }
-        .topup-section .topup-btn.custom input::placeholder {
+        .topup-options .topup-opt.custom input::placeholder {
             color: #aaa;
             font-weight: 400;
         }
@@ -716,7 +743,7 @@
             .greeting .name-row {
                 flex-wrap: wrap;
             }
-            .topup-section .topup-btn {
+            .topup-options .topup-opt {
                 min-width: 50px;
                 padding: 8px 6px;
                 font-size: 0.75rem;
@@ -833,14 +860,19 @@
             </button>
         </div>
 
-        <div class="topup-section" id="topupSection">
-            <button class="topup-btn" onclick="topUp(10)">$10</button>
-            <button class="topup-btn" onclick="topUp(100)">$100</button>
-            <button class="topup-btn" onclick="topUp(1000)">$1000</button>
-            <button class="topup-btn" onclick="topUp(10000)">$10000</button>
-            <button class="topup-btn custom">
-                <input type="number" id="customTopup" placeholder="Custom" min="1" max="100000">
+        <div class="topup-container">
+            <button class="topup-btn-main" onclick="toggleTopup()">
+                <i class="fas fa-plus-circle"></i> Top Up
             </button>
+            <div class="topup-options" id="topupOptions">
+                <button class="topup-opt" onclick="topUp(10)">$10</button>
+                <button class="topup-opt" onclick="topUp(100)">$100</button>
+                <button class="topup-opt" onclick="topUp(1000)">$1000</button>
+                <button class="topup-opt" onclick="topUp(10000)">$10000</button>
+                <button class="topup-opt custom">
+                    <input type="number" id="customTopup" placeholder="Custom" min="1" max="100000">
+                </button>
+            </div>
         </div>
 
         <div class="history-section">
@@ -1047,6 +1079,11 @@
             // =============================================
             // TOP-UP SYSTEM
             // =============================================
+            window.toggleTopup = function() {
+                const options = document.getElementById('topupOptions');
+                options.classList.toggle('show');
+            };
+
             function checkTopupLimit() {
                 const today = new Date().toDateString();
                 if (lastTopupDate !== today) {
@@ -1124,6 +1161,9 @@
                     renderHistory(history);
                     showToast('Top up successful');
 
+                    // Close options after topup
+                    document.getElementById('topupOptions').classList.remove('show');
+
                 } catch (err) {
                     console.error('Error:', err);
                     showToast('An error occurred');
@@ -1142,6 +1182,14 @@
                             }
                         }
                     });
+                }
+            });
+
+            // Close topup options when clicking outside
+            document.addEventListener('click', function(e) {
+                const container = document.querySelector('.topup-container');
+                if (container && !container.contains(e.target)) {
+                    document.getElementById('topupOptions').classList.remove('show');
                 }
             });
 
@@ -1339,7 +1387,6 @@
                 
                 // Filter out hidden items
                 const visible = sorted.filter((item, index) => {
-                    // Create unique ID for each history item based on index and date
                     const itemId = index + '_' + item.date;
                     return !hiddenItems.includes(itemId);
                 });
@@ -1355,7 +1402,6 @@
                 }
 
                 container.innerHTML = visible.map((item, index) => {
-                    // Create unique ID for each history item
                     const originalIndex = sorted.indexOf(item);
                     const itemId = originalIndex + '_' + item.date;
                     
@@ -1392,7 +1438,6 @@
                     hiddenItems.push(itemId);
                     localStorage.setItem(hiddenKey, JSON.stringify(hiddenItems));
                     
-                    // Hide the item in DOM
                     const item = document.querySelector(`.history-item[data-id="${itemId}"]`);
                     if (item) {
                         item.classList.add('hidden');
