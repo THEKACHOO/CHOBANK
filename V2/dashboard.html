@@ -50,7 +50,6 @@
             background: #f0f0f0;
         }
 
-        /* Dropdown Menu */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -98,8 +97,6 @@
         .dropdown-menu .menu-item.logout i {
             color: #dc2626;
         }
-
-        /* Sub menu untuk currency */
         .dropdown-menu .sub-menu {
             display: none;
             background: #fafafa;
@@ -328,7 +325,7 @@
         .actions {
             display: flex;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
         .actions .btn-action {
             flex: 1;
@@ -363,6 +360,52 @@
             transform: translateY(-2px);
         }
 
+        /* Top-up buttons */
+        .topup-section {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .topup-section .topup-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #000;
+            text-align: center;
+        }
+        .topup-section .topup-btn:hover {
+            background: #f0f0f0;
+            border-color: #000;
+        }
+        .topup-section .topup-btn.custom {
+            flex: 1.5;
+            min-width: 80px;
+        }
+        .topup-section .topup-btn.custom input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            outline: none;
+            color: #000;
+        }
+        .topup-section .topup-btn.custom input::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+
         .history-section h3 {
             font-size: 1.1rem;
             font-weight: 700;
@@ -378,11 +421,13 @@
             align-items: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             border: 1px solid rgba(0,0,0,0.04);
+            position: relative;
         }
         .history-item .left {
             display: flex;
             align-items: center;
             gap: 12px;
+            flex: 1;
         }
         .history-item .icon {
             width: 40px;
@@ -412,6 +457,7 @@
         .history-item .amount {
             font-weight: 700;
             font-size: 1rem;
+            margin-right: 8px;
         }
         .history-item .amount.credit {
             color: #16a34a;
@@ -419,6 +465,26 @@
         .history-item .amount.debit {
             color: #dc2626;
         }
+        .history-item .hide-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            opacity: 0.5;
+        }
+        .history-item .hide-btn:hover {
+            background: #f0f0f0;
+            color: #000;
+            opacity: 1;
+        }
+        .history-item.hidden {
+            display: none;
+        }
+
         .empty-history {
             text-align: center;
             padding: 40px 20px;
@@ -650,6 +716,11 @@
             .greeting .name-row {
                 flex-wrap: wrap;
             }
+            .topup-section .topup-btn {
+                min-width: 50px;
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -661,9 +732,7 @@
             <button class="menu-btn" onclick="toggleMenu()">
                 <i class="fas fa-bars"></i>
             </button>
-            <!-- Dropdown Menu -->
             <div class="dropdown-menu" id="dropdownMenu">
-                <!-- Money Change dengan sub menu -->
                 <div class="menu-item" onclick="toggleCurrencyMenu()" style="cursor:pointer;">
                     <i class="fas fa-money-bill-wave"></i> Money Change
                     <i class="fas fa-chevron-right" style="margin-left:auto;font-size:0.7rem;color:#999;"></i>
@@ -764,6 +833,16 @@
             </button>
         </div>
 
+        <div class="topup-section" id="topupSection">
+            <button class="topup-btn" onclick="topUp(10)">$10</button>
+            <button class="topup-btn" onclick="topUp(100)">$100</button>
+            <button class="topup-btn" onclick="topUp(1000)">$1000</button>
+            <button class="topup-btn" onclick="topUp(10000)">$10000</button>
+            <button class="topup-btn custom">
+                <input type="number" id="customTopup" placeholder="Custom" min="1" max="100000">
+            </button>
+        </div>
+
         <div class="history-section">
             <h3><i class="fas fa-clock"></i> Transaction History</h3>
             <div id="historyList"></div>
@@ -860,6 +939,9 @@
 
             let currentUser = null;
             let cardVisible = false;
+            let hiddenHistory = [];
+            let lastTopupDate = null;
+            let todayTopupTotal = 0;
 
             // Currency state
             let selectedCurrency = {
@@ -882,6 +964,7 @@
                 'vcentlucius': { baseSalary: 2500 }
             };
             const SALARY_INCREASE_PERCENT = 5;
+            const TOPUP_LIMIT_PER_DAY = 100000;
 
             function formatNumber(num) {
                 if (num === undefined || num === null) return '0.00';
@@ -962,6 +1045,107 @@
             });
 
             // =============================================
+            // TOP-UP SYSTEM
+            // =============================================
+            function checkTopupLimit() {
+                const today = new Date().toDateString();
+                if (lastTopupDate !== today) {
+                    lastTopupDate = today;
+                    todayTopupTotal = 0;
+                    localStorage.setItem('chobank_topup_date', today);
+                    localStorage.setItem('chobank_topup_total', '0');
+                } else {
+                    todayTopupTotal = parseInt(localStorage.getItem('chobank_topup_total') || '0');
+                }
+            }
+
+            window.topUp = async function(amount) {
+                if (!currentUser) {
+                    showToast('Please wait, user data loading...');
+                    return;
+                }
+
+                // Check custom input
+                const customInput = document.getElementById('customTopup');
+                if (customInput && customInput.value && customInput.value > 0) {
+                    amount = parseFloat(customInput.value);
+                    customInput.value = '';
+                }
+
+                if (!amount || amount <= 0) {
+                    showToast('Invalid amount');
+                    return;
+                }
+
+                if (amount > TOPUP_LIMIT_PER_DAY) {
+                    showToast('Maximum $100,000 per day');
+                    return;
+                }
+
+                checkTopupLimit();
+
+                if (todayTopupTotal + amount > TOPUP_LIMIT_PER_DAY) {
+                    showToast('Daily limit reached');
+                    return;
+                }
+
+                try {
+                    const newBalance = (currentUser.balance || 0) + amount;
+                    const history = currentUser.history || [];
+
+                    history.push({
+                        type: 'credit',
+                        amount: amount,
+                        description: 'Top Up - $' + amount.toFixed(2),
+                        date: new Date().toISOString()
+                    });
+
+                    const { error } = await supabase
+                        .from('users')
+                        .update({
+                            balance: newBalance,
+                            history: history
+                        })
+                        .eq('id', parseInt(userId));
+
+                    if (error) {
+                        console.error('Topup error:', error);
+                        showToast('Failed to top up');
+                        return;
+                    }
+
+                    currentUser.balance = newBalance;
+                    currentUser.history = history;
+                    todayTopupTotal += amount;
+                    localStorage.setItem('chobank_topup_total', String(todayTopupTotal));
+
+                    document.getElementById('userBalanceUSD').textContent = formatNumber(newBalance);
+                    updateBalanceDisplay();
+                    renderHistory(history);
+                    showToast('Top up successful');
+
+                } catch (err) {
+                    console.error('Error:', err);
+                    showToast('An error occurred');
+                }
+            };
+
+            // Custom topup on Enter key
+            document.addEventListener('DOMContentLoaded', function() {
+                const customInput = document.getElementById('customTopup');
+                if (customInput) {
+                    customInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            const val = parseFloat(this.value);
+                            if (val && val > 0) {
+                                window.topUp(val);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // =============================================
             // SALARY SYSTEM
             // =============================================
             async function processSalaries() {
@@ -1038,7 +1222,6 @@
             // =============================================
             async function processInvestmentInterest() {
                 try {
-                    // Ambil semua investasi aktif user
                     const { data: investments, error } = await supabase
                         .from('investments')
                         .select('*')
@@ -1089,7 +1272,6 @@
                             date: new Date().toISOString()
                         });
 
-                        // Update user balance
                         const { error: updateUserError } = await supabase
                             .from('users')
                             .update({
@@ -1103,7 +1285,6 @@
                             continue;
                         }
 
-                        // Update last_interest_date
                         const { error: updateInvestError } = await supabase
                             .from('investments')
                             .update({ last_interest_date: new Date().toISOString() })
@@ -1125,12 +1306,104 @@
                         document.getElementById('userBalanceUSD').textContent = formatNumber(currentUser.balance);
                         updateBalanceDisplay();
                         renderHistory(currentUser.history || []);
-                        showToast('Investment interest added to your balance');
                     }
 
                 } catch (err) {
                     console.error('Error processing investment interest:', err);
                 }
+            }
+
+            // =============================================
+            // RENDER HISTORY WITH HIDE BUTTON
+            // =============================================
+            function renderHistory(history) {
+                const container = document.getElementById('historyList');
+                if (!history || history.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-receipt"></i>
+                            No transactions yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Load hidden history from localStorage
+                const hiddenKey = 'chobank_hidden_' + userId;
+                let hiddenItems = [];
+                try {
+                    hiddenItems = JSON.parse(localStorage.getItem(hiddenKey) || '[]');
+                } catch (e) {}
+
+                const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Filter out hidden items
+                const visible = sorted.filter((item, index) => {
+                    // Create unique ID for each history item based on index and date
+                    const itemId = index + '_' + item.date;
+                    return !hiddenItems.includes(itemId);
+                });
+
+                if (visible.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-history">
+                            <i class="fas fa-receipt"></i>
+                            No transactions yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = visible.map((item, index) => {
+                    // Create unique ID for each history item
+                    const originalIndex = sorted.indexOf(item);
+                    const itemId = originalIndex + '_' + item.date;
+                    
+                    return `
+                        <div class="history-item" data-id="${itemId}">
+                            <div class="left">
+                                <div class="icon ${item.type}">
+                                    <i class="fas ${item.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="title">${item.description || 'Transaction'}</div>
+                                    <div class="sub">${formatDate(item.date)}</div>
+                                </div>
+                            </div>
+                            <div class="amount ${item.type}">
+                                ${item.type === 'credit' ? '+' : '-'} $${formatNumber(item.amount)}
+                            </div>
+                            <button class="hide-btn" onclick="hideHistoryItem('${itemId}')" title="Hide">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            window.hideHistoryItem = function(itemId) {
+                const hiddenKey = 'chobank_hidden_' + userId;
+                let hiddenItems = [];
+                try {
+                    hiddenItems = JSON.parse(localStorage.getItem(hiddenKey) || '[]');
+                } catch (e) {}
+                
+                if (!hiddenItems.includes(itemId)) {
+                    hiddenItems.push(itemId);
+                    localStorage.setItem(hiddenKey, JSON.stringify(hiddenItems));
+                    
+                    // Hide the item in DOM
+                    const item = document.querySelector(`.history-item[data-id="${itemId}"]`);
+                    if (item) {
+                        item.classList.add('hidden');
+                    }
+                }
+            };
+
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             }
 
             (async function() {
@@ -1172,10 +1445,21 @@
 
                     loadCurrencyPreference();
 
-                    // Process salary (only on 1st of month)
-                    await processSalaries();
+                    // Restore topup data
+                    const savedDate = localStorage.getItem('chobank_topup_date');
+                    const savedTotal = localStorage.getItem('chobank_topup_total');
+                    const today = new Date().toDateString();
+                    if (savedDate === today) {
+                        todayTopupTotal = parseInt(savedTotal || '0');
+                        lastTopupDate = today;
+                    } else {
+                        lastTopupDate = null;
+                        todayTopupTotal = 0;
+                        localStorage.setItem('chobank_topup_date', today);
+                        localStorage.setItem('chobank_topup_total', '0');
+                    }
 
-                    // Process investment interest (check every time user opens dashboard)
+                    await processSalaries();
                     await processInvestmentInterest();
 
                     renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
@@ -1227,42 +1511,6 @@
                 }
 
                 renderHistory(user.history || []);
-            }
-
-            function renderHistory(history) {
-                const container = document.getElementById('historyList');
-                if (!history || history.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-history">
-                            <i class="fas fa-receipt"></i>
-                            No transactions yet
-                        </div>
-                    `;
-                    return;
-                }
-                const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
-                container.innerHTML = sorted.map(item => `
-                    <div class="history-item">
-                        <div class="left">
-                            <div class="icon ${item.type}">
-                                <i class="fas ${item.type === 'credit' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
-                            </div>
-                            <div class="details">
-                                <div class="title">${item.description || 'Transaction'}</div>
-                                <div class="sub">${formatDate(item.date)}</div>
-                            </div>
-                        </div>
-                        <div class="amount ${item.type}">
-                            ${item.type === 'credit' ? '+' : '-'} $${formatNumber(item.amount)}
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            function formatDate(dateStr) {
-                if (!dateStr) return '';
-                const d = new Date(dateStr);
-                return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
             }
 
             window.toggleCardNumber = function() {
@@ -1482,7 +1730,7 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded');
+            console.log('Dashboard loaded with topup & hide history');
         })();
     </script>
 
