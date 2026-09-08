@@ -861,17 +861,20 @@
             let currentUser = null;
             let cardVisible = false;
 
+            // Currency state
             let selectedCurrency = {
                 code: 'IDR',
                 rate: 16000,
                 symbol: 'Rp'
             };
 
+            // RULES
             const OWNER = ['jackdaw'];
             const ADMIN = ['admin'];
             const OFFICIAL = ['kachoo', 'chobank'];
             const CAN_EDIT_BALANCE = ['jackdaw'];
 
+            // Employee Salary Config
             const EMPLOYEES = {
                 'jackdaw': { baseSalary: 16000 },
                 'laikaadara21': { baseSalary: 8000 },
@@ -958,6 +961,9 @@
                 }
             });
 
+            // =============================================
+            // SALARY SYSTEM
+            // =============================================
             async function processSalaries() {
                 const today = new Date();
                 const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
@@ -1027,6 +1033,106 @@
                 }
             }
 
+            // =============================================
+            // INVESTMENT INTEREST SYSTEM
+            // =============================================
+            async function processInvestmentInterest() {
+                try {
+                    // Ambil semua investasi aktif user
+                    const { data: investments, error } = await supabase
+                        .from('investments')
+                        .select('*')
+                        .eq('user_id', parseInt(userId))
+                        .eq('status', 'active');
+
+                    if (error) {
+                        console.error('Error fetching investments:', error);
+                        return;
+                    }
+
+                    if (!investments || investments.length === 0) {
+                        return;
+                    }
+
+                    const today = new Date();
+                    let updated = false;
+
+                    for (const inv of investments) {
+                        const lastDate = new Date(inv.last_interest_date);
+                        const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+                        
+                        let shouldProcess = false;
+                        let interestRate = 0;
+                        let typeLabel = '';
+
+                        if (inv.type === 'weekly' && diffDays >= 7) {
+                            shouldProcess = true;
+                            interestRate = 0.01;
+                            typeLabel = 'Weekly';
+                        } else if (inv.type === 'monthly' && diffDays >= 30) {
+                            shouldProcess = true;
+                            interestRate = 0.04;
+                            typeLabel = 'Monthly';
+                        }
+
+                        if (!shouldProcess) continue;
+
+                        const interestAmount = inv.amount * interestRate;
+                        const newBalance = (currentUser.balance || 0) + interestAmount;
+                        const history = currentUser.history || [];
+
+                        const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                        history.push({
+                            type: 'credit',
+                            amount: interestAmount,
+                            description: typeLabel + ' Interest - ' + (interestRate * 100) + '% - ' + dateStr,
+                            date: new Date().toISOString()
+                        });
+
+                        // Update user balance
+                        const { error: updateUserError } = await supabase
+                            .from('users')
+                            .update({
+                                balance: newBalance,
+                                history: history
+                            })
+                            .eq('id', parseInt(userId));
+
+                        if (updateUserError) {
+                            console.error('Error updating user balance:', updateUserError);
+                            continue;
+                        }
+
+                        // Update last_interest_date
+                        const { error: updateInvestError } = await supabase
+                            .from('investments')
+                            .update({ last_interest_date: new Date().toISOString() })
+                            .eq('id', inv.id);
+
+                        if (updateInvestError) {
+                            console.error('Error updating investment date:', updateInvestError);
+                            continue;
+                        }
+
+                        currentUser.balance = newBalance;
+                        currentUser.history = history;
+                        updated = true;
+
+                        console.log(typeLabel + ' interest processed for $' + inv.amount + ' = $' + interestAmount);
+                    }
+
+                    if (updated) {
+                        document.getElementById('userBalanceUSD').textContent = formatNumber(currentUser.balance);
+                        updateBalanceDisplay();
+                        renderHistory(currentUser.history || []);
+                        showToast('Investment interest added to your balance');
+                    }
+
+                } catch (err) {
+                    console.error('Error processing investment interest:', err);
+                }
+            }
+
             (async function() {
                 try {
                     const { data: userData, error } = await supabase
@@ -1066,7 +1172,11 @@
 
                     loadCurrencyPreference();
 
+                    // Process salary (only on 1st of month)
                     await processSalaries();
+
+                    // Process investment interest (check every time user opens dashboard)
+                    await processInvestmentInterest();
 
                     renderDashboard(isOwner, isAdmin, isOfficial, canEditBalance);
 
@@ -1377,4 +1487,4 @@
     </script>
 
 </body>
-</html>
+    </html>
