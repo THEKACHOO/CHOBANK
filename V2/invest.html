@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>CHOBANK - Investment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f5f5;
+            color: #000000;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 440px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .header .back-btn {
+            background: none;
+            border: none;
+            color: #000;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .header .back-btn:hover {
+            background: #f0f0f0;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .header .balance-display {
+            margin-left: auto;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+        }
+        .header .balance-display span {
+            color: #000;
+        }
+
+        .info-card {
+            background: #000000;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+        }
+        .info-card .title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .info-card .desc {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+        .info-card .interest-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .info-card .interest-badge.weekly {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+        .info-card .interest-badge.monthly {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+
+        .investment-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+        .investment-section .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .amount-option {
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+            font-family: 'Outfit', sans-serif;
+            color: #333;
+        }
+        .amount-option:hover {
+            border-color: #999;
+            background: #f0f0f0;
+        }
+        .amount-option.selected {
+            border-color: #000000;
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .type-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+            font-family: 'Outfit', sans-serif;
+            color: #333;
+        }
+        .type-option:hover {
+            border-color: #999;
+            background: #f0f0f0;
+        }
+        .type-option.selected {
+            border-color: #000000;
+            background: #000000;
+            color: #ffffff;
+        }
+        .type-option .sub {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: #888;
+            margin-top: 2px;
+        }
+        .type-option.selected .sub {
+            color: rgba(255,255,255,0.6);
+        }
+        .type-option .badge {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+        .type-option .badge.weekly {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .type-option .badge.monthly {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .type-option.selected .badge.weekly {
+            background: #4ade80;
+            color: #000;
+        }
+        .type-option.selected .badge.monthly {
+            background: #60a5fa;
+            color: #000;
+        }
+
+        .btn-invest {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: #000000;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-invest:hover {
+            background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+        }
+        .btn-invest:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .my-investments {
+            margin-top: 20px;
+        }
+        .my-investments .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .investment-item {
+            background: #fafafa;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #eee;
+        }
+        .investment-item .left .amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .investment-item .left .type {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .investment-item .left .type.weekly {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .investment-item .left .type.monthly {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .investment-item .left .date {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 2px;
+        }
+        .investment-item .left .status {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .investment-item .left .status.active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .investment-item .left .status.withdrawn {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .investment-item .right .withdraw-btn {
+            background: none;
+            border: 1px solid #dc2626;
+            color: #dc2626;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s;
+        }
+        .investment-item .right .withdraw-btn:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+        .investment-item .right .withdraw-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .empty-investments {
+            text-align: center;
+            padding: 30px 20px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .empty-investments i {
+            font-size: 2rem;
+            color: #ddd;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .message-box {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message-box.success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+        .message-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        .message-box.info {
+            background: #dbeafe;
+            color: #1e40af;
+            display: block;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-family: 'Outfit', sans-serif;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateX(-50%); }
+            to { opacity: 1; transform: scale(1) translateX(-50%); }
+        }
+
+        @media (max-width: 480px) {
+            .amount-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .amount-option {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+            .info-card {
+                padding: 20px 18px;
+            }
+            .info-card .title {
+                font-size: 1.2rem;
+            }
+            .investment-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .investment-item .right {
+                width: 100%;
+            }
+            .investment-item .right .withdraw-btn {
+                width: 100%;
+                text-align: center;
+            }
+            .type-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>CHOBANK</h1>
+            <div class="balance-display">
+                Balance: $<span id="userBalance">0.00</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="title">Investment</div>
+            <div class="desc">
+                You can invest with a chosen amount and choose your interest plan.
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+                <span class="interest-badge weekly">Weekly: 1% every 7 days</span>
+                <span class="interest-badge monthly">Monthly: 4% every 30 days</span>
+            </div>
+        </div>
+
+        <div id="messageBox" class="message-box"></div>
+
+        <div class="investment-section">
+            <div class="section-title">Choose Investment Amount</div>
+
+            <div class="amount-grid">
+                <button class="amount-option" data-amount="100" onclick="selectAmount(100)">$100</button>
+                <button class="amount-option" data-amount="300" onclick="selectAmount(300)">$300</button>
+                <button class="amount-option" data-amount="500" onclick="selectAmount(500)">$500</button>
+                <button class="amount-option" data-amount="1000" onclick="selectAmount(1000)">$1000</button>
+            </div>
+
+            <div class="section-title" style="margin-top:16px;">Choose Interest Plan</div>
+            <div class="type-selector">
+                <button class="type-option" data-type="weekly" onclick="selectType('weekly')">
+                    Weekly
+                    <span class="sub">1% every 7 days</span>
+                    <span class="badge weekly">1%</span>
+                </button>
+                <button class="type-option" data-type="monthly" onclick="selectType('monthly')">
+                    Monthly
+                    <span class="sub">4% every 30 days</span>
+                    <span class="badge monthly">4%</span>
+                </button>
+            </div>
+
+            <button class="btn-invest" id="investBtn" onclick="invest()">
+                <i class="fas fa-chart-line"></i> Invest Now
+            </button>
+        </div>
+
+        <div class="my-investments">
+            <div class="section-title">My Investments</div>
+            <div id="investmentList"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            const userId = localStorage.getItem('chobank_user_id');
+            const userUsername = localStorage.getItem('chobank_username');
+
+            if (!userId || !userUsername) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            let currentUser = null;
+            let selectedAmount = null;
+            let selectedType = null;
+            let investments = [];
+
+            function formatNumber(num) {
+                if (num === undefined || num === null) return '0.00';
+                return num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            function showMessage(text, type) {
+                const msg = document.getElementById('messageBox');
+                msg.textContent = text;
+                msg.className = 'message-box ' + type;
+                msg.style.display = 'block';
+            }
+
+            function hideMessage() {
+                const msg = document.getElementById('messageBox');
+                msg.className = 'message-box';
+                msg.textContent = '';
+                msg.style.display = 'none';
+            }
+
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            window.selectAmount = function(amount) {
+                selectedAmount = amount;
+                document.querySelectorAll('.amount-option').forEach(el => {
+                    el.classList.remove('selected');
+                    if (parseInt(el.dataset.amount) === amount) {
+                        el.classList.add('selected');
+                    }
+                });
+                hideMessage();
+            };
+
+            window.selectType = function(type) {
+                selectedType = type;
+                document.querySelectorAll('.type-option').forEach(el => {
+                    el.classList.remove('selected');
+                    if (el.dataset.type === type) {
+                        el.classList.add('selected');
+                    }
+                });
+                hideMessage();
+            };
+
+            async function loadUser() {
+                try {
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('*')
+                        .eq('id', parseInt(userId))
+                        .single();
+
+                    if (error || !userData) {
+                        console.error('User not found:', error);
+                        localStorage.removeItem('chobank_user_id');
+                        localStorage.removeItem('chobank_username');
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
+                    currentUser = userData;
+                    document.getElementById('userBalance').textContent = formatNumber(currentUser.balance || 0);
+
+                    await loadInvestments();
+                    renderInvestments();
+
+                } catch (err) {
+                    console.error('Error:', err);
+                }
+            }
+
+            async function loadInvestments() {
+                try {
+                    const { data, error } = await supabase
+                        .from('investments')
+                        .select('*')
+                        .eq('user_id', parseInt(userId))
+                        .order('invest_date', { ascending: false });
+
+                    if (error) {
+                        console.error('Error loading investments:', error);
+                        return;
+                    }
+
+                    investments = data || [];
+                } catch (err) {
+                    console.error('Error:', err);
+                }
+            }
+
+            function renderInvestments() {
+                const container = document.getElementById('investmentList');
+
+                if (!investments || investments.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-investments">
+                            <i class="fas fa-coins"></i>
+                            No investments yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = investments.map(inv => {
+                    const date = new Date(inv.invest_date);
+                    const dateStr = date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const statusClass = inv.status === 'active' ? 'active' : 'withdrawn';
+                    const isActive = inv.status === 'active';
+                    const typeLabel = inv.type === 'weekly' ? 'Weekly' : 'Monthly';
+                    const typeClass = inv.type === 'weekly' ? 'weekly' : 'monthly';
+
+                    return `
+                        <div class="investment-item">
+                            <div class="left">
+                                <div class="amount">$${formatNumber(inv.amount)}</div>
+                                <span class="type ${typeClass}">${typeLabel}</span>
+                                <div class="date">${dateStr}</div>
+                                <span class="status ${statusClass}">${inv.status}</span>
+                            </div>
+                            <div class="right">
+                                ${isActive ? `<button class="withdraw-btn" onclick="withdrawInvestment(${inv.id}, ${inv.amount})">Withdraw</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            window.invest = async function() {
+                hideMessage();
+
+                if (!selectedAmount || selectedAmount <= 0) {
+                    showMessage('Please select an investment amount.', 'error');
+                    return;
+                }
+
+                if (!selectedType) {
+                    showMessage('Please select an interest plan (Weekly or Monthly).', 'error');
+                    return;
+                }
+
+                if (!currentUser) {
+                    showMessage('Please wait, user data loading...', 'error');
+                    return;
+                }
+
+                if (selectedAmount > currentUser.balance) {
+                    showMessage('Insufficient balance! Your balance: $' + formatNumber(currentUser.balance), 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('investBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                try {
+                    const newBalance = currentUser.balance - selectedAmount;
+                    const history = currentUser.history || [];
+                    const typeLabel = selectedType === 'weekly' ? 'Weekly' : 'Monthly';
+
+                    history.push({
+                        type: 'debit',
+                        amount: selectedAmount,
+                        description: 'Investment (' + typeLabel + ') - $' + selectedAmount.toFixed(2),
+                        date: new Date().toISOString()
+                    });
+
+                    const { error: updateError } = await supabase
+                        .from('users')
+                        .update({
+                            balance: newBalance,
+                            history: history
+                        })
+                        .eq('id', parseInt(userId));
+
+                    if (updateError) {
+                        console.error('Update error:', updateError);
+                        showMessage('Failed to process investment: ' + updateError.message, 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-chart-line"></i> Invest Now';
+                        return;
+                    }
+
+                    const { error: investError } = await supabase
+                        .from('investments')
+                        .insert([{
+                            user_id: parseInt(userId),
+                            amount: selectedAmount,
+                            type: selectedType,
+                            invest_date: new Date().toISOString(),
+                            status: 'active',
+                            last_interest_date: new Date().toISOString()
+                        }]);
+
+                    if (investError) {
+                        console.error('Investment insert error:', investError);
+                        showMessage('Failed to create investment record: ' + investError.message, 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-chart-line"></i> Invest Now';
+                        return;
+                    }
+
+                    currentUser.balance = newBalance;
+                    currentUser.history = history;
+                    document.getElementById('userBalance').textContent = formatNumber(newBalance);
+
+                    await loadInvestments();
+                    renderInvestments();
+
+                    showMessage('Investment successful! $' + formatNumber(selectedAmount) + ' invested (' + typeLabel + ').', 'success');
+                    showToast('Investment of $' + formatNumber(selectedAmount) + ' completed');
+
+                    selectedAmount = null;
+                    selectedType = null;
+                    document.querySelectorAll('.amount-option').forEach(el => el.classList.remove('selected'));
+                    document.querySelectorAll('.type-option').forEach(el => el.classList.remove('selected'));
+
+                } catch (err) {
+                    console.error('Error:', err);
+                    showMessage('An error occurred: ' + err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-chart-line"></i> Invest Now';
+                }
+            };
+
+            window.withdrawInvestment = async function(investId, amount) {
+                if (!confirm('Are you sure you want to withdraw this investment of $' + formatNumber(amount) + '?')) {
+                    return;
+                }
+
+                try {
+                    const { data: investData, error: findError } = await supabase
+                        .from('investments')
+                        .select('*')
+                        .eq('id', investId)
+                        .single();
+
+                    if (findError || !investData) {
+                        showToast('Investment not found');
+                        return;
+                    }
+
+                    if (investData.status !== 'active') {
+                        showToast('This investment has already been withdrawn');
+                        return;
+                    }
+
+                    const newBalance = currentUser.balance + amount;
+                    const history = currentUser.history || [];
+
+                    history.push({
+                        type: 'credit',
+                        amount: amount,
+                        description: 'Withdraw Investment - $' + amount.toFixed(2),
+                        date: new Date().toISOString()
+                    });
+
+                    const { error: updateError } = await supabase
+                        .from('users')
+                        .update({
+                            balance: newBalance,
+                            history: history
+                        })
+                        .eq('id', parseInt(userId));
+
+                    if (updateError) {
+                        console.error('Update error:', updateError);
+                        showToast('Failed to withdraw: ' + updateError.message);
+                        return;
+                    }
+
+                    const { error: withdrawError } = await supabase
+                        .from('investments')
+                        .update({ status: 'withdrawn' })
+                        .eq('id', investId);
+
+                    if (withdrawError) {
+                        console.error('Withdraw update error:', withdrawError);
+                        showToast('Failed to update investment status');
+                        return;
+                    }
+
+                    currentUser.balance = newBalance;
+                    currentUser.history = history;
+                    document.getElementById('userBalance').textContent = formatNumber(newBalance);
+
+                    await loadInvestments();
+                    renderInvestments();
+
+                    showToast('Investment withdrawn: $' + formatNumber(amount));
+
+                } catch (err) {
+                    console.error('Error:', err);
+                    showToast('An error occurred: ' + err.message);
+                }
+            };
+
+            loadUser();
+
+            console.log('Investment page loaded');
+
+        })();
+    </script>
+
+</body>
+</html>
