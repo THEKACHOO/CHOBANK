@@ -433,10 +433,38 @@
             font-weight: 400;
         }
 
+        .history-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .history-actions .btn-history {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #333;
+        }
+        .history-actions .btn-history:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+        .history-actions .btn-history.hide-all {
+            color: #666;
+        }
+        .history-actions .btn-history.show-all {
+            color: #000;
+        }
+
         .history-section h3 {
             font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .history-item {
             background: #ffffff;
@@ -491,22 +519,6 @@
         }
         .history-item .amount.debit {
             color: #dc2626;
-        }
-        .history-item .hide-btn {
-            background: none;
-            border: none;
-            color: #ccc;
-            cursor: pointer;
-            font-size: 0.75rem;
-            padding: 4px 6px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            opacity: 0.5;
-        }
-        .history-item .hide-btn:hover {
-            background: #f0f0f0;
-            color: #000;
-            opacity: 1;
         }
         .history-item.hidden {
             display: none;
@@ -868,15 +880,18 @@
                 <button class="topup-opt" onclick="topUp(10)">$10</button>
                 <button class="topup-opt" onclick="topUp(100)">$100</button>
                 <button class="topup-opt" onclick="topUp(1000)">$1000</button>
-                <button class="topup-opt" onclick="topUp(10000)">$10000</button>
                 <button class="topup-opt custom">
-                    <input type="number" id="customTopup" placeholder="Custom" min="1" max="100000">
+                    <input type="number" id="customTopup" placeholder="Custom" min="1" max="10000">
                 </button>
             </div>
         </div>
 
         <div class="history-section">
             <h3><i class="fas fa-clock"></i> Transaction History</h3>
+            <div class="history-actions">
+                <button class="btn-history hide-all" onclick="hideAllHistory()">Hide All</button>
+                <button class="btn-history show-all" onclick="showAllHistory()">Show All</button>
+            </div>
             <div id="historyList"></div>
         </div>
     </div>
@@ -971,7 +986,6 @@
 
             let currentUser = null;
             let cardVisible = false;
-            let hiddenHistory = [];
             let lastTopupDate = null;
             let todayTopupTotal = 0;
 
@@ -996,7 +1010,7 @@
                 'vcentlucius': { baseSalary: 2500 }
             };
             const SALARY_INCREASE_PERCENT = 5;
-            const TOPUP_LIMIT_PER_DAY = 100000;
+            const TOPUP_LIMIT_PER_DAY = 10000;
 
             function formatNumber(num) {
                 if (num === undefined || num === null) return '0.00';
@@ -1115,14 +1129,14 @@
                 }
 
                 if (amount > TOPUP_LIMIT_PER_DAY) {
-                    showToast('Maximum $100,000 per day');
+                    showToast('Maximum $10,000 per day');
                     return;
                 }
 
                 checkTopupLimit();
 
                 if (todayTopupTotal + amount > TOPUP_LIMIT_PER_DAY) {
-                    showToast('Daily limit reached');
+                    showToast('Daily limit reached (max $10,000)');
                     return;
                 }
 
@@ -1161,7 +1175,6 @@
                     renderHistory(history);
                     showToast('Top up successful');
 
-                    // Close options after topup
                     document.getElementById('topupOptions').classList.remove('show');
 
                 } catch (err) {
@@ -1185,13 +1198,39 @@
                 }
             });
 
-            // Close topup options when clicking outside
             document.addEventListener('click', function(e) {
                 const container = document.querySelector('.topup-container');
                 if (container && !container.contains(e.target)) {
                     document.getElementById('topupOptions').classList.remove('show');
                 }
             });
+
+            // =============================================
+            // HIDE ALL HISTORY
+            // =============================================
+            window.hideAllHistory = function() {
+                const hiddenKey = 'chobank_hidden_' + userId;
+                const items = document.querySelectorAll('.history-item');
+                const ids = [];
+                items.forEach(item => {
+                    const id = item.dataset.id;
+                    if (id) {
+                        ids.push(id);
+                        item.classList.add('hidden');
+                    }
+                });
+                localStorage.setItem(hiddenKey, JSON.stringify(ids));
+                showToast('All transactions hidden');
+            };
+
+            window.showAllHistory = function() {
+                const hiddenKey = 'chobank_hidden_' + userId;
+                localStorage.removeItem(hiddenKey);
+                document.querySelectorAll('.history-item').forEach(item => {
+                    item.classList.remove('hidden');
+                });
+                showToast('All transactions shown');
+            };
 
             // =============================================
             // SALARY SYSTEM
@@ -1362,7 +1401,7 @@
             }
 
             // =============================================
-            // RENDER HISTORY WITH HIDE BUTTON
+            // RENDER HISTORY
             // =============================================
             function renderHistory(history) {
                 const container = document.getElementById('historyList');
@@ -1376,7 +1415,6 @@
                     return;
                 }
 
-                // Load hidden history from localStorage
                 const hiddenKey = 'chobank_hidden_' + userId;
                 let hiddenItems = [];
                 try {
@@ -1385,7 +1423,6 @@
 
                 const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
                 
-                // Filter out hidden items
                 const visible = sorted.filter((item, index) => {
                     const itemId = index + '_' + item.date;
                     return !hiddenItems.includes(itemId);
@@ -1419,31 +1456,10 @@
                             <div class="amount ${item.type}">
                                 ${item.type === 'credit' ? '+' : '-'} $${formatNumber(item.amount)}
                             </div>
-                            <button class="hide-btn" onclick="hideHistoryItem('${itemId}')" title="Hide">
-                                <i class="fas fa-eye-slash"></i>
-                            </button>
                         </div>
                     `;
                 }).join('');
             }
-
-            window.hideHistoryItem = function(itemId) {
-                const hiddenKey = 'chobank_hidden_' + userId;
-                let hiddenItems = [];
-                try {
-                    hiddenItems = JSON.parse(localStorage.getItem(hiddenKey) || '[]');
-                } catch (e) {}
-                
-                if (!hiddenItems.includes(itemId)) {
-                    hiddenItems.push(itemId);
-                    localStorage.setItem(hiddenKey, JSON.stringify(hiddenItems));
-                    
-                    const item = document.querySelector(`.history-item[data-id="${itemId}"]`);
-                    if (item) {
-                        item.classList.add('hidden');
-                    }
-                }
-            };
 
             function formatDate(dateStr) {
                 if (!dateStr) return '';
@@ -1775,7 +1791,7 @@
                 }, 3000);
             }
 
-            console.log('Dashboard loaded with topup & hide history');
+            console.log('Dashboard loaded with topup & hide all history');
         })();
     </script>
 
