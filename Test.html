@@ -637,15 +637,18 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            padding: 20px;
         }
         .business-modal.active, .student-modal.active { opacity: 1; visibility: visible; }
         .business-modal-content, .student-modal-content {
             background: #fff;
             border-radius: 40px;
             padding: 30px;
-            max-width: 500px;
-            width: 90%;
+            max-width: 900px;
+            width: 100%;
             border: 1px solid #000;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .close-modal {
             background: #000;
@@ -656,6 +659,8 @@
             border-radius: 50%;
             cursor: pointer;
             float: right;
+            font-size: 20px;
+            line-height: 1;
         }
         .success-message { text-align: center; margin-top: 20px; }
         .twitter-contact {
@@ -713,7 +718,73 @@
             .card-option { flex: 1 1 calc(50% - 16px); min-width: 220px; }
             .action-buttons { flex-direction: row; gap: 18px; }
             .action-btn { width: auto; flex: 1; }
+
+            .business-modal-content, .student-modal-content {
+                padding: 36px 40px;
+                max-width: 960px;
+            }
+            .business-form-grid, .student-form-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px 22px;
+            }
+            .business-form-grid .form-group, .student-form-grid .form-group {
+                margin-bottom: 0;
+            }
+            .business-form-grid .span-2, .student-form-grid .span-2 {
+                grid-column: span 2;
+            }
+            .business-form-grid .span-3, .student-form-grid .span-3 {
+                grid-column: span 3;
+            }
+            .business-form-grid .full-row, .student-form-grid .full-row {
+                grid-column: 1 / -1;
+            }
+            .business-modal-header, .student-modal-header {
+                margin-bottom: 24px;
+            }
         }
+
+        @media (max-width: 767px) {
+            .business-modal, .student-modal {
+                padding: 12px;
+                align-items: flex-start;
+            }
+            .business-modal-content, .student-modal-content {
+                padding: 24px 20px;
+                border-radius: 32px;
+                max-height: 92vh;
+                margin-top: 8px;
+            }
+            .business-modal-header h3, .student-modal-header h3 {
+                font-size: 1.25rem;
+            }
+            .business-modal-header p, .student-modal-header p {
+                font-size: 0.8rem;
+            }
+            .close-modal {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+            }
+            .business-form-grid, .student-form-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+            .business-form-grid .form-group, .student-form-grid .form-group {
+                margin-bottom: 16px;
+            }
+            .business-form-grid .form-control, .student-form-grid .form-control {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            .business-form-grid .form-group label, .student-form-grid .form-group label {
+                font-size: 0.85rem;
+                margin-bottom: 6px;
+            }
+        }
+
         @media (max-width: 480px) {
             .header-chobank { font-size: 1.8rem; }
             .form-container { padding: 24px 20px; }
@@ -811,12 +882,85 @@
     </footer>
 </div>
 
-<!-- MODAL BUSINESS & STUDENT -->
-<div class="business-modal" id="business-modal"><div class="business-modal-content"><button class="close-modal" id="close-business-modal">&times;</button><div class="business-modal-header"><h3>Business Card Form</h3><p>Fill in company data for Business Card application</p></div><form id="business-form"><div class="form-group"><label for="company-name">Company Name</label><input type="text" id="company-name" class="form-control" placeholder="Enter company name" required></div><div class="form-group"><label for="company-type">Company Type</label><input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required></div><div class="form-group"><label for="company-year">Company Establishment Year</label><input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required></div><div class="form-group"><label for="company-founder">Founder / Person in Charge</label><input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required></div><div class="form-group"><label for="account-manager">Account Manager</label><input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required></div><div class="action-buttons"><button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button></div></form></div></div>
-<div class="student-modal" id="student-modal"><div class="student-modal-content"><button class="close-modal" id="close-student-modal">&times;</button><div class="student-modal-header"><h3>Student Card Form</h3><p>Fill in student data for Student Card application</p></div><form id="student-form"><div class="form-group"><label for="student-name">Student Name</label><input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required></div><div class="form-group"><label for="student-dob">Date of Birth</label><input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required></div><div class="form-group"><label for="student-school">School / University</label><input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required></div><div class="form-group"><label for="parent-occupation">Parent Occupation</label><input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required></div><div class="form-group"><label for="student-address">Address</label><textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea></div><div class="action-buttons"><button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button></div></form></div></div>
+<div class="business-modal" id="business-modal">
+    <div class="business-modal-content">
+        <button class="close-modal" id="close-business-modal">&times;</button>
+        <div class="business-modal-header">
+            <h3>Business Card Form</h3>
+            <p>Fill in company data for Business Card application</p>
+        </div>
+        <form id="business-form">
+            <div class="business-form-grid">
+                <div class="form-group">
+                    <label for="company-name">Company Name</label>
+                    <input type="text" id="company-name" class="form-control" placeholder="Enter company name" required>
+                </div>
+                <div class="form-group">
+                    <label for="company-type">Company Type</label>
+                    <input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required>
+                </div>
+                <div class="form-group">
+                    <label for="company-year">Company Establishment Year</label>
+                    <input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required>
+                </div>
+                <div class="form-group">
+                    <label for="company-founder">Founder / Person in Charge</label>
+                    <input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required>
+                </div>
+                <div class="form-group">
+                    <label for="account-manager">Account Manager</label>
+                    <input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required>
+                </div>
+                <div class="form-group"></div>
+                <div class="action-buttons full-row" style="margin-top: 8px;">
+                    <button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button>
+                    <button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="student-modal" id="student-modal">
+    <div class="student-modal-content">
+        <button class="close-modal" id="close-student-modal">&times;</button>
+        <div class="student-modal-header">
+            <h3>Student Card Form</h3>
+            <p>Fill in student data for Student Card application</p>
+        </div>
+        <form id="student-form">
+            <div class="student-form-grid">
+                <div class="form-group">
+                    <label for="student-name">Student Name</label>
+                    <input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-dob">Date of Birth</label>
+                    <input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-school">School / University</label>
+                    <input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required>
+                </div>
+                <div class="form-group">
+                    <label for="parent-occupation">Parent Occupation</label>
+                    <input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required>
+                </div>
+                <div class="form-group span-2">
+                    <label for="student-address">Address</label>
+                    <textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea>
+                </div>
+                <div class="action-buttons full-row" style="margin-top: 8px;">
+                    <button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button>
+                    <button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
-    const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
+    const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbwvk07oRYureEVNYulf-2GsEXu52MqrTUPuC546Rycx8Pum21ai5YboZnplayfA9PqnTw/exec";
     const usedCardNumbers = new Set();
     let selectedCardType = '', currentAccountNumber = '', currentCardType = '', currentCardName = '', pendingPreviewScroll = false;
     
