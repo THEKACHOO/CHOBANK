@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK | UJI COBA DULU</title>
+    <title>CHOBANK | Digital Credit Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -80,7 +80,6 @@
             gap: 36px;
         }
 
-        /* FORM CONTAINER */
         .form-container {
             background: rgba(255,255,255,0.72);
             backdrop-filter: blur(14px);
@@ -153,7 +152,6 @@
             resize: vertical;
         }
 
-        /* CARD OPTIONS */
         .card-options {
             display: flex;
             flex-direction: column;
@@ -368,7 +366,7 @@
             justify-content: space-between;
             align-items: flex-start;
         }
-        
+
         .card-logo-text {
             font-size: 16px;
             font-weight: 800;
@@ -457,7 +455,7 @@
             color: #ffffff;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        
+
         .card-number.student-card-number {
             color: #ffffff;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
@@ -536,7 +534,7 @@
         .card-holder-name, .card-expiry-date {
             color: #ffffff;
         }
-        
+
         .card-preview.business .card-logo-text,
         .card-preview.student .card-logo-text {
             font-size: 13px;
@@ -813,8 +811,9 @@
     </footer>
 </div>
 
-<div class="business-modal" id="business-modal"><div class="business-modal-content"><button class="close-modal" id="close-business-modal">&times;</button><div class="business-modal-header"><h3>Business Card Form</h3><p>Fill in company data for Business Card application</p></div><form id="business-form"><div class="form-group"><label for="company-name">Company Name</label><input type="text" id="company-name" class="form-control" placeholder="Enter company name" required></div><div class="form-group"><label for="company-type">Company Type</label><input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required></div><div class="form-group"><label for="company-year">Company Establishment Year</label><input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required></div><div class="form-group"><label for="company-founder">Founder / Person in Charge</label><input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required></div><div class="form-group"><label for="account-manager">Account Manager</label><input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required></div><div class="action-buttons"><button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button></div></form><div id="business-success" class="hidden"><div class="success-message"><h4>Form Successfully Submitted!</h4><p>Thank you for completing the Business Card form. Your company data has been recorded.</p><p>Business Card number: <strong id="business-card-number-display">•••• •••• •••• ••••</strong></p><p>For further process and ATM card delivery, please contact:</p><a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact"><i class="fab fa-twitter"></i> @HAIKACHOO on Twitter</a><p style="margin-top: 15px;">Business Card will be processed within 1-3 working days after confirmation.</p></div></div></div></div>
-<div class="student-modal" id="student-modal"><div class="student-modal-content"><button class="close-modal" id="close-student-modal">&times;</button><div class="student-modal-header"><h3>Student Card Form</h3><p>Fill in student data for Student Card application</p></div><form id="student-form"><div class="form-group"><label for="student-name">Student Name</label><input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required></div><div class="form-group"><label for="student-dob">Date of Birth</label><input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required></div><div class="form-group"><label for="student-school">School / University</label><input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required></div><div class="form-group"><label for="parent-occupation">Parent Occupation</label><input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required></div><div class="form-group"><label for="student-address">Address</label><textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea></div><div class="action-buttons"><button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button></div></form><div id="student-success" class="hidden"><div class="success-message"><h4>Form Successfully Submitted!</h4><p>Thank you for completing the Student Card form. Your data has been recorded.</p><p>Student Card number: <strong id="student-card-number-display">•••• •••• •••• ••••</strong></p><p>For further process and ATM card delivery, please contact:</p><a href="https://twitter.com/HAIKACHOO" target="_blank" class="twitter-contact"><i class="fab fa-twitter"></i> @HAIKACHOO on Twitter</a><p style="margin-top: 15px;">Student Card will be processed within 1-3 working days after confirmation.</p></div></div></div></div>
+<!-- MODAL BUSINESS & STUDENT -->
+<div class="business-modal" id="business-modal"><div class="business-modal-content"><button class="close-modal" id="close-business-modal">&times;</button><div class="business-modal-header"><h3>Business Card Form</h3><p>Fill in company data for Business Card application</p></div><form id="business-form"><div class="form-group"><label for="company-name">Company Name</label><input type="text" id="company-name" class="form-control" placeholder="Enter company name" required></div><div class="form-group"><label for="company-type">Company Type</label><input type="text" id="company-type" class="form-control" placeholder="Example: Agency, florist, restaurant, etc" required></div><div class="form-group"><label for="company-year">Company Establishment Year</label><input type="text" id="company-year" class="form-control" placeholder="Example: 2020" required></div><div class="form-group"><label for="company-founder">Founder / Person in Charge</label><input type="text" id="company-founder" class="form-control" placeholder="Founder or responsible person name" required></div><div class="form-group"><label for="account-manager">Account Manager</label><input type="text" id="account-manager" class="form-control" placeholder="Twitter username" required></div><div class="action-buttons"><button type="submit" id="submit-business-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-business-btn" class="action-btn btn-secondary">Cancel</button></div></form></div></div>
+<div class="student-modal" id="student-modal"><div class="student-modal-content"><button class="close-modal" id="close-student-modal">&times;</button><div class="student-modal-header"><h3>Student Card Form</h3><p>Fill in student data for Student Card application</p></div><form id="student-form"><div class="form-group"><label for="student-name">Student Name</label><input type="text" id="student-name" class="form-control" placeholder="Enter student full name" required></div><div class="form-group"><label for="student-dob">Date of Birth</label><input type="text" id="student-dob" class="form-control" placeholder="Example: DD/MM/YYYY" required></div><div class="form-group"><label for="student-school">School / University</label><input type="text" id="student-school" class="form-control" placeholder="Enter school or university name" required></div><div class="form-group"><label for="parent-occupation">Parent Occupation</label><input type="text" id="parent-occupation" class="form-control" placeholder="Enter parent's occupation" required></div><div class="form-group"><label for="student-address">Address</label><textarea id="student-address" class="form-control" rows="3" placeholder="Enter student address" required></textarea></div><div class="action-buttons"><button type="submit" id="submit-student-btn" class="action-btn btn-primary">Submit Form</button><button type="button" id="cancel-student-btn" class="action-btn btn-secondary">Cancel</button></div></form></div></div>
 
 <script>
     const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzfFDwuC79-hN2D6z7ktO3Mb0L-pGFzruQISAtFHWiFNMB8xDsiOmqxB9zhNKpUVJ6StA/exec";
@@ -848,9 +847,9 @@
     });
     
     function openBusinessModal(){document.getElementById('business-modal').classList.add('active');document.body.style.overflow='hidden';}
-    function closeBusinessModal(){document.getElementById('business-modal').classList.remove('active');document.body.style.overflow='auto';document.getElementById('business-form').reset();document.getElementById('business-success').classList.add('hidden');document.getElementById('business-form').classList.remove('hidden');document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected'));selectedCardType='';scrollToPendingPreview();}
+    function closeBusinessModal(){document.getElementById('business-modal').classList.remove('active');document.body.style.overflow='auto';document.getElementById('business-form').reset();document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected'));selectedCardType='';scrollToPendingPreview();}
     function openStudentModal(){document.getElementById('student-modal').classList.add('active');document.body.style.overflow='hidden';}
-    function closeStudentModal(){document.getElementById('student-modal').classList.remove('active');document.body.style.overflow='auto';document.getElementById('student-form').reset();document.getElementById('student-success').classList.add('hidden');document.getElementById('student-form').classList.remove('hidden');document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected'));selectedCardType='';scrollToPendingPreview();}
+    function closeStudentModal(){document.getElementById('student-modal').classList.remove('active');document.body.style.overflow='auto';document.getElementById('student-form').reset();document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected'));selectedCardType='';scrollToPendingPreview();}
     
     async function generateCard(){
         const fullName=document.getElementById('full-name').value.trim(),address=document.getElementById('address').value.trim();
@@ -898,8 +897,7 @@
             currentCardType='business'; currentCardName=data.companyName;
             updateCardPreview(data.companyName,cardNumber,expiryDate,'business');
             revealPreview();
-            document.getElementById('business-card-number-display').textContent=cardNumber;
-            document.getElementById('business-form').classList.add('hidden'); document.getElementById('business-success').classList.remove('hidden'); document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); selectedCardType='';
+            closeBusinessModal();
         } catch(error){ alert('Failed to send data: '+error.message); }
     }
     
@@ -915,8 +913,7 @@
             currentCardType='student'; currentCardName=studentName;
             updateCardPreview(studentName,cardNumber,expiryDate,'student');
             revealPreview();
-            document.getElementById('student-card-number-display').textContent=cardNumber;
-            document.getElementById('student-form').classList.add('hidden'); document.getElementById('student-success').classList.remove('hidden'); document.querySelectorAll('.card-option').forEach(o=>o.classList.remove('selected')); selectedCardType='';
+            closeStudentModal();
         } catch(error){ alert('Failed to send data: '+error.message); }
     }
     
