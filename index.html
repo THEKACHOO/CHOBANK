@@ -6,6 +6,7 @@
     <title>CHOBANK</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/header-footer.css">
     <style>
         * {
             margin: 0;
@@ -40,7 +41,6 @@
             z-index: 2;
         }
 
-        /* SPLASH SCREEN - hanya logo, tanpa teks CHOBANK */
         .splash-screen {
             position: fixed;
             inset: 0;
@@ -78,24 +78,6 @@
             display: none;
         }
 
-        /* HEADER - hanya teks CHOBANK, tanpa logo gambar, ukuran lebih besar */
-        .site-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 16px 0 12px;
-            background: transparent;
-        }
-
-        .header-chobank-text {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
-            line-height: 1.1;
-        }
-
-        /* MENU GRID - 2x2 mobile, desktop 4 kolom */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -181,7 +163,6 @@
             box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
         }
 
-        /* home icon */
         .home-wrap {
             display: flex;
             justify-content: center;
@@ -210,98 +191,6 @@
             border-color: #000;
         }
 
-        /* FOOTER */
-        .site-footer {
-            margin-top: 20px;
-            padding: 24px 20px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(0,0,0,0.06);
-            background: transparent;
-        }
-
-        .footer-notice {
-            background: rgba(0,0,0,0.02);
-            border-radius: 32px;
-            padding: 18px 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        .footer-notice strong {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            color: #000;
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-            letter-spacing: -0.1px;
-        }
-
-        .footer-notice p {
-            font-family: 'Outfit', sans-serif;
-            color: #4a4a4a;
-            font-size: 0.75rem;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        .footer-contact {
-            background: rgba(0,0,0,0.02);
-            border-radius: 32px;
-            padding: 16px 20px;
-            margin-bottom: 16px;
-            backdrop-filter: blur(4px);
-        }
-
-        .footer-contact .contact-bold {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            color: #000;
-            font-size: 0.85rem;
-            letter-spacing: -0.1px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .footer-contact p {
-            font-family: 'Outfit', sans-serif;
-            color: #3a3a3a;
-            font-size: 0.72rem;
-            font-weight: 400;
-            margin-bottom: 4px;
-            line-height: 1.4;
-        }
-
-        .footer-contact a {
-            font-family: 'Outfit', sans-serif;
-            color: #3a3a3a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.2s;
-        }
-
-        .footer-contact a:hover {
-            opacity: 0.7;
-            text-decoration: underline;
-        }
-
-        .footer-copyright {
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.7rem;
-            color: #5a5a5a;
-            margin-top: 12px;
-            font-weight: 400;
-        }
-
-        .footer-featured {
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.7rem;
-            color: #5a5a5a;
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        /* animasi */
         @keyframes gentleReveal {
             0% { opacity: 0; transform: translateY(24px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -312,7 +201,6 @@
             opacity: 0;
         }
 
-        /* DESKTOP */
         @media (min-width: 768px) {
             .container {
                 padding: 28px 36px 48px;
@@ -350,24 +238,6 @@
                 font-size: 0.9rem;
                 max-width: 200px;
             }
-            
-            .header-chobank-text {
-                font-size: 4rem;
-            }
-            
-            .footer-notice p,
-            .footer-contact p,
-            .footer-contact a {
-                font-size: 0.8rem;
-            }
-            
-            .footer-contact {
-                padding: 18px 28px;
-            }
-            
-            .footer-contact .contact-bold {
-                font-size: 0.9rem;
-            }
         }
 
         @media (min-width: 480px) and (max-width: 767px) {
@@ -390,9 +260,6 @@
             }
             .card-icon {
                 font-size: 2rem;
-            }
-            .header-chobank-text {
-                font-size: 2.8rem;
             }
         }
 
@@ -423,25 +290,11 @@
                 font-size: 1.8rem;
                 margin-bottom: 8px;
             }
-            .header-chobank-text {
-                font-size: 2.2rem;
-            }
-            .footer-contact p,
-            .footer-contact a {
-                font-size: 0.65rem;
-            }
-            .footer-contact .contact-bold {
-                font-size: 0.75rem;
-            }
-            .footer-notice {
-                padding: 14px 16px;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- SPLASH SCREEN - hanya logo saja -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <img src="chobank1.png" alt="CHOBANK" class="splash-logo" id="splashLogo" onerror="handleSplashLogoError()">
@@ -449,66 +302,48 @@
     </div>
 
     <div class="container" id="mainContainer" style="opacity: 0; transition: opacity 0.85s ease;">
-        <!-- HEADER - hanya teks CHOBANK, tanpa logo gambar, ukuran besar -->
-        <div class="site-header fade-reveal" style="animation-delay: 0.05s;">
-            <div class="header-chobank-text">CHOBANK</div>
-        </div>
+        <div id="chobank-header"></div>
 
-        <!-- MENU GRID 2x2 mobile, desktop 4 kolom -->
         <div class="menu-grid">
             <div class="glass-card fade-reveal" style="animation-delay: 0.1s;">
                 <div class="card-icon"><i class="fas fa-credit-card"></i></div>
                 <h2>Digital Credit Card</h2>
-                <p>Create CHOBANK digital cards: Regular, Silver, Gold. Unique numbers & premium design.</p>
+                <p>Create CHOBANK digital cards: Regular, Silver, Student, Business, & Gold.</p>
                 <a href="card.html" class="btn-glass">Create Card</a>
             </div>
 
             <div class="glass-card fade-reveal" style="animation-delay: 0.15s;">
                 <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                 <h2>Payment Proof</h2>
-                <p>Generate domestic/international payment proofs with realistic details.</p>
+                <p>Regional and international transaction.</p>
                 <a href="transaction.html" class="btn-glass">Make Transaction</a>
             </div>
 
             <div class="glass-card fade-reveal" style="animation-delay: 0.2s;">
                 <div class="card-icon"><i class="fas fa-users"></i></div>
                 <h2>Payroll</h2>
-                <p>Manage employee salaries, payslips & bulk payroll processing.</p>
+                <p>Manage employee salaries, payslips & payroll processing.</p>
                 <a href="payroll.html" class="btn-glass">Run Payroll</a>
             </div>
 
             <div class="glass-card fade-reveal" style="animation-delay: 0.25s;">
                 <div class="card-icon"><i class="fas fa-receipt"></i></div>
                 <h2>Invoice</h2>
-                <p>Professional invoice generator with tax & custom items.</p>
+                <p>Digital invoice for business or personal needs.</p>
                 <a href="invoice.html" class="btn-glass">Create Invoice</a>
             </div>
         </div>
 
-        <!-- home icon -->
         <div class="home-wrap fade-reveal" style="animation-delay: 0.3s;">
             <a href="https://thekachoo.github.io/Home/index.html" class="home-link" title="Home">
                 <i class="fas fa-home"></i>
             </a>
         </div>
 
-        <!-- FOOTER -->
-        <div class="site-footer fade-reveal" style="animation-delay: 0.35s;">
-            <div class="footer-notice">
-                <strong>FICTIONAL NOTICE</strong>
-                <p>CHOBANK is a roleplay platform. No real money or assets are used. All transactions, cards, and proofs are fictional for roleplay purpose only.</p>
-            </div>
-            <div class="footer-contact">
-                <strong class="contact-bold">THE KACHOO</strong>
-                <p>Jenderal Sudirman Avenue, Lots 61–62, South Jakarta 12930, Indonesia.</p>
-                <p>X : <a href="https://twitter.com/thekachoo" target="_blank" rel="noopener noreferrer">@thekachoo</a></p>
-                <p>Contact Person : @tuaipuji</p>
-                <p>Email : ohkachoo@gmail.com</p>
-            </div>
-            <div class="footer-copyright">2026 CHOBANK, Featured by The Kachoo</div>
-        </div>
+        <div id="chobank-footer"></div>
     </div>
 
+    <script src="Style/header-footer.js"></script>
     <script>
         (function() {
             const splash = document.getElementById('splashScreen');
@@ -538,4 +373,4 @@
         })();
     </script>
 </body>
-    </html>
+                    </html>
