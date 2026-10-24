@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>CHOBANK - Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Style/header-footer.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 32px;
+            padding: 36px 28px 32px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.05);
+        }
+
+        .tab-switcher {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 16px;
+            padding: 4px;
+            margin-bottom: 28px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #000000;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #000;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-container h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .form-container .subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 22px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .form-group input[type="password"] {
+            letter-spacing: 2px;
+        }
+
+        .form-group input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 4px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            background: transparent;
+            color: #333;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .message-box {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .message-box.error {
+            display: block;
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .message-box.success {
+            display: block;
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .message-box.info {
+            display: block;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .back-home a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .back-home a:hover {
+            color: #000;
+        }
+
+        .requirements {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 14px;
+        }
+
+        .forgot-password a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .forgot-password a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .contact-us {
+            text-align: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .contact-us a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .contact-us a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+
+        .info-box .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-box .row:last-child {
+            border-bottom: none;
+        }
+
+        .info-box .label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-box .value {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #000;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 32px 24px;
+            max-width: 380px;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .modal .sub {
+            color: #666;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: #000000;
+            transform: scale(1.2);
+        }
+
+        .step-dot.completed {
+            background: #16a34a;
+        }
+
+        .step-label {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .step-label span {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .forgot-step {
+            display: none;
+        }
+
+        .forgot-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .password-hint {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .username-display {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 12px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+
+        .demo-lite-label {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 8px;
+            }
+            .glass-card {
+                padding: 28px 18px 24px;
+                border-radius: 28px;
+            }
+            .tab-btn {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+            .modal {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="chobank-header"></div>
+
+        <div class="glass-card">
+            <div class="tab-switcher">
+                <button class="tab-btn active" id="loginTab" onclick="window.switchTab('login')">Login</button>
+                <button class="tab-btn" id="registerTab" onclick="window.switchTab('register')">Register</button>
+            </div>
+
+            <div id="messageBox" class="message-box"></div>
+
+            <div class="form-container active" id="loginForm">
+                <h2>Welcome</h2>
+                <p class="subtitle">Login to your CHOBANK account</p>
+
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter your username" required maxlength="12">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+
+                <button class="btn-primary" id="loginBtn" onclick="window.handleLogin()">
+                    <span id="loginText">Login</span>
+                    <span id="loginSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+
+                <div class="forgot-password">
+                    <a onclick="window.showForgotPassword()">Forgot Password?</a>
+                </div>
+
+                <div class="contact-us">
+                    <a href="https://x.com/HaiKachoo" target="_blank"><i class="fas fa-envelope"></i> Contact Us</a>
+                </div>
+            </div>
+
+            <div class="form-container" id="registerForm">
+                <h2>Create Account</h2>
+                <p class="subtitle">Create CHOBANK account now!</p>
+
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regUsername">Username (5-12 characters)</label>
+                    <input type="text" id="regUsername" placeholder="Choose a username" required minlength="5" maxlength="12">
+                    <div class="requirements">5-12 characters (letters & numbers only) • Case insensitive</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regCardNumber">Card Number (16 digits)</label>
+                    <input type="text" id="regCardNumber" placeholder="Enter 16-digit card number" required maxlength="16" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">16 digits only (0-9), must be unique</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password (4-12 characters)</label>
+                    <input type="password" id="regPassword" placeholder="Enter your password" required minlength="4" maxlength="12">
+                    <div class="requirements">4-12 characters (letters & numbers only, NO symbols)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPin">PIN (4 digits)</label>
+                    <input type="password" id="regPin" placeholder="Enter 4-digit PIN" required maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">4 digits only (0-9)</div>
+                </div>
+
+                <button class="btn-primary" id="registerBtn" onclick="window.handleRegister()">
+                    <span id="registerText">Create Account</span>
+                    <span id="registerSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </div>
+
+            <div class="back-home">
+                <a href="https://thekachoo.github.io/Home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+
+        <div class="demo-lite-label">DEMO &amp; LITE VERSION</div>
+
+        <div id="chobank-footer"></div>
+    </div>
+
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal">
+            <h3>Forgot Password</h3>
+            <p class="sub">Verify your identity to reset your password</p>
+
+            <div id="forgotMessage" class="message-box"></div>
+
+            <div class="forgot-step active" id="step1">
+                <div class="step-indicator">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-label">Step <span>1</span> of 3 · Verify Identity</div>
+
+                <div class="form-group">
+                    <label for="forgotCardNumber">Card Number</label>
+                    <input type="text" id="forgotCardNumberInput" placeholder="Enter your 16-digit card number" required maxlength="16" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">16 digits only (0-9)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="forgotPinInput">PIN</label>
+                    <input type="password" id="forgotPinInput" placeholder="Enter your 4-digit PIN" required maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                    <div class="requirements">4 digits only (0-9)</div>
+                </div>
+
+                <button class="btn-primary" onclick="window.verifyCardAndPin()">
+                    <span id="verifyText">Verify</span>
+                    <span id="verifySpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+            </div>
+
+            <div class="forgot-step" id="step2">
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-label">Step <span>2</span> of 3 · Confirm Account</div>
+
+                <div class="info-box">
+                    <div class="row">
+                        <span class="label">Username</span>
+                        <span class="value username-display" id="foundUsername">-</span>
+                    </div>
+                </div>
+
+                <p style="font-size:0.8rem; color:#666; text-align:center; margin-bottom:16px;">
+                    Is this your username? Click Next to reset your password.
+                </p>
+
+                <button class="btn-primary" onclick="window.goToStep3()">Next →</button>
+                <button class="btn-secondary" onclick="window.goToStep1()">← Back</button>
+            </div>
+
+            <div class="forgot-step" id="step3">
+                <div class="step-indicator">
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot completed"></div>
+                    <div class="step-dot active"></div>
+                </div>
+                <div class="step-label">Step <span>3</span> of 3 · Reset Password</div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password (4-12 characters)</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password" required minlength="4" maxlength="12">
+                    <div class="password-hint">4-12 characters (letters & numbers only, NO symbols)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                </div>
+
+                <button class="btn-primary" onclick="window.resetPassword()">
+                    <span id="resetText">Reset Password</span>
+                    <span id="resetSpinner" style="display:none;"><i class="fas fa-spinner fa-spin"></i></span>
+                </button>
+                <button class="btn-secondary" onclick="window.goToStep2()">← Back</button>
+            </div>
+
+            <button class="btn-secondary" onclick="window.closeForgot()" style="margin-top:12px;">Close</button>
+        </div>
+    </div>
+
+    <script src="../Style/header-footer.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            const SUPABASE_URL = 'https://inrvryaxdlhnyxxztyyt.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlucnZyeWF4ZGxobnl4eHp0eXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MTAxNDYsImV4cCI6MjEwNDI4NjE0Nn0.xrG77jRP9Wg06P1D5aMkcBkRfrVGUDs4nN2CNnpBPd8';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            let verifiedUserId = null;
+            let verifiedUsername = null;
+            let verifiedOriginalUsername = null;
+
+            const RESERVED_USERNAMES = ['thekachoo', 'kafka', 'gathur', 'kazine', 'kafkapages', 'kaboom', 'chodate', 'chonnect', 'chosong'];
+            const SPECIAL_USERS = {
+                'kachoo': { password: 'CHO', badge: 'OFFICIAL', unlimited: true },
+                'chobank': { password: 'CHO', badge: 'OFFICIAL', unlimited: true },
+                'jackdaw': { badge: 'OWNER', canEdit: true },
+                'admin': { password: 'CHO', badge: 'ADMIN', canEdit: false }
+            };
+
+            function isReservedUsername(username) {
+                return RESERVED_USERNAMES.includes(username.toLowerCase());
+            }
+
+            function getSpecialUser(username) {
+                const lower = username.toLowerCase();
+                if (lower === 'kachoo' || lower === 'chobank') {
+                    return SPECIAL_USERS[lower];
+                }
+                if (lower === 'jackdaw') {
+                    return SPECIAL_USERS['jackdaw'];
+                }
+                if (lower === 'admin') {
+                    return SPECIAL_USERS['admin'];
+                }
+                return null;
+            }
+
+            function validatePassword(password) {
+                return /^[a-zA-Z0-9]{4,12}$/.test(password);
+            }
+
+            window.switchTab = function(tab) {
+                const loginTab = document.getElementById('loginTab');
+                const registerTab = document.getElementById('registerTab');
+                const loginForm = document.getElementById('loginForm');
+                const registerForm = document.getElementById('registerForm');
+                const msg = document.getElementById('messageBox');
+                msg.className = 'message-box';
+                msg.textContent = '';
+                msg.style.display = 'none';
+                if (tab === 'login') {
+                    loginTab.className = 'tab-btn active';
+                    registerTab.className = 'tab-btn';
+                    loginForm.className = 'form-container active';
+                    registerForm.className = 'form-container';
+                } else {
+                    registerTab.className = 'tab-btn active';
+                    loginTab.className = 'tab-btn';
+                    registerForm.className = 'form-container active';
+                    loginForm.className = 'form-container';
+                }
+            };
+
+            window.showMessage = function(text, type) {
+                const msg = document.getElementById('messageBox');
+                msg.textContent = text;
+                msg.className = 'message-box ' + type;
+                msg.style.display = 'block';
+            };
+
+            window.showForgotMessage = function(text, type) {
+                const msg = document.getElementById('forgotMessage');
+                msg.textContent = text;
+                msg.className = 'message-box ' + type;
+                msg.style.display = 'block';
+            };
+
+            function clearForgotMessage() {
+                const msg = document.getElementById('forgotMessage');
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+                msg.textContent = '';
+            }
+
+            window.showForgotPassword = function() {
+                document.getElementById('forgotModal').classList.add('active');
+                verifiedUserId = null;
+                verifiedUsername = null;
+                verifiedOriginalUsername = null;
+                window.goToStep1();
+                document.getElementById('forgotCardNumberInput').value = '';
+                document.getElementById('forgotPinInput').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                clearForgotMessage();
+            };
+
+            window.closeForgot = function() {
+                document.getElementById('forgotModal').classList.remove('active');
+            };
+
+            window.goToStep1 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step1').classList.add('active');
+                clearForgotMessage();
+            };
+
+            window.goToStep2 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step2').classList.add('active');
+                clearForgotMessage();
+            };
+
+            window.goToStep3 = function() {
+                document.querySelectorAll('.forgot-step').forEach(el => el.classList.remove('active'));
+                document.getElementById('step3').classList.add('active');
+                clearForgotMessage();
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+            };
+
+            window.verifyCardAndPin = async function() {
+                const cardNumber = document.getElementById('forgotCardNumberInput').value.trim();
+                const pin = document.getElementById('forgotPinInput').value.trim();
+                const btn = document.querySelector('#step1 .btn-primary');
+                const text = document.getElementById('verifyText');
+                const spinner = document.getElementById('verifySpinner');
+
+                clearForgotMessage();
+
+                if (!cardNumber || cardNumber.length !== 16) {
+                    window.showForgotMessage('Please enter a valid 16-digit card number.', 'error');
+                    return;
+                }
+
+                if (!pin || pin.length !== 4) {
+                    window.showForgotMessage('Please enter a valid 4-digit PIN.', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Verifying...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('id, username, card_number, pin')
+                        .eq('card_number', cardNumber)
+                        .single();
+
+                    if (error || !userData) {
+                        window.showForgotMessage('Card number not found.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Verify';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    if (userData.pin !== pin) {
+                        window.showForgotMessage('Invalid PIN. Please try again.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Verify';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    verifiedUserId = userData.id;
+                    verifiedUsername = userData.username;
+                    verifiedOriginalUsername = userData.username;
+
+                    document.getElementById('foundUsername').textContent = userData.username;
+
+                    window.goToStep2();
+                    window.showForgotMessage('Identity verified! Please confirm your username.', 'success');
+
+                } catch (err) {
+                    window.showForgotMessage('An error occurred. Please try again.', 'error');
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Verify';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.resetPassword = async function() {
+                const newPassword = document.getElementById('newPassword').value.trim();
+                const confirmPassword = document.getElementById('confirmPassword').value.trim();
+                const btn = document.querySelector('#step3 .btn-primary');
+                const text = document.getElementById('resetText');
+                const spinner = document.getElementById('resetSpinner');
+
+                clearForgotMessage();
+
+                if (!newPassword || !confirmPassword) {
+                    window.showForgotMessage('Please fill in all fields.', 'error');
+                    return;
+                }
+
+                const special = getSpecialUser(verifiedUsername);
+                let isPasswordValid = false;
+                if (special && special.password) {
+                    isPasswordValid = (newPassword.toUpperCase() === special.password && newPassword.length >= 2);
+                } else {
+                    isPasswordValid = validatePassword(newPassword);
+                }
+
+                if (!isPasswordValid) {
+                    if (special && special.password) {
+                        window.showForgotMessage('Invalid password for this username.', 'error');
+                    } else {
+                        window.showForgotMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
+                    }
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    window.showForgotMessage('Passwords do not match.', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Resetting...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .update({ password: newPassword })
+                        .eq('id', verifiedUserId);
+
+                    if (error) {
+                        window.showForgotMessage('Failed to reset password. Please try again.', 'error');
+                    } else {
+                        window.showForgotMessage('Password reset successfully! You can now login.', 'success');
+                        setTimeout(() => {
+                            window.closeForgot();
+                            document.getElementById('loginUsername').value = verifiedOriginalUsername;
+                            document.getElementById('loginPassword').value = '';
+                            window.switchTab('login');
+                        }, 1500);
+                    }
+                } catch (err) {
+                    window.showForgotMessage('An error occurred. Please try again.', 'error');
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Reset Password';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.handleLogin = async function() {
+                const usernameInput = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                const btn = document.getElementById('loginBtn');
+                const text = document.getElementById('loginText');
+                const spinner = document.getElementById('loginSpinner');
+                const msg = document.getElementById('messageBox');
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+
+                if (!usernameInput) {
+                    window.showMessage('Please enter your username.', 'error');
+                    return;
+                }
+                if (!password) {
+                    window.showMessage('Please enter your password.', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Logging in...';
+                spinner.style.display = 'inline';
+
+                try {
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .select('*')
+                        .ilike('username', usernameInput)
+                        .single();
+
+                    if (userError || !userData) {
+                        window.showMessage('Invalid username or password.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Login';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    const special = getSpecialUser(userData.username);
+                    let isValid = false;
+                    if (special && special.password) {
+                        isValid = (password.toUpperCase() === special.password);
+                    } else {
+                        isValid = (password === userData.password);
+                    }
+
+                    if (!isValid) {
+                        window.showMessage('Invalid username or password.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Login';
+                        spinner.style.display = 'none';
+                        return;
+                    }
+
+                    localStorage.setItem('chobank_user_id', userData.id);
+                    localStorage.setItem('chobank_username', userData.username);
+
+                    window.showMessage('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } catch (err) {
+                    window.showMessage('An error occurred. Please try again.', 'error');
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Login';
+                    spinner.style.display = 'none';
+                }
+            };
+
+            window.handleRegister = async function() {
+                const fullName = document.getElementById('regFullName').value.trim();
+                const username = document.getElementById('regUsername').value.trim();
+                const cardNumber = document.getElementById('regCardNumber').value.trim();
+                const password = document.getElementById('regPassword').value.trim();
+                const pin = document.getElementById('regPin').value.trim();
+                const btn = document.getElementById('registerBtn');
+                const text = document.getElementById('registerText');
+                const spinner = document.getElementById('registerSpinner');
+                const msg = document.getElementById('messageBox');
+                msg.className = 'message-box';
+                msg.style.display = 'none';
+
+                if (!fullName) {
+                    window.showMessage('Please enter your full name.', 'error');
+                    return;
+                }
+
+                if (isReservedUsername(username)) {
+                    window.showMessage('Invalid username. Please choose another.', 'error');
+                    return;
+                }
+
+                const { data: existingUser } = await supabase
+                    .from('users')
+                    .select('username')
+                    .ilike('username', username)
+                    .single();
+
+                if (existingUser) {
+                    window.showMessage('Username already taken. Please choose another.', 'error');
+                    return;
+                }
+
+                if (!/^[a-zA-Z0-9]{5,12}$/.test(username)) {
+                    window.showMessage('Username must be 5-12 characters (letters & numbers only).', 'error');
+                    return;
+                }
+
+                if (!/^[0-9]{16}$/.test(cardNumber)) {
+                    window.showMessage('Card number must be exactly 16 digits (0-9).', 'error');
+                    return;
+                }
+
+                const { data: existingCard } = await supabase
+                    .from('users')
+                    .select('card_number')
+                    .eq('card_number', cardNumber)
+                    .single();
+                if (existingCard) {
+                    window.showMessage('Card number already registered. Please use a different card.', 'error');
+                    return;
+                }
+
+                const special = getSpecialUser(username);
+                let isPasswordValid = false;
+                if (special && special.password) {
+                    isPasswordValid = (password.toUpperCase() === special.password && password.length >= 2);
+                } else {
+                    isPasswordValid = /^[a-zA-Z0-9]{4,12}$/.test(password);
+                }
+
+                if (!isPasswordValid) {
+                    if (special && special.password) {
+                        window.showMessage('Invalid password for this username.', 'error');
+                    } else {
+                        window.showMessage('Password must be 4-12 characters (letters & numbers only, NO symbols).', 'error');
+                    }
+                    return;
+                }
+
+                if (!/^[0-9]{4}$/.test(pin)) {
+                    window.showMessage('PIN must be exactly 4 digits (0-9).', 'error');
+                    return;
+                }
+
+                btn.disabled = true;
+                text.textContent = 'Creating account...';
+                spinner.style.display = 'inline';
+
+                try {
+                    let balance = 10;
+                    if (special && special.unlimited) {
+                        balance = 999999999;
+                    }
+
+                    const { error: insertError } = await supabase
+                        .from('users')
+                        .insert([{
+                            full_name: fullName,
+                            username: username,
+                            card_number: cardNumber,
+                            password: password,
+                            pin: pin,
+                            balance: balance,
+                            account_number: null
+                        }]);
+
+                    if (insertError) {
+                        window.showMessage('Registration failed. Please try again.', 'error');
+                    } else {
+                        window.showMessage('Account created successfully! Please login.', 'success');
+                        setTimeout(() => {
+                            window.switchTab('login');
+                            document.getElementById('loginUsername').value = username;
+                            document.getElementById('loginPassword').value = '';
+                            btn.disabled = false;
+                            text.textContent = 'Create Account';
+                            spinner.style.display = 'none';
+                            const msg2 = document.getElementById('messageBox');
+                            msg2.className = 'message-box';
+                            msg2.style.display = 'none';
+                        }, 1500);
+                    }
+                } catch (err) {
+                    window.showMessage('An error occurred. Please try again.', 'error');
+                } finally {
+                    if (!document.getElementById('messageBox').classList.contains('success')) {
+                        btn.disabled = false;
+                        text.textContent = 'Create Account';
+                        spinner.style.display = 'none';
+                    }
+                }
+            };
+
+            document.getElementById('forgotModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    window.closeForgot();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    if (document.getElementById('loginForm').classList.contains('active')) {
+                        window.handleLogin();
+                    } else if (document.getElementById('registerForm').classList.contains('active')) {
+                        window.handleRegister();
+                    } else if (document.getElementById('forgotModal').classList.contains('active')) {
+                        if (document.getElementById('step1').classList.contains('active')) {
+                            window.verifyCardAndPin();
+                        } else if (document.getElementById('step3').classList.contains('active')) {
+                            window.resetPassword();
+                        }
+                    }
+                }
+                if (e.key === 'Escape') {
+                    window.closeForgot();
+                }
+            });
+        })();
+    </script>
+
+</body>
+  </html>
