@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>CHOBANK | Digital Credit Card</title>
+    <title>CHOBANK | Digital Card</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/header-footer.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -41,37 +42,6 @@
             padding: 20px 24px 48px;
             position: relative;
             z-index: 2;
-        }
-
-        .site-header {
-            text-align: center;
-            margin-bottom: 32px;
-            padding: 12px 0 8px;
-            background: transparent;
-        }
-
-        .header-logo {
-            max-width: 100px;
-            height: auto;
-            display: inline-block;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.05));
-        }
-
-        .header-chobank {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
-            line-height: 1.2;
-        }
-
-        .tagline-mini {
-            font-size: 0.85rem;
-            color: #4a4a4a;
-            margin-top: 8px;
-            font-weight: 500;
         }
 
         .main-content {
@@ -691,19 +661,6 @@
         }
         .back-button:hover { transform: translateY(-5px); background: #222; }
 
-        footer {
-            text-align: center;
-            margin-top: 48px;
-            padding-top: 28px;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            font-family: 'Outfit', sans-serif;
-        }
-        footer p {
-            margin-bottom: 6px;
-            font-size: 0.8rem;
-            color: #4a4a4a;
-        }
-
         .loading { display: none; text-align: center; padding: 20px; }
         .spinner { border: 3px solid #eee; border-top: 3px solid #000; border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -786,7 +743,6 @@
         }
 
         @media (max-width: 480px) {
-            .header-chobank { font-size: 1.8rem; }
             .form-container { padding: 24px 20px; }
             .card-preview { width: 340px; height: 215px; padding: 18px; }
             .card-number { font-size: 18px; letter-spacing: 2px; }
@@ -796,15 +752,11 @@
 </head>
 <body>
 <div class="container">
-    <div class="site-header">
-        <img src="chobank1.png" alt="CHOBANK" class="header-logo" id="topLogo" onerror="this.style.display='none';">
-        <div class="header-chobank">CHOBANK</div>
-        <div class="tagline-mini">Digital Credit Card · Roleplay Only</div>
-    </div>
+    <div id="chobank-header"></div>
 
     <main class="main-content">
         <section class="form-container fade-in">
-            <h2>Credit Card Application Form</h2>
+            <h2>Digital Card Application Form</h2>
             <form id="card-form">
                 <div class="form-group">
                     <label for="full-name">Full Name of Cardholder</label>
@@ -875,11 +827,8 @@
     </main>
 
     <div class="back-to-top"><a href="index.html" class="back-button" id="back-button"><i class="fas fa-arrow-left"></i></a></div>
-    <footer>
-        <p>© 2026 CHOBANK Digital Credit Card Generator. All cards are fictional and for roleplay purposes only.</p>
-        <p>This page does not perform actual financial transactions.</p>
-        <p>Each card number is unique and will never be repeated.</p>
-    </footer>
+
+    <div id="chobank-footer"></div>
 </div>
 
 <div class="business-modal" id="business-modal">
@@ -959,6 +908,7 @@
     </div>
 </div>
 
+<script src="Style/header-footer.js"></script>
 <script>
     const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbwvk07oRYureEVNYulf-2GsEXu52MqrTUPuC546Rycx8Pum21ai5YboZnplayfA9PqnTw/exec";
     const usedCardNumbers = new Set();
