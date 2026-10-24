@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHOBANK - Smart Invoice</title>
+    <title>CHOBANK | Invoice</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/header-footer.css">
     <style>
         * {
             margin: 0;
@@ -45,35 +46,6 @@
             .container {
                 padding: 20px 24px 48px;
             }
-        }
-
-        .site-header {
-            text-align: center;
-            margin-bottom: 28px;
-            padding: 12px 0 8px;
-            background: transparent;
-        }
-
-        .header-chobank {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
-            line-height: 1.2;
-        }
-
-        @media (min-width: 480px) {
-            .header-chobank {
-                font-size: 2.4rem;
-            }
-        }
-
-        .tagline-mini {
-            font-size: 0.8rem;
-            color: #4a4a4a;
-            margin-top: 6px;
-            font-weight: 500;
         }
 
         .setting-bar {
@@ -220,7 +192,6 @@
             transform: translateY(-1px);
         }
 
-        /* Logo upload preview */
         .logo-preview {
             width: 50px;
             height: 50px;
@@ -366,7 +337,6 @@
             }
         }
 
-        /* INVOICE PREVIEW - LETTER STYLE (LEBAR, TIDAK MEMANJANG) */
         .invoice-preview {
             margin-top: 24px;
         }
@@ -426,7 +396,6 @@
             justify-content: flex-end;
             gap: 16px;
         }
-        /* Gaya untuk kontainer teks nomor invoice dan tanggal */
         .details-text {
             text-align: right;
         }
@@ -555,30 +524,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .social-links {
-            text-align: center;
-            margin: 32px 0 20px;
-            font-size: 0.8rem;
-            line-height: 1.8;
-        }
-        .social-links a {
-            color: #000000;
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px dotted #000;
-        }
-        .social-links a:hover {
-            opacity: 0.7;
-        }
-        footer {
-            text-align: center;
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.7rem;
-            color: #4a4a4a;
-        }
         .status-badge {
             display: inline-block;
             padding: 4px 14px;
@@ -598,10 +543,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="site-header">
-        <div class="header-chobank">CHOBANK</div>
-        <div class="tagline-mini">Smart Invoice & Billing</div>
-    </div>
+    <div id="chobank-header"></div>
 
     <div class="setting-bar">
         <div class="setting-group">
@@ -667,7 +609,6 @@
                 </div>
             </div>
 
-            <!-- Upload Logo Perusahaan (Optional) -->
             <div class="form-row-2">
                 <div class="form-group">
                     <label id="lblCompanyLogo">Logo Perusahaan (Optional)</label>
@@ -724,22 +665,15 @@
 
     <div class="loading" id="loading"><div class="spinner"></div><p>Memproses...</p></div>
 
-    <div class="social-links">
-        <div>Official Account : <a href="https://x.com/thekachoo" target="_blank" rel="noopener noreferrer">@thekachoo</a></div>
-        <div>Contact Person for Chobank : <a href="https://x.com/tuaipuji" target="_blank" rel="noopener noreferrer">@tuaipuji</a></div>
-        <div>Email : <a href="mailto:ohkachoo@gmail.com">ohkachoo@gmail.com</a></div>
-    </div>
-
-    <footer>
-        <p>© 2026 CHOBANK, Featured by The Kachoo</p>
-    </footer>
+    <div id="chobank-footer"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="Style/header-footer.js"></script>
 <script>
     let currentLang = 'id';
     let currentCurrency = 'IDR';
-    let companyLogoDataURL = ''; // Menyimpan data URL logo perusahaan
+    let companyLogoDataURL = '';
 
     const langIdBtn = document.getElementById('btnLangId');
     const langEnBtn = document.getElementById('btnLangEn');
@@ -756,7 +690,6 @@
     const companyLogoInput = document.getElementById('companyLogoInput');
     const companyLogoPreview = document.getElementById('companyLogoPreview');
 
-    // Preview logo perusahaan saat upload
     companyLogoInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -771,7 +704,6 @@
             companyLogoDataURL = '';
             companyLogoPreview.style.display = 'none';
         }
-        // Jika invoice sudah tampil, refresh preview
         if (invoiceDisplayDiv.style.display === 'block') {
             renderInvoicePreview();
         }
@@ -934,10 +866,7 @@
             adminRowHtml = `<p>${isId ? 'Admin Chobank (1%)' : 'Chobank Admin Fee (1%)'}: ${fmt(adminFee)}</p>`;
         }
         
-        // LANGSUNG PAKAI chobank1.png (tanpa kapital, file lokal)
         const chobankLogoSrc = "chobank1.png";
-        
-        // Logo perusahaan (jika ada)
         const companyLogoHtml = companyLogoDataURL ? `<img src="${companyLogoDataURL}" alt="Company Logo" class="company-logo">` : '';
         
         return `
@@ -1049,7 +978,6 @@
         document.getElementById('paymentStatus').value = 'unpaid';
         document.getElementById('bankName').value = '';
         document.getElementById('accountNumber').value = '';
-        // Reset logo perusahaan
         companyLogoInput.value = '';
         companyLogoDataURL = '';
         companyLogoPreview.style.display = 'none';
