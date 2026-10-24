@@ -22,8 +22,8 @@
             <div class="footer-contact">
                 <strong class="contact-bold">THE KACHOO</strong>
                 <p>Jenderal Sudirman Avenue, Lots 61–62, South Jakarta 12930, Indonesia.</p>
-                <p>Official Account : <a href="https://twitter.com/thekachoo" target="_blank" rel="noopener noreferrer">@thekachoo</a></p>
-                <p>Contant Person : <a href="https://twitter.com/haikachoo" target="_blank" rel="noopener noreferrer">@haikachoo</a></p>
+                <p>Official Account : <a href="https://x.com/thekachoo" target="_blank" rel="noopener noreferrer">@thekachoo</a></p>
+                <p>Contant Person : <a href="https://x.com/haikachoo" target="_blank" rel="noopener noreferrer">@haikachoo</a></p>
                 <p>Email : ohkachoo@gmail.com</p>
             </div>
             <div class="footer-copyright">2026 CHOBANK, Featured by The Kachoo</div>
