@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+.chobank-header *,
+.chobank-footer * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.chobank-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 16px 0 12px;
+    background: transparent;
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+.chobank-header .header-chobank-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #000000;
+    line-height: 1.1;
+}
+
+.chobank-footer {
+    margin-top: 20px;
+    padding: 24px 20px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background: transparent;
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+.chobank-footer .footer-notice {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 32px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.chobank-footer .footer-notice strong {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    color: #000;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    letter-spacing: -0.1px;
+}
+
+.chobank-footer .footer-notice p {
+    font-family: 'Outfit', sans-serif;
+    color: #4a4a4a;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.chobank-footer .footer-contact {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 32px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.chobank-footer .footer-contact .contact-bold {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    color: #000;
+    font-size: 0.85rem;
+    letter-spacing: -0.1px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.chobank-footer .footer-contact p {
+    font-family: 'Outfit', sans-serif;
+    color: #3a3a3a;
+    font-size: 0.72rem;
+    font-weight: 400;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.chobank-footer .footer-contact a {
+    font-family: 'Outfit', sans-serif;
+    color: #3a3a3a;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.chobank-footer .footer-contact a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.chobank-footer .footer-copyright {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    color: #5a5a5a;
+    margin-top: 12px;
+    font-weight: 400;
+}
+
+.chobank-footer .footer-featured {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    color: #5a5a5a;
+    margin-top: 8px;
+    font-weight: 400;
+}
+
+@keyframes chobankGentleReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chobank-header.fade-reveal,
+.chobank-footer.fade-reveal {
+    animation: chobankGentleReveal 0.6s ease forwards;
+    opacity: 0;
+}
+
+@media (min-width: 768px) {
+    .chobank-header .header-chobank-text {
+        font-size: 4rem;
+    }
+
+    .chobank-footer .footer-notice p,
+    .chobank-footer .footer-contact p,
+    .chobank-footer .footer-contact a {
+        font-size: 0.8rem;
+    }
+
+    .chobank-footer .footer-contact {
+        padding: 18px 28px;
+    }
+
+    .chobank-footer .footer-contact .contact-bold {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+    .chobank-header .header-chobank-text {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .chobank-header .header-chobank-text {
+        font-size: 2.2rem;
+    }
+
+    .chobank-footer .footer-contact p,
+    .chobank-footer .footer-contact a {
+        font-size: 0.65rem;
+    }
+
+    .chobank-footer .footer-contact .contact-bold {
+        font-size: 0.75rem;
+    }
+
+    .chobank-footer .footer-notice {
+        padding: 14px 16px;
+    }
+  }
