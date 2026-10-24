@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CHOBANK - Payment Proof Generator</title>
+    <title>CHOBANK | Transactions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/header-footer.css">
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -23,18 +24,6 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-        }
-
-        .site-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .header-chobank-text {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
         }
 
         .payment-options {
@@ -529,15 +518,6 @@
             margin-top: 12px;
         }
 
-        footer {
-            text-align: center;
-            margin-top: 48px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-            color: #999;
-            font-size: 0.75rem;
-        }
-
         @media (max-width: 640px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -572,9 +552,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="site-header">
-            <div class="header-chobank-text">CHOBANK</div>
-        </div>
+        <div id="chobank-header"></div>
 
         <div class="payment-options">
             <div class="payment-option" id="domestic-btn">
@@ -606,11 +584,10 @@
             <p style="font-size: 1rem; color: #666;">Membuat gambar receipt...</p>
         </div>
 
-        <footer>
-            <p>2026 The Kachoo - Roleplay Purpose Only</p>
-        </footer>
+        <div id="chobank-footer"></div>
     </div>
 
+    <script src="Style/header-footer.js"></script>
     <script>
         let currentPaymentType = '';
         
@@ -1013,4 +990,4 @@
         }
     </script>
 </body>
-    </html>
+                                                                       </html>
