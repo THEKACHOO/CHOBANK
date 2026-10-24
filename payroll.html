@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHOBANK - Sistem Payroll</title>
+    <title>CHOBANK | Payroll</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/header-footer.css">
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -40,29 +41,6 @@
             padding: 20px 24px 48px;
             position: relative;
             z-index: 2;
-        }
-
-        .site-header {
-            text-align: center;
-            margin-bottom: 32px;
-            padding: 12px 0 8px;
-            background: transparent;
-        }
-
-        .header-chobank {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #000000;
-            line-height: 1.2;
-        }
-
-        .tagline-mini {
-            font-size: 0.9rem;
-            color: #4a4a4a;
-            margin-top: 8px;
-            font-weight: 500;
         }
 
         .form-container {
@@ -231,38 +209,6 @@
         .btn-secondary:hover {
             background: rgba(0,0,0,0.05);
             transform: translateY(-2px);
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 48px;
-            padding-top: 28px;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .footer-contacts {
-            margin-bottom: 20px;
-            font-size: 0.8rem;
-            color: #2c2c2c;
-            line-height: 1.8;
-        }
-
-        .footer-contacts a {
-            color: #000000;
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px dotted #000;
-        }
-
-        .footer-contacts a:hover {
-            opacity: 0.7;
-        }
-
-        footer p {
-            margin-bottom: 6px;
-            font-size: 0.75rem;
-            color: #4a4a4a;
         }
 
         .loading {
@@ -490,7 +436,6 @@
         }
 
         @media (max-width: 480px) {
-            .header-chobank { font-size: 1.8rem; }
             .form-container { padding: 24px 20px; }
             .payslip-card { padding: 18px 16px; }
         }
@@ -498,10 +443,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="site-header">
-            <div class="header-chobank">CHOBANK</div>
-            <div class="tagline-mini">Sistem Payroll</div>
-        </div>
+        <div id="chobank-header"></div>
 
         <main class="main-content">
             <section class="form-container fade-in">
@@ -615,17 +557,10 @@
             </div>
         </main>
         
-        <footer>
-            <div class="footer-contacts">
-                <div>Official Account : <a href="https://x.com/thekachoo" target="_blank" rel="noopener noreferrer">@thekachoo</a></div>
-                <div>Contact Person for Chobank : <a href="https://x.com/tuaipuji" target="_blank" rel="noopener noreferrer">@tuaipuji</a></div>
-                <div>Gmail : <a href="mailto:ohkachoo@gmail.com">ohkachoo@gmail.com</a></div>
-            </div>
-            <p>© 2026 CHOBANK. All rights reserved.</p>
-            <p>Featured by The Kachoo</p>
-        </footer>
+        <div id="chobank-footer"></div>
     </div>
 
+    <script src="Style/header-footer.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const generateBtn = document.getElementById('generate-slip-btn');
@@ -862,4 +797,4 @@
         });
     </script>
 </body>
-    </html>
+                            </html>
